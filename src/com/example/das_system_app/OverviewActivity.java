@@ -21,11 +21,11 @@ public class OverviewActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.overview);
 
-		Button buttons[] = { (Button) findViewById(R.id.button1),
-				(Button) findViewById(R.id.button2),
-				(Button) findViewById(R.id.button3),
-				(Button) findViewById(R.id.button4),
-				(Button) findViewById(R.id.button5) };
+		Button buttons[] = { (Button) findViewById(R.id.OverviewNavigation),
+				(Button) findViewById(R.id.OverviewChat),
+				(Button) findViewById(R.id.OverviewNutzerprofil),
+				(Button) findViewById(R.id.OverviewRauminfo),
+				(Button) findViewById(R.id.OverviewDozent) };
 
 		for (Button button : buttons) {
 			button.setOnClickListener(this);
@@ -37,19 +37,19 @@ public class OverviewActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 
 		switch (view.getId()) {
-		case R.id.button1:
+		case R.id.OverviewNavigation:
 			startActivity(new Intent(this, NavigationActivity.class));
 			break;
-		case R.id.button2:
+		case R.id.OverviewChat:
 			startActivity(new Intent(this, RegisterActivity.class));
 			break;
-		case R.id.button3:
+		case R.id.OverviewNutzerprofil:
 			startActivity(new Intent(this, ProfilActivity.class));
 			break;
-		case R.id.button4:
+		case R.id.OverviewRauminfo:
 			startActivity(new Intent(this, RegisterActivity.class));
 			break;
-		case R.id.button5:
+		case R.id.OverviewDozent:
 			startActivity(new Intent(this, RegisterActivity.class));
 			break;
 		default:
