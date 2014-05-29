@@ -1,7 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true" >
 
-</ListView>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="231dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical" >
+
+            
+            <TextView
+                android:id="@+id/RegisterLabelVorname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vorname" />
+            
+            <EditText
+                android:id="@+id/RegisterVorname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+            
+            <TextView
+                android:id="@+id/RegisterLabelNachname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nachname" />
+            
+            <EditText
+                android:id="@+id/RegisterVorname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+
+            <TextView
+                android:id="@+id/RegisterLabelEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/RegisterEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:inputType="textEmailAddress" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
+                android:id="@+id/RegisterLabelPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Passwort" />
+
+            <EditText
+                android:id="@+id/RegisterPassword"
+                android:layout_width="232dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:inputType="textPassword" />
+            
+            <TextView
+                android:id="@+id/RegisterCheckLabelPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Passwort wiederholen" />
+
+            <EditText
+                android:id="@+id/RegisterCheckPassword"
+                android:layout_width="232dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:inputType="textPassword" />
+
+            
+
+            <Button
+                android:id="@+id/RegisterButton"
+                style="android:buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right"
+                android:text="Registrieren" />
+            
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>
