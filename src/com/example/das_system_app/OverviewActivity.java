@@ -41,16 +41,16 @@ public class OverviewActivity extends Activity implements OnClickListener {
 			startActivity(new Intent(this, NavigationActivity.class));
 			break;
 		case R.id.OverviewChat:
-			startActivity(new Intent(this, RegisterActivity.class));
+			startActivity(new Intent(this, ChatActivity.class));
 			break;
 		case R.id.OverviewNutzerprofil:
 			startActivity(new Intent(this, ProfilActivity.class));
 			break;
 		case R.id.OverviewRauminfo:
-			startActivity(new Intent(this, RegisterActivity.class));
+			startActivity(new Intent(this, RaumActivity.class));
 			break;
 		case R.id.OverviewDozent:
-			startActivity(new Intent(this, RegisterActivity.class));
+			startActivity(new Intent(this, DozentActivity.class));
 			break;
 		default:
 
