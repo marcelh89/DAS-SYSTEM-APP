@@ -23,8 +23,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 		
 		TextView passwordVergessenView = (TextView) findViewById(R.id.LoginPasswortVergessen);
 		passwordVergessenView.setOnClickListener(this);
-		
-		
 
 	}
 

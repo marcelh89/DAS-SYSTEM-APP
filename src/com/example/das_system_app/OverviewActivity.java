@@ -44,7 +44,7 @@ public class OverviewActivity extends Activity implements OnClickListener {
 			startActivity(new Intent(this, RegisterActivity.class));
 			break;
 		case R.id.button3:
-			startActivity(new Intent(this, RegisterActivity.class));
+			startActivity(new Intent(this, ProfilActivity.class));
 			break;
 		case R.id.button4:
 			startActivity(new Intent(this, RegisterActivity.class));
