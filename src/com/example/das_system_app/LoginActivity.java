@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class LoginActivity extends Activity implements OnClickListener {
 
@@ -16,6 +17,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		Button loginButton = (Button) findViewById(R.id.LoginButton);
 		loginButton.setOnClickListener(this);
+		
+		TextView registerView = (TextView) findViewById(R.id.LoginRegistrieren);
+		registerView.setOnClickListener(this);
+		
+		TextView passwordVergessenView = (TextView) findViewById(R.id.LoginPasswortVergessen);
+		passwordVergessenView.setOnClickListener(this);
+		
+		
 
 	}
 
@@ -23,6 +32,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.LoginRegistrieren:
+			startActivity(new Intent(this, RegisterActivity.class));
+			break;
+		case R.id.LoginPasswortVergessen:
 			startActivity(new Intent(this, RegisterActivity.class));
 			break;
 		case R.id.LoginButton:
