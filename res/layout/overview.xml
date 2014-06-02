@@ -1,44 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true" >
-
-    <LinearLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+ 
+    <ExpandableListView
+        android:id="@+id/laptop_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/OverviewNavigation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Navigation" />
-
-        <Button
-            android:id="@+id/OverviewChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chat" />
-
-        <Button
-            android:id="@+id/OverviewNutzerprofil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nutzerprofil" />
-
-        <Button
-            android:id="@+id/OverviewRauminfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rauminfo" />
-        
-        <Button
-            android:id="@+id/OverviewDozent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dozent" />
-
-    </LinearLayout>
-
-</ScrollView>
+        android:layout_height="fill_parent" >
+    </ExpandableListView>
+     
+</RelativeLayout>
