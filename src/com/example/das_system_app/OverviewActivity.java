@@ -22,7 +22,7 @@ public class OverviewActivity extends Activity {
 
 	List<String> groupList;
 	List<String> childList;
-	Map<String, List<String>> laptopCollection;
+	Map<String, List<String>> optionsCollection;
 	ExpandableListView expListView;
 
 	@Override
@@ -36,10 +36,8 @@ public class OverviewActivity extends Activity {
 
 		expListView = (ExpandableListView) findViewById(R.id.laptop_list);
 		final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
-				this, groupList, laptopCollection);
+				this, groupList, optionsCollection);
 		expListView.setAdapter(expListAdapter);
-
-		// setGroupIndicatorToRight();
 
 		expListView.setOnChildClickListener(new OnChildClickListener() {
 
@@ -80,7 +78,7 @@ public class OverviewActivity extends Activity {
 		String[] dozentOptions = { "Anwesenheit prüfen",
 				"QR-Code für LV bereitstellen" };
 
-		laptopCollection = new LinkedHashMap<String, List<String>>();
+		optionsCollection = new LinkedHashMap<String, List<String>>();
 
 		for (String laptop : groupList) {
 			if (laptop.equals("Navigation")) {
@@ -95,7 +93,7 @@ public class OverviewActivity extends Activity {
 				// (laptop.equals("Dozent"))
 				loadChild(dozentOptions);
 
-			laptopCollection.put(laptop, childList);
+			optionsCollection.put(laptop, childList);
 		}
 	}
 
@@ -103,14 +101,6 @@ public class OverviewActivity extends Activity {
 		childList = new ArrayList<String>();
 		for (String model : laptopModels)
 			childList.add(model);
-	}
-
-	// Convert pixel to dip
-	public int getDipsFromPixel(float pixels) {
-		// Get the screen's density scale
-		final float scale = getResources().getDisplayMetrics().density;
-		// Convert the dps to pixels, based on density scale
-		return (int) (pixels * scale + 0.5f);
 	}
 
 }
