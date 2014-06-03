@@ -45,17 +45,48 @@ public class OverviewActivity extends Activity {
 					int groupPosition, int childPosition, long id) {
 				final String selected = (String) expListAdapter.getChild(
 						groupPosition, childPosition);
-				Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-						.show();
-				
-				/*
-				 * switch-case für neue Intents
-				 * startActivity(new Intent(this, RegisterActivity.class));
-				 */
+				// Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+				// .show();
+				Toast.makeText(getBaseContext(),
+						groupPosition + " - " + childPosition,
+						Toast.LENGTH_LONG).show();
+
+				createDependingIntent(groupPosition, childPosition);
 
 				return true;
 			}
+
 		});
+	}
+
+	private void createDependingIntent(int groupPosition, int childPosition) {
+
+		Intent intent = null;
+
+		switch (groupPosition) {
+		case 0:
+			if (childPosition == 0) { // Freunde im Umkreis
+				intent = new Intent(this, NavigationActivity.class);
+			} else { // Weg zum Freund
+				intent = new Intent(this, NavigationActivity.class); // Params?
+			}
+			break;
+		case 1:
+			intent = new Intent(this, ChatActivity.class);
+			break;
+		case 2:
+			intent = new Intent(this, ProfilActivity.class);
+			break;
+		case 3:
+			intent = new Intent(this, RaumActivity.class);
+			break;
+		default:
+			intent = new Intent(this, DozentActivity.class);
+
+		}
+
+		startActivity(intent);
+
 	}
 
 	private void createGroupList() {
