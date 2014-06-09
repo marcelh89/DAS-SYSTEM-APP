@@ -1,4 +1,4 @@
-DAS-SYSTEM-APP [(DAS-SYSTEM-APP)](https://github.com/marcelh89/DAS-SYSTEM-)
+DAS-SYSTEM-APP [(DAS-SYSTEM-SERVER)](https://github.com/marcelh89/DAS-SYSTEM-SERVER)
 ==========
 
 
@@ -25,13 +25,9 @@ Tech
 
 Installation
 --------------
+import als Eclipse Projekt --> RUN as Android Application
 
-```sh
-git clone https://github.com/marcelh89/DAS-SYSTEM-SERVER/
-cd DAS-SYSTEM-SERVER
-mvn install
-
-```
-
-
-    
+bekannte Fehler
+---------------
+Android Abhängigkeiten verursachen Problem beim Ausführen des dex Codes
+* Rechtsklick auf Projekt --> Settings --> Abhängigkeiten und alles bis auf Android 4 rauslöschen --> Run
