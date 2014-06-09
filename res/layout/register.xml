@@ -2,12 +2,18 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true" >
+    android:fillViewport="true" android:background="#ffffff">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/banner" />
 
         <LinearLayout
             android:id="@+id/linearLayout1"

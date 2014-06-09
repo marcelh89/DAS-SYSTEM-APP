@@ -28,7 +28,16 @@ public class RegisterActivity extends Activity implements
 
 	@Override
 	public void onClick(View v) {
+		
+	}
+	
+	private void validateInput(){
+		
+	}
+	
+	private void submit(){
 		startActivity(new Intent(this, LoginActivity.class));
+		//besser zurück zur Parent Activity (startActivityWithResult..)
 	}
 
 }
