@@ -166,10 +166,10 @@ public class ChatActivity extends Activity {
             fragment = new HomeFragment();
             break;
         case 1:
-            fragment = new AddPeopleFragment();
+            fragment = new AddGroupFragment();
             break;
         case 2:
-            fragment = new AddGroupFragment();
+            fragment = new AddPeopleFragment();
             break;
  
         default:

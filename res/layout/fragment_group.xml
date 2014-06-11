@@ -13,4 +13,58 @@
         android:layout_height="wrap_content"
         android:text="@string/dummy_group" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="231dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/LoginLabelEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gruppenname" />
+
+        <EditText
+            android:id="@+id/LoginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:inputType="textEmailAddress" >
+
+            <requestFocus android:layout_width="match_parent" />
+        </EditText>
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gruppe privatisieren" />
+
+        <TextView
+            android:id="@+id/LoginLabelPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Passwort" />
+
+        <EditText
+            android:id="@+id/LoginPassword"
+            android:layout_width="232dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/LoginButton"
+            style="android:buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:text="Erstellen"
+            android:textSize="14sp" />
+    </LinearLayout>
+
 </RelativeLayout>

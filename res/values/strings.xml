@@ -25,8 +25,10 @@
     <string name="desc_list_item_icon">Item Icon</string>
 
     <!-- dummy texts -->
-    <string name="dummy_home">Home Fragment</string>
-    <string name="dummy_group">Gruppen Fragment</string>
-    <string name="dummy_people">Leut Fragment</string>
+    <string name="dummy_home">Übersicht</string>
+    <string name="dummy_group">Gruppe erstellen</string>
+    <string name="dummy_people">Freunde in Gruppe einladen</string>
+    
+    
 
 </resources>
