@@ -5,9 +5,12 @@ package com.example.das_system_app;
 
 import com.example.das_system_app.adapters.NavDrawerListAdapter;
 import com.example.das_system_app.model.NavDrawerItem;
- 
+import com.example.das_system_app.view.AddGroupFragment;
+import com.example.das_system_app.view.AddPeopleFragment;
+import com.example.das_system_app.view.HomeFragment;
+
 import java.util.ArrayList;
- 
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -83,7 +86,7 @@ public class ChatActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
  
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_launcher, //nav menu toggle icon
+                android.R.drawable.ic_dialog_dialer, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name // nav drawer close - description for accessibility
         ) {
@@ -163,10 +166,10 @@ public class ChatActivity extends Activity {
             fragment = new HomeFragment();
             break;
         case 1:
-            fragment = new FindPeopleFragment();
+            fragment = new AddPeopleFragment();
             break;
         case 2:
-            fragment = new PhotosFragment();
+            fragment = new AddGroupFragment();
             break;
  
         default:
