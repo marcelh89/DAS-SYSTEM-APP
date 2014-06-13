@@ -1,13 +1,16 @@
 /**
  * 
  */
-package com.example.das_system_app;
+package com.example.das_system_app.activities;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.das_system_app.R;
+import com.example.das_system_app.R.id;
+import com.example.das_system_app.R.layout;
 import com.example.das_system_app.adapters.ExpandableListAdapter;
 
 import android.app.Activity;

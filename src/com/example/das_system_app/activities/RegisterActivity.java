@@ -1,7 +1,11 @@
 /**
  * 
  */
-package com.example.das_system_app;
+package com.example.das_system_app.activities;
+
+import com.example.das_system_app.R;
+import com.example.das_system_app.R.id;
+import com.example.das_system_app.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;
