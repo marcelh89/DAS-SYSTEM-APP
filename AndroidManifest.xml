@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.das_system_app"
     android:versionCode="1"
-    android:versionName="1.0"
-     >
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="14" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -24,13 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".OverviewActivity" />
-        <activity android:name=".NavigationActivity" />
-        <activity android:name=".ProfilActivity" />
-        <activity android:name=".RaumActivity" />
-        <activity android:name=".DozentActivity" />
-        <activity android:name=".ChatActivity" />
+        <activity android:name="com.example.das_system_app.activities.RegisterActivity" />
+        <activity android:name="com.example.das_system_app.activities.OverviewActivity" />
+        <activity android:name="com.example.das_system_app.activities.NavigationActivity" />
+        <activity android:name="com.example.das_system_app.activities.ProfilActivity" />
+        <activity android:name="com.example.das_system_app.activities.RaumActivity" />
+        <activity android:name="com.example.das_system_app.activities.DozentActivity" />
+        <activity android:name="com.example.das_system_app.activities.ChatActivity" />
     </application>
 
 </manifest>
