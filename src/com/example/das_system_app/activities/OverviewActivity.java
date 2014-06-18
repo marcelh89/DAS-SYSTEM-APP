@@ -68,14 +68,15 @@ public class OverviewActivity extends Activity {
 
 		switch (groupPosition) {
 		case 0:
-			if (childPosition == 0) { // Freunde im Umkreis
-				intent = new Intent(this, NavigationActivity.class);
-			} else { // Weg zum Freund
-				intent = new Intent(this, NavigationActivity.class); // Params?
-			}
+			// Freunde im Umkreis or Weg zum Freund
+			intent = (childPosition == 0) ? new Intent(this,
+					NavigationActivity.class) : new Intent(this,
+					NavigationActivity.class);
 			break;
 		case 1:
-			intent = new Intent(this, ChatActivity.class);
+			intent = (childPosition == 0) ? new Intent(this,
+					ChatGlobalActivity.class) : new Intent(this,
+					ChatActivity.class);
 			break;
 		case 2:
 			intent = new Intent(this, ProfilActivity.class);
