@@ -1,8 +1,5 @@
 package com.example.das_system_app.activities;
 
-import java.util.HashMap;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,15 +9,12 @@ import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 public class ChatGlobalActivity extends Activity implements OnClickListener {
@@ -28,18 +22,15 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	ImageButton postbtn;
 	TextView chatView;
 	EditText inputField;
+	String currentUserName = "";
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
-
-	// HashMap<String, String> chatlog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_global);
-
-		// chatlog = new HashMap<String, String>();
 
 		inputField = (EditText) findViewById(R.id.editText2);
 		chatView = (TextView) findViewById(R.id.textviewChat);
@@ -56,10 +47,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 		String inputText = inputField.getText().toString().trim();
 
-		// String username = "PeterL";
-
 		if (!inputText.isEmpty()) {
-			// chatView.append("\n" + username + "> " + inputText);
 			mConnection.sendTextMessage(inputText);
 			inputField.setText("");
 		}
@@ -82,16 +70,24 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 				public void onTextMessage(String payload) {
 					Log.d(CLS, "Got echo: " + payload);
 
+					if (payload.contains("addUser")) {
+						Log.d(CLS,
+								"nickname: "
+										+ payload.substring(12,
+												payload.length() - 2));
+						currentUserName = payload.substring(12,
+								payload.length() - 2);
+					}
+
 					try {
 						JSONObject jsonObj = new JSONObject(payload);
 						String nickname = jsonObj.getString("nickname");
 						String msg = jsonObj.getString("message");
 						chatView.append(nickname + "> " + msg + "\n");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 
+					} catch (JSONException e) {
+						Log.e(CLS, "Got exception: " + e.getMessage());
+					}
 				}
 
 				@Override
@@ -101,20 +97,32 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 			});
 		} catch (WebSocketException e) {
-
 			Log.d(CLS, e.toString());
 		}
+
+	}
+
+	@Override
+	protected void onPause() {
+		// save state of chatlogs
+		mConnection.disconnect();
+		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
-		// get back foreign connection (closes when screen gets dark)
 		super.onResume();
+
+		// get back foreign connection (closes when screen gets dark)
+		if (currentUserName != "") {
+			connect();
+			// dont works after connect (sleep?!)
+			// mConnection.sendTextMessage(currentUserName);
+		}
 	}
 
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		mConnection.disconnect();
 		super.onStop();
 	}
