@@ -2,17 +2,25 @@ package com.example.das_system_app.activities;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.das_system_app.R;
+
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 public class ChatGlobalActivity extends Activity implements OnClickListener {
@@ -48,10 +56,11 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 		String inputText = inputField.getText().toString().trim();
 
-		String username = "PeterL";
+		// String username = "PeterL";
 
 		if (!inputText.isEmpty()) {
-			chatView.append("\n" + username + "> " + inputText);
+			// chatView.append("\n" + username + "> " + inputText);
+			mConnection.sendTextMessage(inputText);
 			inputField.setText("");
 		}
 
@@ -67,22 +76,46 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 				@Override
 				public void onOpen() {
 					Log.d(CLS, "Status: Connected to " + wsuri);
-					mConnection.sendTextMessage("Hello, world!");
 				}
 
 				@Override
 				public void onTextMessage(String payload) {
 					Log.d(CLS, "Got echo: " + payload);
+
+					try {
+						JSONObject jsonObj = new JSONObject(payload);
+						String nickname = jsonObj.getString("nickname");
+						String msg = jsonObj.getString("message");
+						chatView.append(nickname + "> " + msg + "\n");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				}
 
 				@Override
 				public void onClose(int code, String reason) {
 					Log.d(CLS, "Connection lost.");
 				}
+
 			});
 		} catch (WebSocketException e) {
 
 			Log.d(CLS, e.toString());
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		// get back foreign connection (closes when screen gets dark)
+		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		mConnection.disconnect();
+		super.onStop();
 	}
 }
