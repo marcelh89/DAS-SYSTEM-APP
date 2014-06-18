@@ -10,6 +10,7 @@ import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +23,9 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	ImageButton postbtn;
 	TextView chatView;
 	EditText inputField;
-	String currentUserName = "";
+	// String currentUserName = "";
+	boolean onCreateExecuted = false; // Problem with onResume triggered twice
+										// when onCreate...
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
@@ -38,7 +41,13 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		postbtn = (ImageButton) findViewById(R.id.imageButton1);
 		postbtn.setOnClickListener(this);
 
-		connect();
+		connectChain();
+
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+				onCreateExecuted = true;
+			}
+		}, 2000);
 
 	}
 
@@ -70,14 +79,20 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 				public void onTextMessage(String payload) {
 					Log.d(CLS, "Got echo: " + payload);
 
-					if (payload.contains("addUser")) {
-						Log.d(CLS,
-								"nickname: "
-										+ payload.substring(12,
-												payload.length() - 2));
-						currentUserName = payload.substring(12,
-								payload.length() - 2);
-					}
+					/*
+					 * ueberdenken kann doppelt auftreten, dann fehler bsp: wenn
+					 * sich 1 in webapp nach android app anmeldet LSG: user
+					 * ueber session setzen siehe connectChain()
+					 */
+					// if (payload.contains("addUser")) {
+					// Log.d(CLS,
+					// "nickname: "
+					// + payload.substring(12,
+					// payload.length() - 2));
+					// currentUserName = payload.substring(12,
+					// payload.length() - 2);
+					// }
+					/* ueberdenken */
 
 					try {
 						JSONObject jsonObj = new JSONObject(payload);
@@ -114,10 +129,8 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		super.onResume();
 
 		// get back foreign connection (closes when screen gets dark)
-		if (currentUserName != "") {
-			connect();
-			// dont works after connect (sleep?!)
-			// mConnection.sendTextMessage(currentUserName);
+		if (onCreateExecuted) {
+			connectChain();
 		}
 	}
 
@@ -126,4 +139,18 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		mConnection.disconnect();
 		super.onStop();
 	}
+
+	private void connectChain() {
+		connect();
+
+		// wait until mConnection established
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+				// dynamical set username or get from session context
+				String username = "dummy";
+				mConnection.sendTextMessage(username);
+			}
+		}, 2000);
+	}
+
 }

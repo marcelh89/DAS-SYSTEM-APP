@@ -26,7 +26,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:text="Willkommen im globalen Chat" >
+                android:text="Willkommen im globalen Chat \n" >
             </TextView>
         </ScrollView>
 
@@ -52,7 +52,6 @@
                 android:layout_marginTop="-15px"
                 android:src="@android:drawable/ic_media_play" />
         </LinearLayout>
-
     </LinearLayout>
 
 </FrameLayout>
