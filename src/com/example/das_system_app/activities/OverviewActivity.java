@@ -74,9 +74,9 @@ public class OverviewActivity extends Activity {
 					NavigationActivity.class);
 			break;
 		case 1:
-			intent = (childPosition == 0) ? new Intent(this,
-					ChatGlobalActivity.class) : new Intent(this,
-					ChatActivity.class);
+			// intent = new Intent(this, ChatChooseActivity.class);
+			intent = new Intent(this, ChatGlobalActivity.class);
+			intent.putExtra("room", "arduino");
 			break;
 		case 2:
 			intent = new Intent(this, ProfilActivity.class);

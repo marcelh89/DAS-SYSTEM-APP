@@ -31,6 +31,7 @@
         <activity android:name="com.example.das_system_app.activities.RaumActivity" />
         <activity android:name="com.example.das_system_app.activities.DozentActivity" />
         <activity android:name="com.example.das_system_app.activities.ChatActivity" />
+        <activity android:name="com.example.das_system_app.activities.ChatChooseActivity" />
         <activity
             android:name="com.example.das_system_app.activities.ChatGlobalActivity"
             android:label="@string/title_activity_chat_global" >

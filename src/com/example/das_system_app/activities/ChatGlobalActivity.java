@@ -1,5 +1,7 @@
 package com.example.das_system_app.activities;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +25,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	ImageButton postbtn;
 	TextView chatView;
 	EditText inputField;
-	// String currentUserName = "";
+	String currentUserName = "dummy";
 	boolean onCreateExecuted = false; // Problem with onResume triggered twice
 										// when onCreate...
 
@@ -57,7 +59,18 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		String inputText = inputField.getText().toString().trim();
 
 		if (!inputText.isEmpty()) {
-			mConnection.sendTextMessage(inputText);
+
+			JSONObject chatmessage = new JSONObject();
+
+			try {
+				chatmessage.put("message", inputText);
+				chatmessage.put("sender", currentUserName);
+				chatmessage.put("received", new Date());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			mConnection.sendTextMessage(chatmessage.toString());
 			inputField.setText("");
 		}
 
@@ -65,7 +78,10 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 	public void connect() {
 
-		final String wsuri = "ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat";
+		String room = getIntent().getStringExtra("room");
+
+		final String wsuri = "ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/"
+				+ room;
 
 		try {
 			mConnection.connect(wsuri, new WebSocketHandler() {
@@ -79,26 +95,13 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 				public void onTextMessage(String payload) {
 					Log.d(CLS, "Got echo: " + payload);
 
-					/*
-					 * ueberdenken kann doppelt auftreten, dann fehler bsp: wenn
-					 * sich 1 in webapp nach android app anmeldet LSG: user
-					 * ueber session setzen siehe connectChain()
-					 */
-					// if (payload.contains("addUser")) {
-					// Log.d(CLS,
-					// "nickname: "
-					// + payload.substring(12,
-					// payload.length() - 2));
-					// currentUserName = payload.substring(12,
-					// payload.length() - 2);
-					// }
-					/* ueberdenken */
-
 					try {
 						JSONObject jsonObj = new JSONObject(payload);
-						String nickname = jsonObj.getString("nickname");
-						String msg = jsonObj.getString("message");
-						chatView.append(nickname + "> " + msg + "\n");
+						String sender = jsonObj.getString("sender");
+						String message = jsonObj.getString("message");
+						String received = jsonObj.getString("received");
+
+						chatView.append(sender + "> " + message + "\n");
 
 					} catch (JSONException e) {
 						Log.e(CLS, "Got exception: " + e.getMessage());
@@ -129,9 +132,9 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		super.onResume();
 
 		// get back foreign connection (closes when screen gets dark)
-		if (onCreateExecuted) {
-			connectChain();
-		}
+		// if (onCreateExecuted) {
+		// connectChain();
+		// }
 	}
 
 	@Override
@@ -147,10 +150,20 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
 				// dynamical set username or get from session context
-				String username = "dummy";
-				mConnection.sendTextMessage(username);
+
+				JSONObject chatmessage = new JSONObject();
+
+				try {
+					chatmessage.put("message", "CONNECT");
+					chatmessage.put("sender", currentUserName);
+					chatmessage.put("received", new Date());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				mConnection.sendTextMessage(chatmessage.toString());
+
 			}
 		}, 2000);
 	}
-
 }
