@@ -34,7 +34,8 @@
         <activity android:name="com.example.das_system_app.activities.ChatChooseActivity" />
         <activity
             android:name="com.example.das_system_app.activities.ChatGlobalActivity"
-            android:label="@string/title_activity_chat_global" >
+            android:label="@string/title_activity_chat_global"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

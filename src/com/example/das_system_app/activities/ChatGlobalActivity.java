@@ -43,7 +43,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		postbtn = (ImageButton) findViewById(R.id.imageButton1);
 		postbtn.setOnClickListener(this);
 
-		connectChain();
+		connect();
 
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
@@ -65,7 +65,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 			try {
 				chatmessage.put("message", inputText);
 				chatmessage.put("sender", currentUserName);
-				chatmessage.put("received", new Date());
+				chatmessage.put("received", "");
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -131,10 +131,6 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 
-		// get back foreign connection (closes when screen gets dark)
-		// if (onCreateExecuted) {
-		// connectChain();
-		// }
 	}
 
 	@Override
@@ -143,27 +139,4 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		super.onStop();
 	}
 
-	private void connectChain() {
-		connect();
-
-		// wait until mConnection established
-		new Handler().postDelayed(new Runnable() {
-			public void run() {
-				// dynamical set username or get from session context
-
-				JSONObject chatmessage = new JSONObject();
-
-				try {
-					chatmessage.put("message", "CONNECT");
-					chatmessage.put("sender", currentUserName);
-					chatmessage.put("received", new Date());
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-
-				mConnection.sendTextMessage(chatmessage.toString());
-
-			}
-		}, 2000);
-	}
 }
