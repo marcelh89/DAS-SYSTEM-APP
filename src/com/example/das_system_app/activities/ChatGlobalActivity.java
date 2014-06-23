@@ -25,9 +25,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	ImageButton postbtn;
 	TextView chatView;
 	EditText inputField;
-	String currentUserName = "dummy";
-	boolean onCreateExecuted = false; // Problem with onResume triggered twice
-										// when onCreate...
+	String currentUserName = "android"; // set dynamically
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
@@ -44,12 +42,6 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		postbtn.setOnClickListener(this);
 
 		connect();
-
-		new Handler().postDelayed(new Runnable() {
-			public void run() {
-				onCreateExecuted = true;
-			}
-		}, 2000);
 
 	}
 
@@ -130,7 +122,9 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		if (!mConnection.isConnected()) {
+			connect();
+		}
 	}
 
 	@Override
