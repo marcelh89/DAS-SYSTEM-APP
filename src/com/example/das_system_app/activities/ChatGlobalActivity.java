@@ -6,16 +6,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.das_system_app.R;
+import com.google.zxing.Result;
 
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,7 +32,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	TextView chatView;
 	EditText inputField;
 	String currentUserName = "android"; // set dynamically
-	String room = "global";
+	String room;
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
@@ -47,6 +53,11 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 		postbtn = (ImageButton) findViewById(R.id.imageButton1);
 		postbtn.setOnClickListener(this);
+
+		boolean isPrivate = getIntent().getBooleanExtra("isPrivate", false);
+		if (isPrivate) {
+			startInitialDialog();
+		}
 
 	}
 
@@ -143,6 +154,32 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 		// mConnection.disconnect();
 		super.onStop();
+	}
+
+	private void startInitialDialog() {
+
+		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter
+				.createFromResource(this, R.array.chats,
+						android.R.layout.simple_list_item_1);
+
+		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setIcon(R.drawable.ic_launcher);
+		ad.setTitle("Wählen sie eine Gruppe");
+		ad.setView(LayoutInflater.from(this).inflate(R.layout.dialog, null));
+
+		ad.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				if (item == 0) {
+					room = "privat1";
+				} else {
+					room = "privat2";
+				}
+			}
+		});
+
+		AlertDialog alert = ad.create();
+		alert.show();
+
 	}
 
 }

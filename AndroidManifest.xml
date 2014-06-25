@@ -18,20 +18,22 @@
         <activity
             android:name="com.example.das_system_app.activities.LoginActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity android:name="com.example.das_system_app.activities.RegisterActivity" />
+        <activity android:name="com.example.das_system_app.activities.OverviewActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.das_system_app.activities.RegisterActivity" />
-        <activity android:name="com.example.das_system_app.activities.OverviewActivity" />
         <activity android:name="com.example.das_system_app.activities.NavigationActivity" />
         <activity android:name="com.example.das_system_app.activities.ProfilActivity" />
         <activity android:name="com.example.das_system_app.activities.RaumActivity" />
         <activity android:name="com.example.das_system_app.activities.DozentActivity" />
         <activity android:name="com.example.das_system_app.activities.ChatActivity" />
-        <activity android:name="com.example.das_system_app.activities.ChatChooseActivity" />
+        <activity android:name="com.example.das_system_app.activities.ChatChooseActivity" >
+        </activity>
         <activity
             android:name="com.example.das_system_app.activities.ChatGlobalActivity"
             android:label="@string/title_activity_chat_global"
