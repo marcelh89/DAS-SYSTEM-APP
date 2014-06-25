@@ -26,7 +26,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:text="Willkommen im globalen Chat \n" >
+                android:text="Willkommen im Chat \n" >
             </TextView>
         </ScrollView>
 

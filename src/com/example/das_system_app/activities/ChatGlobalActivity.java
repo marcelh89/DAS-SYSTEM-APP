@@ -1,12 +1,9 @@
 package com.example.das_system_app.activities;
 
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.das_system_app.R;
-import com.google.zxing.Result;
 
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
@@ -14,9 +11,7 @@ import de.tavendo.autobahn.WebSocketHandler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,15 +28,17 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	EditText inputField;
 	String currentUserName = "android"; // set dynamically
 	String room;
+	boolean isConnectionEnabled = false;
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 
-		Log.i("ChatGlobalActivity", "oncreate triggered");
+		// Log.i("ChatGlobalActivity", "oncreate triggered");
 
 		setContentView(R.layout.activity_chat);
 
@@ -49,22 +46,16 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 		inputField = (EditText) findViewById(R.id.editText2);
 		chatView = (TextView) findViewById(R.id.textviewChat);
-		chatView.setText("Willkommen im Chat " + room + "\n");
 
 		postbtn = (ImageButton) findViewById(R.id.imageButton1);
 		postbtn.setOnClickListener(this);
-
-		boolean isPrivate = getIntent().getBooleanExtra("isPrivate", false);
-		if (isPrivate) {
-			startInitialDialog();
-		}
 
 	}
 
 	@Override
 	public void onClick(View v) {
 
-		Log.i("ChatGlobalActivity", "onclick triggered");
+		// Log.i("ChatGlobalActivity", "onclick triggered");
 
 		String inputText = inputField.getText().toString().trim();
 
@@ -88,7 +79,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 	public void connect() {
 
-		Log.i("ChatGlobalActivity", "connect method");
+		// Log.i("ChatGlobalActivity", "connect method");
 
 		final String wsuri = "ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/"
 				+ room;
@@ -134,7 +125,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	protected void onPause() {
 		super.onPause();
 
-		Log.i("ChatGlobalActivity", "onPause triggered");
+		// Log.i("ChatGlobalActivity", "onPause triggered");
 
 		// save state of chatlogs
 		mConnection.disconnect();
@@ -143,14 +134,26 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.i("ChatGlobalActivity", "onResume triggered");
+		// Log.i("ChatGlobalActivity", "onResume triggered");
 
-		connect();
+		if (isConnectionEnabled) {
+			chatView.setText("Willkommen im Chat " + room + "\n");
+			connect();
+		} else {
+			boolean isPrivate = getIntent().getBooleanExtra("isPrivate", false);
+			if (isPrivate) {
+				startInitialDialog();
+			} else {
+				isConnectionEnabled = true;
+				onResume();
+			}
+		}
+
 	}
 
 	@Override
 	protected void onStop() {
-		Log.i("ChatGlobalActivity", "onStop triggered");
+		// Log.i("ChatGlobalActivity", "onStop triggered");
 
 		// mConnection.disconnect();
 		super.onStop();
@@ -174,6 +177,9 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 				} else {
 					room = "privat2";
 				}
+
+				isConnectionEnabled = true;
+				onResume();
 			}
 		});
 
