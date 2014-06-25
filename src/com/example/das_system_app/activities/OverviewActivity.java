@@ -78,7 +78,7 @@ public class OverviewActivity extends Activity {
 				intent = new Intent(this, ChatGlobalActivity.class);
 				intent.putExtra("room", "global");
 			} else {
-				intent = new Intent(this, ChatActivity.class);
+				intent = new Intent(this, ChatChooseActivity.class);
 			}
 
 			break;

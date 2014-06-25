@@ -32,7 +32,6 @@
     <string name="hello_world">Hello world!</string>
 
     <string-array name="chats">
-        <item>Global</item>
         <item>Privat1</item>
         <item>Privat2</item>
     </string-array>

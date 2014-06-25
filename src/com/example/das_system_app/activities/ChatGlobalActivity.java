@@ -26,6 +26,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	TextView chatView;
 	EditText inputField;
 	String currentUserName = "android"; // set dynamically
+	String room = "global";
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
@@ -33,7 +34,12 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_chat_global);
+		setContentView(R.layout.activity_chat);
+
+		room = getIntent().getStringExtra("room");
+
+		TextView textviewChat = (TextView) findViewById(R.id.textviewChat);
+		textviewChat.setText("Willkommen im Chat " + room + "\n");
 
 		inputField = (EditText) findViewById(R.id.editText2);
 		chatView = (TextView) findViewById(R.id.textviewChat);
@@ -69,8 +75,6 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	}
 
 	public void connect() {
-
-		String room = getIntent().getStringExtra("room");
 
 		final String wsuri = "ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/"
 				+ room;

@@ -15,10 +15,12 @@
             android:layout_height="wrap_content"
             android:text="Wählen sie einen Chatraum aus" />
 
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+      
     </LinearLayout>
 
 </ScrollView>
