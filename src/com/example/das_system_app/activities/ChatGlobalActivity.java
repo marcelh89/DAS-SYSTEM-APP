@@ -34,25 +34,26 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Log.i("ChatGlobalActivity", "oncreate triggered");
+
 		setContentView(R.layout.activity_chat);
 
 		room = getIntent().getStringExtra("room");
 
-		TextView textviewChat = (TextView) findViewById(R.id.textviewChat);
-		textviewChat.setText("Willkommen im Chat " + room + "\n");
-
 		inputField = (EditText) findViewById(R.id.editText2);
 		chatView = (TextView) findViewById(R.id.textviewChat);
+		chatView.setText("Willkommen im Chat " + room + "\n");
 
 		postbtn = (ImageButton) findViewById(R.id.imageButton1);
 		postbtn.setOnClickListener(this);
-
-		connect();
 
 	}
 
 	@Override
 	public void onClick(View v) {
+
+		Log.i("ChatGlobalActivity", "onclick triggered");
 
 		String inputText = inputField.getText().toString().trim();
 
@@ -75,6 +76,8 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	}
 
 	public void connect() {
+
+		Log.i("ChatGlobalActivity", "connect method");
 
 		final String wsuri = "ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/"
 				+ room;
@@ -118,22 +121,27 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onPause() {
+		super.onPause();
+
+		Log.i("ChatGlobalActivity", "onPause triggered");
+
 		// save state of chatlogs
 		mConnection.disconnect();
-		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (!mConnection.isConnected()) {
-			connect();
-		}
+		Log.i("ChatGlobalActivity", "onResume triggered");
+
+		connect();
 	}
 
 	@Override
 	protected void onStop() {
-		mConnection.disconnect();
+		Log.i("ChatGlobalActivity", "onStop triggered");
+
+		// mConnection.disconnect();
 		super.onStop();
 	}
 
