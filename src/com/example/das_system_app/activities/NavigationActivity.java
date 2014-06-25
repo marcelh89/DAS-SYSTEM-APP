@@ -13,7 +13,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
@@ -40,11 +43,14 @@ public class NavigationActivity extends Activity {
 			// Loading map
 			initilizeMap();
 
-			latFrom = 52.4167;
-			lonFrom = 12.5500;
+			googleMap.setMyLocationEnabled(true);
 
-			latTo = 52.0;
-			lonTo = 12.5167;
+			Location loc = getMyLocation();
+			latFrom = loc.getLatitude();
+			lonFrom = loc.getLongitude();
+
+			latTo = 52.4167;
+			lonTo = 12.5500;
 
 			addMarker(latFrom, lonFrom, "Eigener Standort",
 					BitmapDescriptorFactory.HUE_GREEN);
@@ -52,12 +58,32 @@ public class NavigationActivity extends Activity {
 					BitmapDescriptorFactory.HUE_RED);
 
 			googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-					new LatLng(latFrom, lonFrom), 14.0f));
+					new LatLng(latFrom, lonFrom), 14.6f));
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private Location getMyLocation() {
+		// Get location from GPS if it's available
+		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Location myLocation = lm
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+		// Location wasn't found, check the next most accurate place for the
+		// current location
+		if (myLocation == null) {
+			Criteria criteria = new Criteria();
+			criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+			// Finds a provider that matches the criteria
+			String provider = lm.getBestProvider(criteria, true);
+			// Use the provider to get the last known location
+			myLocation = lm.getLastKnownLocation(provider);
+		}
+
+		return myLocation;
 	}
 
 	private void addMarker(double lat, double lon, String description,
