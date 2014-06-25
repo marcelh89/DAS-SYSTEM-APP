@@ -46,13 +46,6 @@ public class OverviewActivity extends Activity {
 
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
-				final String selected = (String) expListAdapter.getChild(
-						groupPosition, childPosition);
-				// Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-				// .show();
-				Toast.makeText(getBaseContext(),
-						groupPosition + " - " + childPosition,
-						Toast.LENGTH_LONG).show();
 
 				createDependingIntent(groupPosition, childPosition);
 
@@ -78,9 +71,11 @@ public class OverviewActivity extends Activity {
 			if (childPosition == 0) {
 				intent = new Intent(this, ChatGlobalActivity.class);
 				intent.putExtra("room", "global");
-			} else {
+			} else if (childPosition == 1) {
 				intent = new Intent(this, ChatGlobalActivity.class);
 				intent.putExtra("isPrivate", true);
+			} else {
+				intent = new Intent(this, ChatActivity.class);
 			}
 			break;
 		case 2:
@@ -111,7 +106,7 @@ public class OverviewActivity extends Activity {
 		// preparing laptops collection(child)
 		String[] navigationOptions = { "Freunde im Umkreis",
 				"Weg zum Freund finden" };
-		String[] chatOptions = { "globaler Chat", "Gruppenchat" };
+		String[] chatOptions = { "globaler Chat", "Gruppenchat", "Menutest" };
 		String[] profilOptions = { "Profil einsehen" };
 		String[] raumOptions = { "Raum identifizieren",
 				"Für einen Kurs anmelden" };
