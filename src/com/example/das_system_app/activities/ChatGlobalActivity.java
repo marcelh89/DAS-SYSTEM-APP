@@ -4,6 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.das_system_app.R;
+import com.example.das_system_app.activities.LoginActivity.UserLoginTask;
+import com.example.das_system_app.rest.DasSystemRESTAccessor;
+import com.example.das_system_app.rest.IDasSystemRESTAccessor;
+import com.example.das_system_app.rest.valueobject.User;
 
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
@@ -11,6 +15,8 @@ import de.tavendo.autobahn.WebSocketHandler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +35,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	String currentUserName = "android"; // set dynamically
 	String room;
 	boolean isConnectionEnabled = false;
+	private ChatConnectTask mConnectTask = null;
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
@@ -37,8 +44,6 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
-		// Log.i("ChatGlobalActivity", "oncreate triggered");
 
 		setContentView(R.layout.activity_chat);
 
@@ -54,8 +59,6 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-
-		// Log.i("ChatGlobalActivity", "onclick triggered");
 
 		String inputText = inputField.getText().toString().trim();
 
@@ -75,6 +78,38 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 			inputField.setText("");
 		}
 
+	}
+
+	public class ChatConnectTask extends AsyncTask<Void, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			connect();
+			return false;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mConnectTask = null;
+
+			// check if connection is Available
+			if (mConnection.isConnected()) {
+				Log.i("ChatConnectTask", "connection established");
+			} else {
+				Log.e("ChatConnectTask", "server not available");
+				startFailDialog();
+				// Alert Handling and
+				// get back to parent activity
+
+			}
+
+		}
+
+		@Override
+		protected void onCancelled() {
+			mConnectTask = null;
+			// showProgress(false);
+		}
 	}
 
 	public void connect() {
@@ -124,21 +159,19 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-
-		// Log.i("ChatGlobalActivity", "onPause triggered");
-
-		// save state of chatlogs
 		mConnection.disconnect();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// Log.i("ChatGlobalActivity", "onResume triggered");
 
 		if (isConnectionEnabled) {
 			chatView.setText("Willkommen im Chat " + room + "\n");
-			connect();
+
+			mConnectTask = new ChatConnectTask();
+			mConnectTask.execute((Void) null);
+
 		} else {
 			boolean isPrivate = getIntent().getBooleanExtra("isPrivate", false);
 			if (isPrivate) {
@@ -149,14 +182,6 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 			}
 		}
 
-	}
-
-	@Override
-	protected void onStop() {
-		// Log.i("ChatGlobalActivity", "onStop triggered");
-
-		// mConnection.disconnect();
-		super.onStop();
 	}
 
 	private void startInitialDialog() {
@@ -182,6 +207,27 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 				onResume();
 			}
 		});
+
+		AlertDialog alert = ad.create();
+		alert.show();
+
+	}
+
+	private void startFailDialog() {
+
+		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setIcon(R.drawable.ic_launcher);
+		ad.setTitle("Server nicht erreichbar");
+		ad.setMessage("Die Verbindung zum Server konnte nicht hergestellt werden, "
+				+ "Klick ok um zurück zur Hauptansicht zu gelangen");
+		ad.setCancelable(true);
+		ad.setNeutralButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+						finish();
+					}
+				});
 
 		AlertDialog alert = ad.create();
 		alert.show();

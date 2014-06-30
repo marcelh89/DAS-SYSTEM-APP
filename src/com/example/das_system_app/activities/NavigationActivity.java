@@ -18,7 +18,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.Menu;
 import android.widget.Toast;
 
 /**
