@@ -32,6 +32,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 		mEmailView = (EditText) findViewById(R.id.LoginEmail);
 		mPasswordView = (EditText) findViewById(R.id.LoginPassword);
 
+		mEmailView.setText("marcelh89@googlemail.com");
+		mPasswordView.setText("123");
+
 		Button loginButton = (Button) findViewById(R.id.LoginButton);
 		loginButton.setOnClickListener(this);
 
@@ -55,9 +58,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 			startActivity(new Intent(this, RegisterActivity.class));
 			break;
 		case R.id.LoginButton:
-			// mAuthTask = new UserLoginTask();
-			// mAuthTask.execute((Void) null);
-			startActivity(new Intent(this, OverviewActivity.class));
+			mAuthTask = new UserLoginTask();
+			mAuthTask.execute((Void) null);
+			// startActivity(new Intent(this, OverviewActivity.class));
 			break;
 		default:
 		}
@@ -88,11 +91,16 @@ public class LoginActivity extends Activity implements OnClickListener {
 			// }
 			// mailFalsch = true;
 			// }
+			if (u != null) {
+				return true;
+			}
+
 			return false;
+
 		}
 
 		@Override
-		protected void onPostExecute(final Boolean success) {
+		protected void onPostExecute(Boolean success) {
 			mAuthTask = null;
 			// showProgress(false);
 
@@ -101,7 +109,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 						OverviewActivity.class);
 				// intent.putExtra(IS_ONLINE, isOnline);
 				startActivity(intent);
-				finish();
+				// finish();
 			}
 			// else {
 			// if(mailFalsch){

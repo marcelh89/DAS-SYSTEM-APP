@@ -7,24 +7,27 @@ import android.util.Log;
 
 import com.example.das_system_app.rest.valueobject.User;
 
+public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
-public class DasSystemRESTAccessor implements IDasSystemRESTAccessor{
-	
-	protected static String logger = DasSystemRESTAccessor.class.getSimpleName();
+	protected static String logger = DasSystemRESTAccessor.class
+			.getSimpleName();
 	private IDasSystemRESTAccessor restClient;
-	
-	public DasSystemRESTAccessor(){
+
+	private static String URLS[] = { "http://10.0.2.2:8080/DAS-SYSTEM-SERVER",
+			"http://192.168.178.60:8080/DAS-SYSTEM-SERVER" };
+
+	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				"http://10.0.2.2:8080/DAS-SYSTEM-SERVER", new ApacheHttpClient4Executor());
-		Log.i(logger,"initialised restClient: " + restClient);
+				URLS[1], new ApacheHttpClient4Executor());
+		Log.i(logger, "initialised restClient: " + restClient);
 	}
 
 	@Override
 	public User login(User user) {
-		Log.i(logger, "versuche login "+user.getEmail()+user.getPassword());
+		Log.i(logger, "versuche login " + user.getEmail() + user.getPassword());
 		return restClient.login(user);
 	}
-	
+
 	@Override
 	public boolean register(User user) {
 		// TODO Auto-generated method stub
@@ -35,5 +38,5 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor{
 	public User halloWelt() {
 		return restClient.halloWelt();
 	}
-	
+
 }

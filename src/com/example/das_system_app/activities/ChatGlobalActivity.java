@@ -29,6 +29,10 @@ import android.widget.TextView;
 
 public class ChatGlobalActivity extends Activity implements OnClickListener {
 
+	private static String URLS[] = {
+			"ws://10.0.2.2:8080/DAS-SYSTEM-SERVER/chat/",
+			"ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/" };
+
 	ImageButton postbtn;
 	TextView chatView;
 	EditText inputField;
@@ -114,10 +118,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 	public void connect() {
 
-		// Log.i("ChatGlobalActivity", "connect method");
-
-		final String wsuri = "ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/"
-				+ room;
+		final String wsuri = URLS[1] + room;
 
 		try {
 			mConnection.connect(wsuri, new WebSocketHandler() {
