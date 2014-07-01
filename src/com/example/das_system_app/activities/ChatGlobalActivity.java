@@ -7,7 +7,7 @@ import com.example.das_system_app.R;
 import com.example.das_system_app.activities.LoginActivity.UserLoginTask;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
-import com.example.das_system_app.rest.valueobject.User;
+import com.example.das_system_app.rest.valueobject.User_old;
 
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;

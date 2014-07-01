@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="reg_pflichtfeld">Pflichtfeld</string>
+	<string name="reg_email_ungueltig">Email ungültig</string>
+	<string name="reg_pw_ungleich">Die Passwörter stimmen nicht überein</string>
+</resources>

@@ -3,32 +3,28 @@ package com.example.das_system_app.rest.valueobject;
 import java.io.Serializable;
 import java.util.Date;
 
-
-public class User implements Serializable {
+public class User_old implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -282126619116500134L;
-	private Integer uid;
-	private String email;
-	private String forename;
-	private String surname;
-	private String password;
+	private static final long serialVersionUID = 5427760379791471498L;
+	private int id;
+	private String forename, surname, email, password;
 	private Date birthDate;
 	private boolean dozent;
-	private String lastLocation;
 
-	public User(int id, String forename, String surname, String email, String password, Date birthDate, boolean dozent) {
+	// registration
+	public User_old(int id, String forename, String surname, String email, String password, Date birthDate, boolean dozent) {
 		this.email = email;
 		this.password = password;
 		this.forename = forename;
 		this.surname = surname;
 		this.setBirthDate(birthDate);
-		this.setUid(id);
+		this.setId(id);
 		this.setDozent(dozent);
 	}
 	
-	public User( String forename, String surname, String email, String password, Date birthDate, boolean dozent) {
+	public User_old( String forename, String surname, String email, String password, Date birthDate, boolean dozent) {
 		this.email = email;
 		this.password = password;
 		this.forename = forename;
@@ -38,20 +34,13 @@ public class User implements Serializable {
 	}
 
 	// Login
-	public User(String email, String password) {
+	public User_old(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}
-	
-	public User(){
-	}
 
-	public Integer getUid() {
-		return uid;
-	}
+	public User_old() {
 
-	public void setUid(Integer uid) {
-		this.uid = uid;
 	}
 
 	public String getEmail() {
@@ -60,6 +49,14 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getForename() {
@@ -78,14 +75,6 @@ public class User implements Serializable {
 		this.surname = surname;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public Date getBirthDate() {
 		return birthDate;
 	}
@@ -93,6 +82,15 @@ public class User implements Serializable {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	public boolean isDozent() {
 		return dozent;
@@ -104,19 +102,17 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [uid=" + uid + ", email=" + email + ", forename="
-				+ forename + ", surname=" + surname + ", password=" + password
+		return "User [id=" + id + ", forename=" + forename + ", surname="
+				+ surname + ", email=" + email + ", password=" + password
 				+ ", birthDate=" + birthDate + ", dozent=" + dozent + "]";
 	}
-
-	public String getLastLocation() {
-		return lastLocation;
-	}
-
-	public void setLastLocation(String lastLocation) {
-		this.lastLocation = lastLocation;
-	}
-
 	
+	public boolean equals(User_old u){
+		if(u.getId()==this.id){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 }

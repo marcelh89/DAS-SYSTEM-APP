@@ -43,7 +43,7 @@
                 android:text="Nachname" />
             
             <EditText
-                android:id="@+id/RegisterVorname"
+                android:id="@+id/RegisterNachname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10" />
