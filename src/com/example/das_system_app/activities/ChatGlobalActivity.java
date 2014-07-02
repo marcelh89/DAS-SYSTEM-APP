@@ -1,12 +1,19 @@
 package com.example.das_system_app.activities;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.das_system_app.R;
 import com.example.das_system_app.activities.LoginActivity.UserLoginTask;
+import com.example.das_system_app.adapters.ChatListAdapter;
+import com.example.das_system_app.adapters.ExpandableListAdapter;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
+import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.rest.valueobject.User_old;
 
 import de.tavendo.autobahn.WebSocketConnection;
@@ -25,6 +32,8 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ChatGlobalActivity extends Activity implements OnClickListener {
@@ -34,12 +43,16 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 			"ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/" };
 
 	ImageButton postbtn;
-	TextView chatView;
+	ListView mChatListView;
+	ChatListAdapter listAdapter;
 	EditText inputField;
-	String currentUserName = "android"; // set dynamically
+	User currentUser;
 	String room;
 	boolean isConnectionEnabled = false;
 	private ChatConnectTask mConnectTask = null;
+
+	List<String> labelValues = new ArrayList<String>();
+	List<String> values = new ArrayList<String>();
 
 	private static String CLS = "ChatService";
 	private final WebSocketConnection mConnection = new WebSocketConnection();
@@ -51,10 +64,18 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 		setContentView(R.layout.activity_chat);
 
+		currentUser = (User) getIntent().getSerializableExtra("user");
+
 		room = getIntent().getStringExtra("room");
 
 		inputField = (EditText) findViewById(R.id.editText2);
-		chatView = (TextView) findViewById(R.id.textviewChat);
+		// chatView = (TextView) findViewById(R.id.textviewChat);
+
+		mChatListView = (ListView) findViewById(R.id.ChatlistView);
+
+		listAdapter = new ChatListAdapter(getBaseContext(), values, labelValues);
+
+		mChatListView.setAdapter(listAdapter);
 
 		postbtn = (ImageButton) findViewById(R.id.imageButton1);
 		postbtn.setOnClickListener(this);
@@ -69,10 +90,12 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		if (!inputText.isEmpty()) {
 
 			JSONObject chatmessage = new JSONObject();
+			String sender = currentUser.getForename() + "|"
+					+ currentUser.getSurname();
 
 			try {
 				chatmessage.put("message", inputText);
-				chatmessage.put("sender", currentUserName);
+				chatmessage.put("sender", sender);
 				chatmessage.put("received", "");
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -138,7 +161,9 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 						String message = jsonObj.getString("message");
 						String received = jsonObj.getString("received");
 
-						chatView.append(sender + "> " + message + "\n");
+						labelValues.add(sender);
+						values.add(message);
+						listAdapter.notifyDataSetChanged();
 
 					} catch (JSONException e) {
 						Log.e(CLS, "Got exception: " + e.getMessage());
@@ -168,7 +193,8 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 		super.onResume();
 
 		if (isConnectionEnabled) {
-			chatView.setText("Willkommen im Chat " + room + "\n");
+			labelValues.add("Willkommen im Chat");
+			values.add(room);
 
 			mConnectTask = new ChatConnectTask();
 			mConnectTask.execute((Void) null);

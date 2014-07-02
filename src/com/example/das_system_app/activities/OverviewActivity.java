@@ -82,6 +82,7 @@ public class OverviewActivity extends Activity {
 			} else {
 				intent = new Intent(this, ChatActivity.class);
 			}
+			intent.putExtra("user", currentUser);
 			break;
 		case 2:
 			intent = new Intent(this, ProfilActivity.class);
