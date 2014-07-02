@@ -1,115 +1,87 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".LoginActivity" >
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_form"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:fillViewport="true" >
 
-    <LinearLayout
-        android:id="@+id/login_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/login_status_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/login_progress_signing_in"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <ScrollView
-        android:id="@+id/login_form"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#ffffff"
-        android:fillViewport="true" >
+        android:layout_height="wrap_content" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/banner" />
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:scaleType="fitStart"
-                android:src="@drawable/banner" />
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageView1"
+            android:orientation="vertical" 
+            android:layout_margin="3dp">
+
+            <TextView
+                android:id="@+id/LoginLabelEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/LoginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:id="@+id/LoginLabelPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Passwort" />
+
+            <EditText
+                android:id="@+id/LoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:inputType="textPassword" />
 
             <LinearLayout
-                android:id="@+id/linearLayout1"
-                android:layout_width="231dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="50dp"
-                android:orientation="vertical" >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/LoginLabelEmail"
+                    android:id="@+id/LoginRegistrieren"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email" />
-
-                <EditText
-                    android:id="@+id/LoginEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:inputType="textEmailAddress" >
-
-                    <requestFocus android:layout_width="match_parent" />
-                </EditText>
+                    android:layout_marginRight="20dp"
+                    android:text="Registrieren" />
 
                 <TextView
-                    android:id="@+id/LoginLabelPassword"
+                    android:id="@+id/LoginPasswortVergessen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Passwort" />
-
-                <EditText
-                    android:id="@+id/LoginPassword"
-                    android:layout_width="232dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:inputType="textPassword" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:id="@+id/LoginRegistrieren"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="Registrieren" />
-
-                    <TextView
-                        android:id="@+id/LoginPasswortVergessen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Passwort vergessen" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/LoginButton"
-                    style="android:buttonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="10dp"
-                    android:text="Login"
-                    android:textSize="14sp" />
+                    android:text="Passwort vergessen" />
             </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
 
-</merge>
+            <Button
+                android:id="@+id/LoginButton"
+                style="android:buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:text="Login"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

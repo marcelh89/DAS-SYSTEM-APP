@@ -7,6 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.example.das_system_app.rest.valueobject.RauminfoIn;
+import com.example.das_system_app.rest.valueobject.Rauminformation;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.rest.valueobject.User_old;
 
@@ -18,7 +20,6 @@ public interface IDasSystemRESTAccessor {
 	
 	@GET
 	@Path("/hi")
-	@Produces(MediaType.APPLICATION_JSON)
 	public User_old halloWelt();
 	@POST
 	@Path("/login")
@@ -29,4 +30,7 @@ public interface IDasSystemRESTAccessor {
 	@POST
 	@Path("/register")
 	public boolean register(User user);
+	@POST
+	@Path("/rauminfo/")
+	public Rauminformation getRauminformation(RauminfoIn rIn);
 }

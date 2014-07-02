@@ -101,6 +101,14 @@ public class User implements Serializable {
 	public void setDozent(boolean dozent) {
 		this.dozent = dozent;
 	}
+	
+	public String getLastLocation() {
+		return lastLocation;
+	}
+
+	public void setLastLocation(String lastLocation) {
+		this.lastLocation = lastLocation;
+	}
 
 	@Override
 	public String toString() {
@@ -109,13 +117,7 @@ public class User implements Serializable {
 				+ ", birthDate=" + birthDate + ", dozent=" + dozent + "]";
 	}
 
-	public String getLastLocation() {
-		return lastLocation;
-	}
 
-	public void setLastLocation(String lastLocation) {
-		this.lastLocation = lastLocation;
-	}
 
 	
 	

@@ -168,8 +168,13 @@ public class RegisterActivity extends Activity implements
 						"Registrierung fehlgeschlagen!", Toast.LENGTH_SHORT);
 				toast.show();
 			}
-			
-			
 		}
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			mDialog.hide();
+		}
+		
+		
 	}
 }

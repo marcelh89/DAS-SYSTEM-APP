@@ -8,6 +8,8 @@ import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
 
 import android.util.Log;
 
+import com.example.das_system_app.rest.valueobject.RauminfoIn;
+import com.example.das_system_app.rest.valueobject.Rauminformation;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.rest.valueobject.User_old;
 
@@ -18,11 +20,12 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	private IDasSystemRESTAccessor restClient;
 
 	private static String URLS[] = { "http://10.0.2.2:8080/DAS-SYSTEM-SERVER",
-			"http://192.168.178.60:8080/DAS-SYSTEM-SERVER" };
+			"http://192.168.178.60:8080/DAS-SYSTEM-SERVER",
+			"http://192.168.178.46:8080/DAS-SYSTEM-SERVER"};
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				URLS[0], new ApacheHttpClient4Executor());
+				URLS[2], new ApacheHttpClient4Executor());
 		Log.i(logger, "initialised restClient: " + restClient);
 	}
 
@@ -48,6 +51,15 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	public User login2(User user) {
 		Log.i(logger, "versuche login " + user.getEmail() + user.getPassword());
 		return restClient.login2(user);
+	}
+
+	@Override
+	@POST
+	@Path("/rauminfo/")
+	public Rauminformation getRauminformation(RauminfoIn rIn) {
+		Log.i(logger, "Hole Rauminfo " + rIn.getRaumNr());
+		Rauminformation rauminfo = restClient.getRauminformation(rIn);
+		return rauminfo;
 	}
 
 }
