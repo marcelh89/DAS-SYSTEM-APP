@@ -21,14 +21,14 @@ import android.widget.TextView;
 public class LoginActivity extends Activity implements OnClickListener {
 	private String mEmail;
 	private String mPassword;
-//	private boolean isOnline;
+	// private boolean isOnline;
 	private ProgressDialog mDialog;
 	private EditText mEmailView;
 	private EditText mPasswordView;
-//	private View mLoginFormView;
-//	private View mLoginStatusView;
+	// private View mLoginFormView;
+	// private View mLoginStatusView;
 	private Button mButton;
-//	private TextView mLoginStatusMessageView;
+	// private TextView mLoginStatusMessageView;
 	private UserLoginTask mAuthTask = null;
 
 	@Override
@@ -44,18 +44,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		mButton = (Button) findViewById(R.id.LoginButton);
 		mButton.setOnClickListener(this);
-//		Button loginButton = (Button) findViewById(R.id.LoginButton);
-//		loginButton.setOnClickListener(this);
+		// Button loginButton = (Button) findViewById(R.id.LoginButton);
+		// loginButton.setOnClickListener(this);
 
 		TextView registerView = (TextView) findViewById(R.id.LoginRegistrieren);
 		registerView.setOnClickListener(this);
 
 		TextView passwordVergessenView = (TextView) findViewById(R.id.LoginPasswortVergessen);
 		passwordVergessenView.setOnClickListener(this);
-		
-//		mLoginFormView = findViewById(R.id.login_form);
-//		mLoginStatusView = findViewById(R.id.login_status);
-//		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+
+		// mLoginFormView = findViewById(R.id.login_form);
+		// mLoginStatusView = findViewById(R.id.login_status);
+		// mLoginStatusMessageView = (TextView)
+		// findViewById(R.id.login_status_message);
 
 		// isServerReachable();
 
@@ -77,6 +78,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		}
 
 	}
+
 	public void attemptLogin() {
 		if (mAuthTask != null) {
 			return;
@@ -102,7 +104,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			mPasswordView.setError("Passwort zu kurz");
 			focusView = mPasswordView;
 			cancel = true;
-		} 
+		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
@@ -122,37 +124,41 @@ public class LoginActivity extends Activity implements OnClickListener {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-//			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-//			showProgress(true);
+			// mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			// showProgress(true);
 			mAuthTask = new UserLoginTask(this);
 			mAuthTask.execute((Void) null);
 		}
 	}
-	
+
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		Context context;
-		
+		User u;
+
 		public UserLoginTask(Context context) {
 			this.context = context;
 		}
+
 		protected void onPreExecute() {
 			super.onPreExecute();
 			mDialog = new ProgressDialog(context);
 			mDialog.setMessage("Logge ein...");
 			mDialog.show();
 		}
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			boolean userExists = false;
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			System.out.println(mEmailView.getText().toString() + ","
 					+ mPasswordView.getText().toString());
-			User u = acc.login2(new User(mEmailView.getText().toString(),
+			u = acc.login2(new User(mEmailView.getText().toString(),
 					mPasswordView.getText().toString()));
-//			User_old u = acc.login(new User_old(mEmailView.getText().toString(),
-//					mPasswordView.getText().toString()));
+			// User_old u = acc.login(new
+			// User_old(mEmailView.getText().toString(),
+			// mPasswordView.getText().toString()));
 			System.out.println("user:" + u);
-			if(u != null){
+			if (u != null) {
 				userExists = true;
 			}
 			return userExists;
@@ -162,13 +168,15 @@ public class LoginActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(Boolean success) {
 			mAuthTask = null;
-//			showProgress(false);
+			// showProgress(false);
 			mDialog.hide();
 
 			if (success) {
-				Intent intent = new Intent(LoginActivity.this, OverviewActivity.class);
+				Intent intent = new Intent(LoginActivity.this,
+						OverviewActivity.class);
+				intent.putExtra("user", u);
 				startActivity(intent);
-			}else{
+			} else {
 				mEmailView.setError("Email oder Passwort falsch");
 				mPasswordView.setError("Email oder Passwort falsch");
 				mPasswordView.requestFocus();
@@ -178,8 +186,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
-//			mDialog.hide();
-//			showProgress(false);
+			// mDialog.hide();
+			// showProgress(false);
 		}
 	}
 }
