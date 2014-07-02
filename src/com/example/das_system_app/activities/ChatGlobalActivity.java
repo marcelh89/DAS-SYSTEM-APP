@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,18 +118,25 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
+
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				public void run() {
+
+					// check if connection is Available
+					if (mConnection.isConnected()) {
+						Log.i("ChatConnectTask", "connection established");
+					} else {
+						Log.e("ChatConnectTask", "server not available");
+						startFailDialog();
+						// Alert Handling and
+						// get back to parent activity
+					}
+
+				}
+			}, 1000);
+
 			mConnectTask = null;
-
-			// check if connection is Available
-			if (mConnection.isConnected()) {
-				Log.i("ChatConnectTask", "connection established");
-			} else {
-				Log.e("ChatConnectTask", "server not available");
-				startFailDialog();
-				// Alert Handling and
-				// get back to parent activity
-
-			}
 
 		}
 
@@ -176,6 +184,7 @@ public class ChatGlobalActivity extends Activity implements OnClickListener {
 				}
 
 			});
+
 		} catch (WebSocketException e) {
 			Log.d(CLS, e.toString());
 		}
