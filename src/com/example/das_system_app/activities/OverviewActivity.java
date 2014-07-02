@@ -12,10 +12,12 @@ import com.example.das_system_app.R;
 import com.example.das_system_app.R.id;
 import com.example.das_system_app.R.layout;
 import com.example.das_system_app.adapters.ExpandableListAdapter;
+import com.example.das_system_app.rest.valueobject.User;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -27,11 +29,14 @@ public class OverviewActivity extends Activity {
 	List<String> childList;
 	Map<String, List<String>> optionsCollection;
 	ExpandableListView expListView;
+	User currentUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.overview);
+
+		currentUser = (User) getIntent().getSerializableExtra("user");
 
 		createGroupList();
 
@@ -80,6 +85,7 @@ public class OverviewActivity extends Activity {
 			break;
 		case 2:
 			intent = new Intent(this, ProfilActivity.class);
+			intent.putExtra("user", currentUser);
 			break;
 		case 3:
 			intent = new Intent(this, RaumActivity.class);
