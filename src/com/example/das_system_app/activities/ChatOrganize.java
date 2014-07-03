@@ -73,7 +73,7 @@ public class ChatOrganize extends Activity implements OnItemClickListener {
 		String room = c.getText().toString();
 		Log.i("OnItemClicked", room);
 
-		Intent intent = new Intent(this, ChatGlobalActivity.class);
+		Intent intent = new Intent(this, ChatActivity.class);
 		intent.putExtra("room", room);
 
 		if (room != "global") {

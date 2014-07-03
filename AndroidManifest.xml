@@ -46,10 +46,8 @@
         <activity android:name="com.example.das_system_app.activities.ProfilActivity" />
         <activity android:name="com.example.das_system_app.activities.RaumActivity" />
         <activity android:name="com.example.das_system_app.activities.DozentActivity" />
-        <activity android:name="com.example.das_system_app.activities.ChatActivity" />
-        <activity android:name="com.example.das_system_app.activities.ChatChooseActivity" />
         <activity
-            android:name="com.example.das_system_app.activities.ChatGlobalActivity"
+            android:name="com.example.das_system_app.activities.ChatActivity"
             android:label="@string/title_activity_chat_global"
             android:screenOrientation="portrait" />
         <!-- created by marcman at 2014-07-03 11:09:22 -->

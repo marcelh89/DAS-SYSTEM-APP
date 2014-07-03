@@ -1,226 +1,274 @@
-/**
- * 
- */
 package com.example.das_system_app.activities;
 
-import com.example.das_system_app.R;
-import com.example.das_system_app.R.array;
-import com.example.das_system_app.R.id;
-import com.example.das_system_app.R.layout;
-import com.example.das_system_app.R.menu;
-import com.example.das_system_app.R.string;
-import com.example.das_system_app.adapters.NavDrawerListAdapter;
-import com.example.das_system_app.model.NavDrawerItem;
-import com.example.das_system_app.view.AddGroupFragment;
-import com.example.das_system_app.view.AddPeopleFragment;
-import com.example.das_system_app.view.HomeFragment;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.das_system_app.R;
+import com.example.das_system_app.activities.LoginActivity.UserLoginTask;
+import com.example.das_system_app.adapters.ChatListAdapter;
+import com.example.das_system_app.adapters.ExpandableListAdapter;
+import com.example.das_system_app.rest.DasSystemRESTAccessor;
+import com.example.das_system_app.rest.IDasSystemRESTAccessor;
+import com.example.das_system_app.rest.valueobject.User;
+import com.example.das_system_app.rest.valueobject.User_old;
+
+import de.tavendo.autobahn.WebSocketConnection;
+import de.tavendo.autobahn.WebSocketException;
+import de.tavendo.autobahn.WebSocketHandler;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.res.Configuration;
-import android.content.res.TypedArray;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
- 
-public class ChatActivity extends Activity {
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
- 
-    // nav drawer title
-    private CharSequence mDrawerTitle;
- 
-    // used to store app title
-    private CharSequence mTitle;
- 
-    // slide menu items
-    private String[] navMenuTitles;
-    private TypedArray navMenuIcons;
- 
-    private ArrayList<NavDrawerItem> navDrawerItems;
-    private NavDrawerListAdapter adapter;
- 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.chat);
- 
-        mTitle = mDrawerTitle = getTitle();
- 
-        // load slide menu items
-        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
- 
-        // nav drawer icons from resources
-        navMenuIcons = getResources()
-                .obtainTypedArray(R.array.nav_drawer_icons);
- 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
- 
-        navDrawerItems = new ArrayList<NavDrawerItem>();
- 
-        // adding nav drawer items to array
-        // Home
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Find People
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Photos
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-       
-        // Recycle the typed array
-        navMenuIcons.recycle();
- 
-        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
- 
-        // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(),
-                navDrawerItems);
-        mDrawerList.setAdapter(adapter);
- 
-        // enabling action bar app icon and behaving it as toggle button
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
- 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                android.R.drawable.ic_dialog_dialer, //nav menu toggle icon
-                R.string.app_name, // nav drawer open - description for accessibility
-                R.string.app_name // nav drawer close - description for accessibility
-        ) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
-                invalidateOptionsMenu();
-            }
- 
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                invalidateOptionsMenu();
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
- 
-        if (savedInstanceState == null) {
-            // on first time display view for first nav item
-            displayView(0);
-        }
-    }
- 
-    /**
-     * Slide menu item click listener
-     * */
-    private class SlideMenuClickListener implements
-            ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
-            // display view for selected nav drawer item
-            displayView(position);
-        }
-    }
- 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
- 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // toggle nav drawer on selecting action bar app icon/title
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle action bar actions click
-        switch (item.getItemId()) {
-        case R.id.action_settings:
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
- 
-    /***
-     * Called when invalidateOptionsMenu() is triggered
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
- 
-    /**
-     * Diplaying fragment view for selected nav drawer list item
-     * */
-    private void displayView(int position) {
-        // update the main content by replacing fragments
-        Fragment fragment = null;
-        switch (position) {
-        case 0:
-            fragment = new HomeFragment();
-            break;
-        case 1:
-            fragment = new AddGroupFragment();
-            break;
-        case 2:
-            fragment = new AddPeopleFragment();
-            break;
- 
-        default:
-            break;
-        }
- 
-        if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
- 
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
-            setTitle(navMenuTitles[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
-        }
-    }
- 
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
- 
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
- 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
- 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
- 
+import android.widget.TextView;
+
+public class ChatActivity extends Activity implements OnClickListener {
+
+	private static String URLS[] = {
+			"ws://10.0.2.2:8080/DAS-SYSTEM-SERVER/chat/",
+			"ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/" };
+
+	ImageButton postbtn;
+	ListView mChatListView;
+	ChatListAdapter listAdapter;
+	EditText inputField;
+	User currentUser;
+	String room;
+	boolean isConnectionEnabled = false;
+	private ChatConnectTask mConnectTask = null;
+
+	List<String> labelValues = new ArrayList<String>();
+	List<String> values = new ArrayList<String>();
+
+	private static String CLS = "ChatService";
+	private final WebSocketConnection mConnection = new WebSocketConnection();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_chat);
+
+		currentUser = (User) getIntent().getSerializableExtra("user");
+
+		room = getIntent().getStringExtra("room");
+
+		inputField = (EditText) findViewById(R.id.editText2);
+		// chatView = (TextView) findViewById(R.id.textviewChat);
+
+		mChatListView = (ListView) findViewById(R.id.ChatlistView);
+
+		listAdapter = new ChatListAdapter(getBaseContext(), values, labelValues);
+
+		mChatListView.setAdapter(listAdapter);
+
+		postbtn = (ImageButton) findViewById(R.id.imageButton1);
+		postbtn.setOnClickListener(this);
+
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		String inputText = inputField.getText().toString().trim();
+
+		if (!inputText.isEmpty()) {
+
+			JSONObject chatmessage = new JSONObject();
+			String sender = currentUser.getForename() + "|"
+					+ currentUser.getSurname();
+
+			try {
+				chatmessage.put("message", inputText);
+				chatmessage.put("sender", sender);
+				chatmessage.put("received", "");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			mConnection.sendTextMessage(chatmessage.toString());
+			inputField.setText("");
+		}
+
+	}
+
+	public class ChatConnectTask extends AsyncTask<Void, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			connect();
+			return false;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				public void run() {
+
+					// check if connection is Available
+					if (mConnection.isConnected()) {
+						Log.i("ChatConnectTask", "connection established");
+					} else {
+						Log.e("ChatConnectTask", "server not available");
+						startFailDialog();
+						// Alert Handling and
+						// get back to parent activity
+					}
+
+				}
+			}, 1000);
+
+			mConnectTask = null;
+
+		}
+
+		@Override
+		protected void onCancelled() {
+			mConnectTask = null;
+			// showProgress(false);
+		}
+	}
+
+	public void connect() {
+
+		final String wsuri = URLS[1] + room;
+
+		try {
+			mConnection.connect(wsuri, new WebSocketHandler() {
+
+				@Override
+				public void onOpen() {
+					Log.d(CLS, "Status: Connected to " + wsuri);
+				}
+
+				@Override
+				public void onTextMessage(String payload) {
+					Log.d(CLS, "Got echo: " + payload);
+
+					try {
+						JSONObject jsonObj = new JSONObject(payload);
+						String sender = jsonObj.getString("sender");
+						String message = jsonObj.getString("message");
+						String received = jsonObj.getString("received");
+
+						labelValues.add(sender);
+						values.add(message);
+						listAdapter.notifyDataSetChanged();
+
+					} catch (JSONException e) {
+						Log.e(CLS, "Got exception: " + e.getMessage());
+					}
+				}
+
+				@Override
+				public void onClose(int code, String reason) {
+					Log.d(CLS, "Connection lost.");
+				}
+
+			});
+
+		} catch (WebSocketException e) {
+			Log.d(CLS, e.toString());
+		}
+
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mConnection.disconnect();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		if (isConnectionEnabled) {
+			labelValues.add("Willkommen im Chat");
+			values.add(room);
+
+			mConnectTask = new ChatConnectTask();
+			mConnectTask.execute((Void) null);
+
+		} else {
+			// boolean isPrivate = getIntent().getBooleanExtra("isPrivate",
+			// false);
+			// if (isPrivate) {
+			// startInitialDialog();
+			// } else {
+			isConnectionEnabled = true;
+			onResume();
+			// }
+		}
+
+	}
+
+//	private void startInitialDialog() {
+//
+//		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter
+//				.createFromResource(this, R.array.chats,
+//						android.R.layout.simple_list_item_1);
+//
+//		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+//		ad.setIcon(R.drawable.ic_launcher);
+//		ad.setTitle("Wählen sie eine Gruppe");
+//		ad.setView(LayoutInflater.from(this).inflate(R.layout.dialog, null));
+//
+//		ad.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+//			public void onClick(DialogInterface dialog, int item) {
+//				if (item == 0) {
+//					room = "privat1";
+//				} else {
+//					room = "privat2";
+//				}
+//
+//				isConnectionEnabled = true;
+//				onResume();
+//			}
+//		});
+//
+//		AlertDialog alert = ad.create();
+//		alert.show();
+//
+//	}
+
+	private void startFailDialog() {
+
+		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setIcon(R.drawable.ic_launcher);
+		ad.setTitle("Server nicht erreichbar");
+		ad.setMessage("Die Verbindung zum Server konnte nicht hergestellt werden, "
+				+ "Klick ok um zurück zur Hauptansicht zu gelangen");
+		ad.setCancelable(true);
+		ad.setNeutralButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+						finish();
+					}
+				});
+
+		AlertDialog alert = ad.create();
+		alert.show();
+
+	}
+
 }

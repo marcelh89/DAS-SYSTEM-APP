@@ -1,6 +1,8 @@
 package com.example.das_system_app.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.model.Gruppe;
 
 public class ChatCreateActivity extends Activity implements OnClickListener {
 
@@ -52,9 +53,28 @@ public class ChatCreateActivity extends Activity implements OnClickListener {
 			setResult(RESULT_CREATE_GROUP, returnIntent);
 			finish();
 		} else {
-			// alert
-
+			startFailDialog();
 		}
+
+	}
+
+	private void startFailDialog() {
+
+		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setIcon(R.drawable.ic_launcher);
+		ad.setTitle("Eingabe Fehlerhaft");
+		ad.setMessage("Bitte überprüfen sie, ob sie Namen und Passwort eingegeben haben");
+		ad.setCancelable(true);
+		ad.setNeutralButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+						finish();
+					}
+				});
+
+		AlertDialog alert = ad.create();
+		alert.show();
 
 	}
 }
