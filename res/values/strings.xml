@@ -27,6 +27,7 @@
     <!-- dummy texts -->
     <string name="dummy_home">Übersicht</string>
     <string name="dummy_group">Gruppe erstellen</string>
+    <string name="dummy_group_detail">Gruppeninformationen</string>
     <string name="dummy_people">Freunde in Gruppe einladen</string>
     <string name="title_activity_chat_global">ChatGlobalActivity</string>
     <string name="hello_world">Hello world!</string>
@@ -36,6 +37,7 @@
         <item>Privat1</item>
         <item>Privat2</item>
     </string-array>
-    
+
+    <string name="title_activity_main_activityff">MainActivityff</string>
 
 </resources>

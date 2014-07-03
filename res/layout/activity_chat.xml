@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.das_system_app.activities.ChatGlobalActivity"
+    tools:context="com.example.das_system_app.activities.ChatActivity"
     tools:ignore="MergeRootFrame" >
 
     <LinearLayout

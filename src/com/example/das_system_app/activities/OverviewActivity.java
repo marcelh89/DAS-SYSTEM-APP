@@ -73,15 +73,18 @@ public class OverviewActivity extends Activity {
 			break;
 		case 1:
 
-			if (childPosition == 0) {
-				intent = new Intent(this, ChatGlobalActivity.class);
-				intent.putExtra("room", "global");
-			} else if (childPosition == 1) {
-				intent = new Intent(this, ChatGlobalActivity.class);
-				intent.putExtra("isPrivate", true);
-			} else {
+			switch (childPosition) {
+			case 0:
+				intent = new Intent(this, ChatOrganizeActivity.class);
+
+				break;
+			case 1:
 				intent = new Intent(this, ChatActivity.class);
+				intent.putExtra("room", "global");
+
+			default:
 			}
+
 			intent.putExtra("user", currentUser);
 			break;
 		case 2:
@@ -118,7 +121,7 @@ public class OverviewActivity extends Activity {
 		// preparing laptops collection(child)
 		String[] navigationOptions = { "Freunde im Umkreis",
 				"Weg zum Freund finden" };
-		String[] chatOptions = { "globaler Chat", "Gruppenchat", "Menutest" };
+		String[] chatOptions = { "Chats verwalten", "Direkt zum globalen Chat" };
 		String[] profilOptions = { "Profil einsehen" };
 		String[] raumOptions = { "Raum identifizieren",
 				"Für einen Kurs anmelden" };
