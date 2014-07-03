@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.example.das_system_app.R;
+import com.example.das_system_app.rest.valueobject.User;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,11 +40,14 @@ public class ChatOrganize extends Activity implements OnItemClickListener {
 
 	List<String> chatlist;
 	ArrayAdapter<String> dataAdapter;
+	User currentUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_choose);
+
+		currentUser = (User) getIntent().getSerializableExtra("user");
 
 		ListView listView = (ListView) findViewById(R.id.listView1);
 
@@ -61,7 +65,7 @@ public class ChatOrganize extends Activity implements OnItemClickListener {
 			public void run() {
 				openOptionsMenu();
 			}
-		}, 1000);
+		}, 2000);
 
 	}
 
@@ -74,12 +78,13 @@ public class ChatOrganize extends Activity implements OnItemClickListener {
 		Log.i("OnItemClicked", room);
 
 		Intent intent = new Intent(this, ChatActivity.class);
+
+		// if (room != "global") {
+		// intent.putExtra("isPrivate", true);
+		// }
+
 		intent.putExtra("room", room);
-
-		if (room != "global") {
-			intent.putExtra("isPrivate", true);
-		}
-
+		intent.putExtra("user", currentUser);
 		startActivity(intent);
 
 	}

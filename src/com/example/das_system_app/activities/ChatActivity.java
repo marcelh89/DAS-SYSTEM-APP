@@ -134,7 +134,7 @@ public class ChatActivity extends Activity implements OnClickListener {
 					}
 
 				}
-			}, 1000);
+			}, 2000);
 
 			mConnectTask = null;
 
@@ -221,34 +221,34 @@ public class ChatActivity extends Activity implements OnClickListener {
 
 	}
 
-//	private void startInitialDialog() {
-//
-//		ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter
-//				.createFromResource(this, R.array.chats,
-//						android.R.layout.simple_list_item_1);
-//
-//		AlertDialog.Builder ad = new AlertDialog.Builder(this);
-//		ad.setIcon(R.drawable.ic_launcher);
-//		ad.setTitle("Wählen sie eine Gruppe");
-//		ad.setView(LayoutInflater.from(this).inflate(R.layout.dialog, null));
-//
-//		ad.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialog, int item) {
-//				if (item == 0) {
-//					room = "privat1";
-//				} else {
-//					room = "privat2";
-//				}
-//
-//				isConnectionEnabled = true;
-//				onResume();
-//			}
-//		});
-//
-//		AlertDialog alert = ad.create();
-//		alert.show();
-//
-//	}
+	// private void startInitialDialog() {
+	//
+	// ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter
+	// .createFromResource(this, R.array.chats,
+	// android.R.layout.simple_list_item_1);
+	//
+	// AlertDialog.Builder ad = new AlertDialog.Builder(this);
+	// ad.setIcon(R.drawable.ic_launcher);
+	// ad.setTitle("Wählen sie eine Gruppe");
+	// ad.setView(LayoutInflater.from(this).inflate(R.layout.dialog, null));
+	//
+	// ad.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int item) {
+	// if (item == 0) {
+	// room = "privat1";
+	// } else {
+	// room = "privat2";
+	// }
+	//
+	// isConnectionEnabled = true;
+	// onResume();
+	// }
+	// });
+	//
+	// AlertDialog alert = ad.create();
+	// alert.show();
+	//
+	// }
 
 	private void startFailDialog() {
 
