@@ -51,9 +51,10 @@
             android:label="@string/title_activity_chat_global"
             android:screenOrientation="portrait" />
         <!-- created by marcman at 2014-07-03 11:09:22 -->
-        <activity android:name="com.example.das_system_app.activities.ChatOrganize" />
+        <activity android:name="com.example.das_system_app.activities.ChatOrganizeActivity" />
         <activity android:name="com.example.das_system_app.activities.ChatCreateActivity" />
         <activity android:name="com.example.das_system_app.activities.ChatInviteFriendActivity" />
+        <activity android:name="com.example.das_system_app.activities.ChatDetailActivity" />
 
         <!-- Goolge API Key -->
         <meta-data

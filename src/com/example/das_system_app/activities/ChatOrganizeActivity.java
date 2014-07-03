@@ -34,8 +34,8 @@ import android.widget.TextView;
  * @author marcman
  * 
  */
-public class ChatOrganize extends Activity implements OnItemClickListener,
-		OnItemLongClickListener {
+public class ChatOrganizeActivity extends Activity implements
+		OnItemClickListener, OnItemLongClickListener {
 
 	public static final String GROUP_NAME = "gName";
 	public static final String GROUP_PASSWORD = "gPassword";
@@ -49,6 +49,7 @@ public class ChatOrganize extends Activity implements OnItemClickListener,
 	List<String> chatlist;
 	ArrayAdapter<String> dataAdapter;
 	User currentUser;
+	String room;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class ChatOrganize extends Activity implements OnItemClickListener,
 			long id) {
 
 		TextView c = (TextView) view.findViewById(R.id.rowTextView);
-		String room = c.getText().toString();
+		room = c.getText().toString();
 		Log.i("OnItemClicked", room);
 
 		Intent intent = new Intent(this, ChatActivity.class);
@@ -104,7 +105,7 @@ public class ChatOrganize extends Activity implements OnItemClickListener,
 			int position, long id) {
 
 		TextView c = (TextView) view.findViewById(R.id.rowTextView);
-		String room = c.getText().toString();
+		room = c.getText().toString();
 		Log.i("OnItemLongClicked", room);
 
 		startSelectionDialog(position);
@@ -189,12 +190,12 @@ public class ChatOrganize extends Activity implements OnItemClickListener,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
-						// Intent intent = new Intent(this,
-						// ChatDetailActivity.class);
+						Intent intent = new Intent(getBaseContext(),
+								ChatDetailActivity.class);
 
-						// intent.putExtra("room", room);
-						// intent.putExtra("user", currentUser);
-						// startActivity(intent);
+						intent.putExtra("room", room);
+						intent.putExtra("user", currentUser);
+						startActivity(intent);
 
 					}
 				});

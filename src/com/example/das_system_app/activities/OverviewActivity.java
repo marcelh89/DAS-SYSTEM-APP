@@ -75,7 +75,7 @@ public class OverviewActivity extends Activity {
 
 			switch (childPosition) {
 			case 0:
-				intent = new Intent(this, ChatOrganize.class);
+				intent = new Intent(this, ChatOrganizeActivity.class);
 
 				break;
 			case 1:
