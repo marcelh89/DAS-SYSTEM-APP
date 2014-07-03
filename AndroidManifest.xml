@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <!-- Required OpenGL ES 2.0. for Maps V2 -->
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -42,20 +41,21 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.das_system_app.activities.RegisterActivity" />
-        <activity android:name="com.example.das_system_app.activities.OverviewActivity" >
-        </activity>
+        <activity android:name="com.example.das_system_app.activities.OverviewActivity" />
         <activity android:name="com.example.das_system_app.activities.NavigationActivity" />
         <activity android:name="com.example.das_system_app.activities.ProfilActivity" />
         <activity android:name="com.example.das_system_app.activities.RaumActivity" />
         <activity android:name="com.example.das_system_app.activities.DozentActivity" />
         <activity android:name="com.example.das_system_app.activities.ChatActivity" />
-        <activity android:name="com.example.das_system_app.activities.ChatChooseActivity" >
-        </activity>
+        <activity android:name="com.example.das_system_app.activities.ChatChooseActivity" />
         <activity
             android:name="com.example.das_system_app.activities.ChatGlobalActivity"
             android:label="@string/title_activity_chat_global"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
+        <!-- created by marcman at 2014-07-03 11:09:22 -->
+        <activity android:name="com.example.das_system_app.activities.ChatOrganize" />
+        <activity android:name="com.example.das_system_app.activities.ChatCreateActivity" />
+        <activity android:name="com.example.das_system_app.activities.ChatInviteFriendActivity" />
 
         <!-- Goolge API Key -->
         <meta-data

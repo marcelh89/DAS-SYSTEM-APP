@@ -36,6 +36,7 @@
         <item>Privat1</item>
         <item>Privat2</item>
     </string-array>
-    
+
+    <string name="title_activity_main_activityff">MainActivityff</string>
 
 </resources>
