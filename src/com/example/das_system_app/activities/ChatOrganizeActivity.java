@@ -1,11 +1,13 @@
 package com.example.das_system_app.activities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.example.das_system_app.R;
+import com.example.das_system_app.model.Gruppe;
 import com.example.das_system_app.rest.valueobject.User;
+import com.example.das_system_app.util.DataWrapper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,7 +16,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -46,8 +46,9 @@ public class ChatOrganizeActivity extends Activity implements
 	public static final int GROUP_CREATE = 0;
 	public static final int FRIEND_INVITE = 1;
 
-	List<String> chatlist;
-	ArrayAdapter<String> dataAdapter;
+	List<Gruppe> grouplist;
+
+	ArrayAdapter<Gruppe> dataAdapter;
 	User currentUser;
 	String room;
 
@@ -58,13 +59,12 @@ public class ChatOrganizeActivity extends Activity implements
 
 		currentUser = (User) getIntent().getSerializableExtra("user");
 
+		initializeGroupList();
+
 		ListView listView = (ListView) findViewById(R.id.listView1);
 
-		chatlist = new ArrayList<String>(Arrays.asList("global", "privat1",
-				"privat2"));
-
-		dataAdapter = new ArrayAdapter<String>(this, R.layout.simplerow,
-				chatlist);
+		dataAdapter = new ArrayAdapter<Gruppe>(this, R.layout.simplerow,
+				grouplist);
 
 		listView.setAdapter(dataAdapter);
 
@@ -78,6 +78,27 @@ public class ChatOrganizeActivity extends Activity implements
 				openOptionsMenu();
 			}
 		}, 2000);
+
+	}
+
+	/**
+	 * REST call to server getting Group lists of User
+	 */
+	private void initializeGroupList() {
+
+		User system = new User(0, "SYSTEM", "SYSTEM", "SYS@TEM.de", "123",
+				new Date(), false);
+
+		grouplist = new ArrayList<Gruppe>();
+		grouplist.add(new Gruppe("global", true, system));
+		grouplist.add(new Gruppe("privat1", false, system));
+		grouplist.add(new Gruppe("privat2", false, system));
+		grouplist.add(new Gruppe("useraddedGroup", false, currentUser));
+
+//		for (Gruppe element : grouplist) {
+//			Log.i("GROUPLIST",
+//					element.toString() + " - " + element.getCreator());
+//		}
 
 	}
 
@@ -110,12 +131,6 @@ public class ChatOrganizeActivity extends Activity implements
 
 		startSelectionDialog(position);
 
-		// Intent intent = new Intent(this, ChatDetailActivity.class);
-
-		// intent.putExtra("room", room);
-		// intent.putExtra("user", currentUser);
-		// startActivity(intent);
-
 		return false;
 	}
 
@@ -138,7 +153,7 @@ public class ChatOrganizeActivity extends Activity implements
 			break;
 		case R.id.FriendInvite:
 			Intent intent = new Intent(this, ChatInviteFriendActivity.class);
-			intent.putStringArrayListExtra("chatlist", (ArrayList<String>) chatlist);
+			intent.putExtra("grouplist", new DataWrapper(grouplist));
 			intent.putExtra("user", currentUser);
 			startActivityForResult(intent, FRIEND_INVITE);
 
@@ -159,7 +174,7 @@ public class ChatOrganizeActivity extends Activity implements
 		if (requestCode == GROUP_CREATE) {
 			String name = data.getStringExtra(GROUP_NAME);
 			String password = data.getStringExtra(GROUP_PASSWORD);
-			chatlist.add(name);
+			grouplist.add(new Gruppe(name, false, currentUser));
 			dataAdapter.notifyDataSetChanged();
 
 		} else if (requestCode == FRIEND_INVITE) {
@@ -172,8 +187,6 @@ public class ChatOrganizeActivity extends Activity implements
 		AlertDialog.Builder ad = new AlertDialog.Builder(this);
 		ad.setIcon(R.drawable.ic_launcher);
 		ad.setTitle("Was wollen Sie tun?");
-		// ad.setMessage("Die Verbindung zum Server konnte nicht hergestellt werden, "
-		// + "Klick ok um zurück zur Hauptansicht zu gelangen");
 		ad.setCancelable(true);
 		ad.setNegativeButton(OPTION_DELETE_STR,
 				new DialogInterface.OnClickListener() {
@@ -182,7 +195,7 @@ public class ChatOrganizeActivity extends Activity implements
 						if (position == 0) {
 							startFailDialog();
 						} else {
-							chatlist.remove(position);
+							grouplist.remove(position);
 							dataAdapter.notifyDataSetChanged();
 						}
 

@@ -3,7 +3,6 @@ package com.example.das_system_app.rest.valueobject;
 import java.io.Serializable;
 import java.util.Date;
 
-
 public class User implements Serializable {
 	/**
 	 * 
@@ -18,7 +17,8 @@ public class User implements Serializable {
 	private boolean dozent;
 	private String lastLocation;
 
-	public User(int id, String forename, String surname, String email, String password, Date birthDate, boolean dozent) {
+	public User(int id, String forename, String surname, String email,
+			String password, Date birthDate, boolean dozent) {
 		this.email = email;
 		this.password = password;
 		this.forename = forename;
@@ -27,8 +27,9 @@ public class User implements Serializable {
 		this.setUid(id);
 		this.setDozent(dozent);
 	}
-	
-	public User( String forename, String surname, String email, String password, Date birthDate, boolean dozent) {
+
+	public User(String forename, String surname, String email, String password,
+			Date birthDate, boolean dozent) {
 		this.email = email;
 		this.password = password;
 		this.forename = forename;
@@ -42,8 +43,8 @@ public class User implements Serializable {
 		this.email = email;
 		this.password = password;
 	}
-	
-	public User(){
+
+	public User() {
 	}
 
 	public Integer getUid() {
@@ -101,7 +102,7 @@ public class User implements Serializable {
 	public void setDozent(boolean dozent) {
 		this.dozent = dozent;
 	}
-	
+
 	public String getLastLocation() {
 		return lastLocation;
 	}
@@ -117,8 +118,11 @@ public class User implements Serializable {
 				+ ", birthDate=" + birthDate + ", dozent=" + dozent + "]";
 	}
 
+	public boolean equals(Object other) {
+		if (other.getClass() == this.getClass()) {
+			return this.getUid() == ((User) other).getUid();
+		}
+		return false;
+	}
 
-
-	
-	
 }
