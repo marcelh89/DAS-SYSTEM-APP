@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.example.das_system_app.R;
 import com.example.das_system_app.model.Gruppe;
+import com.example.das_system_app.rest.DasSystemRESTAccessor;
+import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.util.DataWrapper;
 
@@ -95,10 +97,15 @@ public class ChatOrganizeActivity extends Activity implements
 		grouplist.add(new Gruppe("privat2", false, system));
 		grouplist.add(new Gruppe("useraddedGroup", false, currentUser));
 
-//		for (Gruppe element : grouplist) {
-//			Log.i("GROUPLIST",
-//					element.toString() + " - " + element.getCreator());
-//		}
+		// for (Gruppe element : grouplist) {
+		// Log.i("GROUPLIST",
+		// element.toString() + " - " + element.getCreator());
+		// }
+
+		IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+
+		List<Gruppe> grouplist2 = acc.getGroups();
+		
 
 	}
 

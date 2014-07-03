@@ -1,5 +1,7 @@
 package com.example.das_system_app.rest;
 
+import java.util.List;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
@@ -8,6 +10,7 @@ import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
 
 import android.util.Log;
 
+import com.example.das_system_app.model.Gruppe;
 import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.RauminfoIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
@@ -22,7 +25,7 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	private static String URLS[] = { "http://10.0.2.2:8080/DAS-SYSTEM-SERVER",
 			"http://192.168.178.60:8080/DAS-SYSTEM-SERVER",
-			"http://192.168.178.46:8080/DAS-SYSTEM-SERVER"};
+			"http://192.168.178.46:8080/DAS-SYSTEM-SERVER" };
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
@@ -39,9 +42,9 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	@Override
 	public boolean register(User user) {
 		boolean retVal = false;
-		try{
+		try {
 			retVal = restClient.register(user);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			retVal = false;
 		}
@@ -59,9 +62,9 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	public User login2(User user) {
 		Log.i(logger, "versuche login " + user.getEmail() + user.getPassword());
 		User retUser = null;
-		try{
+		try {
 			retUser = restClient.login2(user);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			retUser = null;
 		}
@@ -74,9 +77,9 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	public Rauminformation getRauminformation(RauminfoIn rIn) {
 		Log.i(logger, "Hole Rauminfo " + rIn.getRaumNr());
 		Rauminformation rauminfo = null;
-		try{
-			rauminfo = restClient.getRauminformation(rIn);	
-		}catch(Exception e){
+		try {
+			rauminfo = restClient.getRauminformation(rIn);
+		} catch (Exception e) {
 			e.printStackTrace();
 			rauminfo = null;
 		}
@@ -89,12 +92,19 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	public Rauminformation anKursAnmelden(KursAnmeldenIn kIn) {
 		Log.i(logger, "Melde an Kurs an " + kIn);
 		Rauminformation rauminfo = null;
-		try{
-			rauminfo = restClient.anKursAnmelden(kIn);	
-		}catch(Exception e){
+		try {
+			rauminfo = restClient.anKursAnmelden(kIn);
+		} catch (Exception e) {
 			e.printStackTrace();
 			rauminfo = null;
 		}
 		return rauminfo;
+	}
+
+	@Override
+	public List<Gruppe> getGroups() {
+		List<Gruppe> gruppen = null;
+		gruppen = restClient.getGroups();
+		return gruppen;
 	}
 }
