@@ -121,11 +121,11 @@ public class RaumActivity extends Activity implements OnClickListener{
 			}
 		}
 
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-			mDialog.hide();
-		}
+//		@Override
+//		protected void onCancelled() {
+//			super.onCancelled();
+//			mDialog.hide();
+//		}
 		
 	}
 
