@@ -137,8 +137,10 @@ public class ChatOrganizeActivity extends Activity implements
 
 			break;
 		case R.id.FriendInvite:
-			startActivityForResult(new Intent(this,
-					ChatInviteFriendActivity.class), FRIEND_INVITE);
+			Intent intent = new Intent(this, ChatInviteFriendActivity.class);
+			intent.putStringArrayListExtra("chatlist", (ArrayList<String>) chatlist);
+			intent.putExtra("user", currentUser);
+			startActivityForResult(intent, FRIEND_INVITE);
 
 			break;
 		default:
