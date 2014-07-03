@@ -11,24 +11,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <ScrollView
-            android:id="@+id/scrollView1"
-            android:layout_width="fill_parent"
+        <ListView
+            android:id="@+id/ChatlistView"
+            android:layout_width="match_parent"
             android:layout_height="400dp" >
-
-            <TextView
-                android:id="@+id/textviewChat"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="left"
-                android:lines="22"
-                android:maxLines="4"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:text="Willkommen im Chat \n" >
-            </TextView>
-        </ScrollView>
+        </ListView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,18 +26,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.90"
+                android:paddingTop="20dp"
                 android:ems="10"
-                android:hint="Nachricht verfassen" >
-
-                <requestFocus />
-            </EditText>
+                android:hint="Nachricht verfassen" />
 
             <ImageButton
                 android:id="@+id/imageButton1"
                 android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_height="74dp"
                 android:layout_marginTop="-15px"
+                android:layout_weight="0.06"
                 android:src="@android:drawable/ic_media_play" />
+
         </LinearLayout>
     </LinearLayout>
 
