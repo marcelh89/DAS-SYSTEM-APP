@@ -8,6 +8,7 @@ import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
 
 import android.util.Log;
 
+import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.RauminfoIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
 import com.example.das_system_app.rest.valueobject.User;
@@ -25,7 +26,7 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				URLS[1], new ApacheHttpClient4Executor());
+				URLS[2], new ApacheHttpClient4Executor());
 		Log.i(logger, "initialised restClient: " + restClient);
 	}
 
@@ -37,7 +38,14 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	@Override
 	public boolean register(User user) {
-		return restClient.register(user);
+		boolean retVal = false;
+		try{
+			retVal = restClient.register(user);
+		}catch(Exception e){
+			e.printStackTrace();
+			retVal = false;
+		}
+		return retVal;
 	}
 
 	@Override
@@ -50,7 +58,14 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	@Path("/login2")
 	public User login2(User user) {
 		Log.i(logger, "versuche login " + user.getEmail() + user.getPassword());
-		return restClient.login2(user);
+		User retUser = null;
+		try{
+			retUser = restClient.login2(user);
+		}catch(Exception e){
+			e.printStackTrace();
+			retUser = null;
+		}
+		return retUser;
 	}
 
 	@Override
@@ -58,8 +73,28 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	@Path("/rauminfo/")
 	public Rauminformation getRauminformation(RauminfoIn rIn) {
 		Log.i(logger, "Hole Rauminfo " + rIn.getRaumNr());
-		Rauminformation rauminfo = restClient.getRauminformation(rIn);
+		Rauminformation rauminfo = null;
+		try{
+			rauminfo = restClient.getRauminformation(rIn);	
+		}catch(Exception e){
+			e.printStackTrace();
+			rauminfo = null;
+		}
 		return rauminfo;
 	}
 
+	@Override
+	@POST
+	@Path("/vorlesung/teilnehmer/anmelden")
+	public Rauminformation anKursAnmelden(KursAnmeldenIn kIn) {
+		Log.i(logger, "Melde an Kurs an " + kIn);
+		Rauminformation rauminfo = null;
+		try{
+			rauminfo = restClient.anKursAnmelden(kIn);	
+		}catch(Exception e){
+			e.printStackTrace();
+			rauminfo = null;
+		}
+		return rauminfo;
+	}
 }

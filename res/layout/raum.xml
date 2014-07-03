@@ -4,60 +4,123 @@
     android:layout_height="fill_parent"
     android:fillViewport="true" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="180dp"
-                android:layout_height="96dp"
-                android:src="@drawable/ic_launcher" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="110dp"
-                android:layout_height="38dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="58dp"
-                android:src="@android:drawable/presence_online" />
-
-
-        </RelativeLayout>
-
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:text="106" >
-
-            <requestFocus />
-        </EditText>
-
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:text="Computerraum" />
+        android:layout_height="wrap_content" >
 
         <Button
             android:id="@+id/scanBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:text="scan" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="110dp"
+            android:layout_height="38dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@android:drawable/presence_online" />
+
+        <TextView
+            android:id="@+id/raumNrText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="scan" />
-        
-    </LinearLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/raumNr"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:textColor="@color/wallet_holo_blue_light"/>
+
+        <TextView
+            android:id="@+id/inhaltText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/scanBtn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/inhalt"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:textColor="@color/wallet_holo_blue_light"
+            />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/raumNrText"
+            android:text="Vorlesung:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/vorlesungText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/name"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:textColor="@color/wallet_holo_blue_light"/>
+
+        <TextView
+            android:id="@+id/beginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/begin"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:textColor="@color/wallet_holo_blue_light"/>
+
+        <TextView
+            android:id="@+id/endeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ende"
+            android:textAppearance="?android:attr/textAppearanceLarge" 
+            android:textColor="@color/wallet_holo_blue_light"/>
+
+        <TextView
+            android:id="@+id/inhalt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/endeText"
+            android:text="Inhalt:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/raumNr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/imageView2"
+            android:text="Raumnr.: "
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/ende"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/beginText"
+            android:text="Ende:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/vorlesungText"
+            android:text="Beginn:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </RelativeLayout>
 
 </ScrollView>

@@ -4,27 +4,27 @@
 package com.example.das_system_app.activities;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 import com.example.das_system_app.R;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
-import com.example.das_system_app.rest.valueobject.RauminfoIn;
+import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,25 +32,24 @@ import android.widget.Toast;
  * @author marcman & patman
  *
  */
-public class RaumActivity extends Activity implements OnClickListener{
+public class KursAnmeldenActivity extends Activity implements OnClickListener{
 	
 	private Button scanBtn;
-	private RaumInformation mRaumTask;
-	private TextView raumNr,vorlesung,begin,ende,inhalt;
+	private AnmeldeTask mAnmeldeTask;
+	private TextView vorlesung,inhalt;
+	private CheckBox angemeldet;
 	private Rauminformation rauminfo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.raum);
+		setContentView(R.layout.kursanmelden);
 		scanBtn = (Button)findViewById(R.id.scanBtn);
 		scanBtn.setOnClickListener(this);
 		
-		raumNr = (TextView) findViewById(R.id.raumNrText);
 		vorlesung = (TextView) findViewById(R.id.vorlesungText);
-		begin = (TextView) findViewById(R.id.beginText);
-		ende = (TextView) findViewById(R.id.endeText);
 		inhalt = (TextView) findViewById(R.id.inhaltText);
+		angemeldet = (CheckBox) findViewById(R.id.angemeldet);
 		
 //		mDialog = new ProgressDialog(this);
 //		mDialog.setMessage("Rufe Informationen ab...");
@@ -63,35 +62,19 @@ public class RaumActivity extends Activity implements OnClickListener{
 		if(v.getId()==R.id.scanBtn){
 			IntentIntegrator scanIntegrator = new IntentIntegrator(this);	
 			scanIntegrator.initiateScan();
-//			mRaumTask = new RaumInformation(this);
-//			mRaumTask.execute();
 		}
 	}
 	
 	
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if(rauminfo != null){
-			raumNr.setText(rauminfo.getRaumNr());
-			vorlesung.setText(rauminfo.getName()); 
-			begin.setText(rauminfo.getBegin());
-			ende.setText(rauminfo.getEnde());
-			inhalt.setText(rauminfo.getInhalt());	
-		}
-	}
+
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		if (scanningResult != null) {
 			String scanContent = scanningResult.getContents();
 //			String scanFormat = scanningResult.getFormatName();
-			mRaumTask = new RaumInformation(RaumActivity.this);
-			mRaumTask.execute(scanContent);
-//			Toast toast = Toast.makeText(getApplicationContext(), 
-//		            scanContent+" "+scanFormat, Toast.LENGTH_SHORT);
-//		    toast.show();
+			mAnmeldeTask = new AnmeldeTask(KursAnmeldenActivity.this);
+			mAnmeldeTask.execute(scanContent);
 		}else{
 		    Toast toast = Toast.makeText(getApplicationContext(), 
 		            "No scan data received!", Toast.LENGTH_SHORT);
@@ -99,10 +82,10 @@ public class RaumActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	public class RaumInformation extends AsyncTask<String, Void, Boolean> {
-		String raumNrStr;
+	public class AnmeldeTask extends AsyncTask<String, Void, Boolean> {
+		String anmeldeCode;
 //		private ProgressDialog mDialog;
-		public RaumInformation(Context context) {
+		public AnmeldeTask(Context context) {
 //			mDialog = new ProgressDialog(context);
 //			mDialog.setMessage("Rufe Informationen ab...");
 		}
@@ -114,18 +97,17 @@ public class RaumActivity extends Activity implements OnClickListener{
 		@SuppressLint("SimpleDateFormat")
 		@Override
 		protected Boolean doInBackground(String... params) {
-			raumNrStr = params[0];
-			System.out.println(raumNrStr);
+			anmeldeCode = params[0];
+			System.out.println(anmeldeCode);
+			SimpleDateFormat sf = new SimpleDateFormat("dd.MM.yyyy");
+			SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+			int userid = settings.getInt("UserId", 0);
+			KursAnmeldenIn kIn = new KursAnmeldenIn();
+			kIn.setAnmeldecode(anmeldeCode);
+			kIn.setUserid(userid);
+			kIn.setDatum(sf.format(new Date()));
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-			RauminfoIn rIn = new RauminfoIn();
-			SimpleDateFormat sf = new SimpleDateFormat("dd.MM.yyyy-HH:mm");
-			//TODO Testzwecke
-			Calendar monTest = new GregorianCalendar(2014,5,30,9,15);
-			//
-			rIn.setDatum(sf.format(monTest.getTime()));
-			rIn.setRaumNr(raumNrStr);
-			rauminfo= acc.getRauminformation(rIn);
-			System.out.println(rauminfo);
+			rauminfo = acc.anKursAnmelden(kIn);
 			if(rauminfo != null){
 				return true;	
 			}else{
@@ -137,24 +119,15 @@ public class RaumActivity extends Activity implements OnClickListener{
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
-			mRaumTask = null;
+			mAnmeldeTask = null;
 //			mDialog.hide();
 			if(result){
-//				raumNr = (TextView) findViewById(R.id.raumNrText);
-//				vorlesung = (TextView) findViewById(R.id.vorlesungText);
-//				begin = (TextView) findViewById(R.id.beginText);
-//				ende = (TextView) findViewById(R.id.endeText);
-//				inhalt = (TextView) findViewById(R.id.inhaltText);
-//				System.out.println(""+raumNr+vorlesung+begin+ende+inhalt);
-				raumNr.setText(raumNrStr);
+				angemeldet.setChecked(true);
 				vorlesung.setText(rauminfo.getName()); 
-				begin.setText(rauminfo.getBegin());
-				ende.setText(rauminfo.getEnde());
 				inhalt.setText(rauminfo.getInhalt());
 			}else{
-				raumNr.setText(raumNrStr);
 				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Keine aktuelle Veranstalltung!", Toast.LENGTH_SHORT);
+						"Konnte Veranstalltung nicht finden!", Toast.LENGTH_SHORT);
 				toast.show();
 			}
 		}
@@ -162,7 +135,7 @@ public class RaumActivity extends Activity implements OnClickListener{
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-			mRaumTask = null;
+			mAnmeldeTask = null;
 //			mDialog.hide();
 		}
 		

@@ -89,7 +89,12 @@ public class OverviewActivity extends Activity {
 			intent.putExtra("user", currentUser);
 			break;
 		case 3:
-			intent = new Intent(this, RaumActivity.class);
+			if(childPosition == 0){
+				intent = new Intent(this, RaumActivity.class);	
+			}
+			if(childPosition == 1){
+				intent = new Intent(this, KursAnmeldenActivity.class);
+			}
 			break;
 		default:
 			intent = new Intent(this, DozentActivity.class);
@@ -116,7 +121,7 @@ public class OverviewActivity extends Activity {
 		String[] chatOptions = { "globaler Chat", "Gruppenchat", "Menutest" };
 		String[] profilOptions = { "Profil einsehen" };
 		String[] raumOptions = { "Raum identifizieren",
-				"Für einen Kurs anmelden" };
+				"F�r einen Kurs anmelden" };
 		String[] dozentOptions = { "Anwesenheit prüfen",
 				"QR-Code für LV bereitstellen" };
 

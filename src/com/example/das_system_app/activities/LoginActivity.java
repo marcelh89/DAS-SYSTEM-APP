@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,16 +20,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoginActivity extends Activity implements OnClickListener {
+	public static final String PREFS_NAME = "DasSystemPrefsFile";
 	private String mEmail;
 	private String mPassword;
-	// private boolean isOnline;
 	private ProgressDialog mDialog;
 	private EditText mEmailView;
 	private EditText mPasswordView;
-	// private View mLoginFormView;
-	// private View mLoginStatusView;
 	private Button mButton;
-	// private TextView mLoginStatusMessageView;
 	private UserLoginTask mAuthTask = null;
 
 	@Override
@@ -44,21 +42,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		mButton = (Button) findViewById(R.id.LoginButton);
 		mButton.setOnClickListener(this);
-		// Button loginButton = (Button) findViewById(R.id.LoginButton);
-		// loginButton.setOnClickListener(this);
 
 		TextView registerView = (TextView) findViewById(R.id.LoginRegistrieren);
 		registerView.setOnClickListener(this);
 
 		TextView passwordVergessenView = (TextView) findViewById(R.id.LoginPasswortVergessen);
 		passwordVergessenView.setOnClickListener(this);
-
-		// mLoginFormView = findViewById(R.id.login_form);
-		// mLoginStatusView = findViewById(R.id.login_status);
-		// mLoginStatusMessageView = (TextView)
-		// findViewById(R.id.login_status_message);
-
-		// isServerReachable();
 
 	}
 
@@ -168,10 +157,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onPostExecute(Boolean success) {
 			mAuthTask = null;
-			// showProgress(false);
 			mDialog.hide();
 
 			if (success) {
+				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+				SharedPreferences.Editor editor = settings.edit();
+			    editor.putInt("UserId", u.getUid());
+			    editor.commit();
+			    
 				Intent intent = new Intent(LoginActivity.this,
 						OverviewActivity.class);
 				intent.putExtra("user", u);
@@ -186,8 +179,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;
-			// mDialog.hide();
-			// showProgress(false);
+			mDialog.hide();
 		}
 	}
 }

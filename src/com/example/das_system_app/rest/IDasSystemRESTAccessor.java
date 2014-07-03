@@ -7,11 +7,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.RauminfoIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.rest.valueobject.User_old;
-
 
 @Path("/dassystem")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,4 +33,8 @@ public interface IDasSystemRESTAccessor {
 	@POST
 	@Path("/rauminfo/")
 	public Rauminformation getRauminformation(RauminfoIn rIn);
+	
+	@POST
+	@Path("/vorlesung/teilnehmer/anmelden")
+	public Rauminformation anKursAnmelden(KursAnmeldenIn kIn);
 }
