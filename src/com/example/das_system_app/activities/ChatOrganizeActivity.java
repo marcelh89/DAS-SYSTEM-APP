@@ -280,9 +280,9 @@ public class ChatOrganizeActivity extends Activity implements
 		protected void onPostExecute(Boolean success) {
 
 			for (Gruppe group : gruppen) {
-				// if (!grouplist.contains(group)) {
-				grouplist.add(group);
-				// }
+				if (!grouplist.contains(group)) {
+					grouplist.add(group);
+				}
 			}
 
 			dataAdapter.notifyDataSetChanged();
