@@ -208,7 +208,11 @@ public class ChatOrganizeActivity extends Activity implements
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
-						if (position == 0) {
+
+						Integer creatorId = grouplist.get(position)
+								.getCreator().getUid();
+
+						if (creatorId.equals(2)) {
 							startFailDialog();
 						} else {
 							grouplist.remove(position);
@@ -243,7 +247,7 @@ public class ChatOrganizeActivity extends Activity implements
 		AlertDialog.Builder ad = new AlertDialog.Builder(this);
 		ad.setIcon(R.drawable.ic_launcher);
 		ad.setTitle("Fehler beim Löschen");
-		ad.setMessage("Die globale Gruppe kann nicht gelöscht werden !");
+		ad.setMessage("Die globale Gruppe kann nicht gelöscht werden, da sie vom System erstellt wurde!");
 		ad.setCancelable(true);
 		ad.setNegativeButton(android.R.string.ok,
 				new DialogInterface.OnClickListener() {
