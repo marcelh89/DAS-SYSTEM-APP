@@ -6,8 +6,12 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.das_system_app.R;
@@ -15,20 +19,33 @@ import com.example.das_system_app.model.Gruppe;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.util.DataWrapper;
 
-public class ChatInviteFriendActivity extends Activity {
+import android.widget.AdapterView.*;
+
+public class ChatInviteFriendActivity extends Activity implements
+		OnClickListener {
+
+	public static final String GROUP = "group";
+	public static final String USER = "user";
+
+	public static final int RESULT_INVITE_FRIEND = 1;
+
+	Spinner mUsers, mGroups;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_invitefriend);
 
-		DataWrapper dw = (DataWrapper) getIntent().getSerializableExtra(
-				"grouplist");
-		ArrayList<Gruppe> grouplist = dw.getGroups();
+		DataWrapper<Gruppe> dw = (DataWrapper) getIntent()
+				.getSerializableExtra("grouplist");
+		ArrayList<Gruppe> grouplist = dw.getList();
 		grouplist.remove(0); // delete global group
 
 		User currentUser = (User) getIntent().getSerializableExtra("user");
-		List<String> userlist = getIntent().getStringArrayListExtra("userlist");
+
+		DataWrapper<User> dw2 = (DataWrapper) getIntent().getSerializableExtra(
+				"userlist");
+		List<User> userlist = dw2.getList();
 
 		ArrayList<Gruppe> grouplistCopy = (ArrayList<Gruppe>) grouplist.clone();
 
@@ -48,15 +65,19 @@ public class ChatInviteFriendActivity extends Activity {
 			startFailDialog();
 		}
 
-		Spinner mGroups = (Spinner) findViewById(R.id.GroupSpinner);
+		mGroups = (Spinner) findViewById(R.id.GroupSpinner);
 		ArrayAdapter<Gruppe> dataAdapter = new ArrayAdapter<Gruppe>(this,
 				android.R.layout.simple_spinner_item, grouplist);
 		mGroups.setAdapter(dataAdapter);
 
-		Spinner mUsers = (Spinner) findViewById(R.id.UserSpinner);
-		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-		// android.R.layout.simple_spinner_item, userlist);
-		// mUsers.setAdapter(adapter);
+		mUsers = (Spinner) findViewById(R.id.UserSpinner);
+		ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,
+				android.R.layout.simple_spinner_item, userlist);
+		mUsers.setAdapter(adapter);
+
+		Button mAccept = (Button) findViewById(R.id.AccButton);
+		mAccept.setOnClickListener(this);
+
 	}
 
 	private int startFailDialog() {
@@ -80,4 +101,24 @@ public class ChatInviteFriendActivity extends Activity {
 		return 0;
 	}
 
+	@Override
+	public void onClick(View v) {
+
+		Intent returnIntent = new Intent();
+
+		int selectedUserPosition = mUsers.getSelectedItemPosition();
+		int selectedGroupPosition = mGroups.getSelectedItemPosition();
+
+		// return to parent
+		if (selectedGroupPosition != android.widget.AdapterView.INVALID_POSITION
+				&& selectedGroupPosition != android.widget.AdapterView.INVALID_POSITION) {
+			returnIntent.putExtra(GROUP, selectedGroupPosition);
+			returnIntent.putExtra(USER, selectedUserPosition);
+			setResult(RESULT_INVITE_FRIEND, returnIntent);
+			finish();
+		} else {
+			startFailDialog();
+		}
+
+	}
 }

@@ -44,7 +44,7 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/LoginButton"
+            android:id="@+id/AccButton"
             style="android:buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="34dp"

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -52,4 +53,12 @@ public interface IDasSystemRESTAccessor {
 	@POST
 	@Path("/gruppe/user")
 	public List<Gruppe> getGroups(User user);
+
+	@POST
+	@Path("/gruppe/user")
+	public boolean addGroup(Gruppe gruppe);
+	
+	@GET
+	@Path("/testuser")
+	public List<User> getUser();
 }
