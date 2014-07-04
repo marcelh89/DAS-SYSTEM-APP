@@ -190,7 +190,7 @@ public class ChatOrganizeActivity extends Activity implements
 		if (requestCode == GROUP_CREATE) {
 			String name = data.getStringExtra(GROUP_NAME);
 			String password = data.getStringExtra(GROUP_PASSWORD);
-			grouplist.add(new Gruppe(name, false, currentUser));
+			grouplist.add(new Gruppe(-1, name, false, currentUser));
 			dataAdapter.notifyDataSetChanged();
 
 		} else if (requestCode == FRIEND_INVITE) {
@@ -278,7 +278,13 @@ public class ChatOrganizeActivity extends Activity implements
 
 		@Override
 		protected void onPostExecute(Boolean success) {
-			grouplist.addAll(gruppen);
+
+			for (Gruppe group : gruppen) {
+				// if (!grouplist.contains(group)) {
+				grouplist.add(group);
+				// }
+			}
+
 			dataAdapter.notifyDataSetChanged();
 		}
 
