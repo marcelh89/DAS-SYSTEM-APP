@@ -62,6 +62,7 @@ public class ChatOrganizeActivity extends Activity implements
 	String room;
 	IDasSystemRESTAccessor acc;
 	private GroupLoadTask mGroupLoadTask = null;
+	private GroupLoadTask mGroupSaveTask = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,33 +91,6 @@ public class ChatOrganizeActivity extends Activity implements
 		}, 2000);
 
 	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		mGroupLoadTask = new GroupLoadTask(this);
-		mGroupLoadTask.execute((Void) null);
-	};
-
-	/**
-	 * REST call to server getting Group lists of User
-	 */
-	// private void initializeGroupList() {
-	//
-	// // User system = new User(0, "SYSTEM", "SYSTEM", "SYS@TEM.de", "123",
-	// // new Date(), false);
-	//
-	// // grouplist.add(new Gruppe("global", true, system));
-	// // grouplist.add(new Gruppe("privat1", false, system));
-	// // grouplist.add(new Gruppe("privat2", false, system));
-	// // grouplist.add(new Gruppe("useraddedGroup", false, currentUser));
-	//
-	// // for (Gruppe element : grouplist) {
-	// // Log.i("GROUPLIST",
-	// // element.toString() + " - " + element.getCreator());
-	// // }
-	//
-	// }
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -263,6 +237,13 @@ public class ChatOrganizeActivity extends Activity implements
 
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mGroupLoadTask = new GroupLoadTask(this);
+		mGroupLoadTask.execute((Void) null);
+	};
+
 	public class GroupLoadTask extends AsyncTask<Void, Void, Boolean> {
 		Context context;
 		List<Gruppe> gruppen;
@@ -290,6 +271,46 @@ public class ChatOrganizeActivity extends Activity implements
 			}
 
 			dataAdapter.notifyDataSetChanged();
+		}
+
+		@Override
+		protected void onCancelled() {
+			mGroupLoadTask = null;
+		}
+	}
+
+	// @Override
+	// protected void onStop() {
+	// // TODO Auto-generated method stub
+	// super.onStop();
+	// }
+
+	private void saveGroupToDatabase() {
+
+		// PUT grouplist in database
+		Log.i("GroupSaveTask", "Save to Database");
+
+		mGroupSaveTask = new GroupLoadTask(this);
+		mGroupSaveTask.execute((Void) null);
+
+	}
+
+	public class GroupSaveTask extends AsyncTask<Void, Void, Boolean> {
+		Context context;
+		List<Gruppe> gruppen;
+
+		public GroupSaveTask(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+			gruppen = new ArrayList<Gruppe>();
+			// gruppen.addAll(acc.setGroups(currentUser));
+
+			return false;
+
 		}
 
 		@Override
