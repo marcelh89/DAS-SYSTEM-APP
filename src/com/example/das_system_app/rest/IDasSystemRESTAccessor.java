@@ -55,10 +55,16 @@ public interface IDasSystemRESTAccessor {
 	public List<Gruppe> getGroups(User user);
 
 	@POST
-	@Path("/gruppe/user")
-	public boolean addGroup(Gruppe gruppe);
+	@Path("/gruppe/add")
+	public boolean addGroup(Gruppe gruppe, User currentUser);
+	
+	@PUT
+	@Path("/gruppe/update")
+	public boolean updateGroup(Gruppe gruppe, User newUser);
 	
 	@GET
 	@Path("/testuser")
 	public List<User> getUser();
+
+	
 }

@@ -116,8 +116,13 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	}
 
 	@Override
-	public boolean addGroup(Gruppe group) {
-		return restClient.addGroup(group);
+	public boolean addGroup(Gruppe gruppe, User currentUser) {
+		return restClient.addGroup(gruppe, currentUser);
+	}
+
+	@Override
+	public boolean updateGroup(Gruppe gruppe, User newUser) {
+		return restClient.updateGroup(gruppe, newUser);
 	}
 
 	@Override

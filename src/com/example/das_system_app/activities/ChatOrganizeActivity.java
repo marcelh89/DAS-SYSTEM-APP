@@ -61,14 +61,21 @@ public class ChatOrganizeActivity extends Activity implements
 	List<Gruppe> grouplist;
 	List<User> userlist;
 
+	Gruppe actGroup;
+	User actUser;
+
 	ArrayAdapter<Gruppe> dataAdapter;
 	User currentUser;
 	String room;
 	IDasSystemRESTAccessor acc;
 	private GroupLoadTask mGroupLoadTask = null;
-	private GroupSaveTask mGroupSaveTask = null;
+	private GroupAddTask mGroupSaveTask = null;
 	private UserLoadTask mUserLoadTask = null;
+	private GroupUpdateTask mGroupUpdateTask = null;
 
+	/**
+	 * triggered once on startup of activity
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -99,6 +106,9 @@ public class ChatOrganizeActivity extends Activity implements
 
 	}
 
+	/**
+	 * listview itemClicklistener
+	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -116,7 +126,7 @@ public class ChatOrganizeActivity extends Activity implements
 	}
 
 	/**
-	 * longclicklistener fuer löschen, detailansicht von chats
+	 * listview itemlongclicklistener fuer löschen, detailansicht von chats
 	 */
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
@@ -131,12 +141,18 @@ public class ChatOrganizeActivity extends Activity implements
 		return false;
 	}
 
+	/**
+	 * context menu
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.layout.chatmenu, menu);
 		return true;
 	}
 
+	/**
+	 * context menu actions
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
@@ -163,6 +179,9 @@ public class ChatOrganizeActivity extends Activity implements
 
 	}
 
+	/**
+	 * child activity handling
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -173,7 +192,7 @@ public class ChatOrganizeActivity extends Activity implements
 			grouplist.add(new Gruppe(-1, name, false, currentUser));
 			dataAdapter.notifyDataSetChanged();
 
-			// update database
+			// add to database
 			// mGroupSaveTask = new GroupSaveTask(this);
 			// mGroupSaveTask.execute((Void) null);
 
@@ -184,19 +203,25 @@ public class ChatOrganizeActivity extends Activity implements
 
 			if (selectedGroupPosition != -1 && selectedUserPosition != -1) {
 
-				Gruppe actGroup = grouplist.get(selectedGroupPosition);
-				User actUser = userlist.get(selectedUserPosition);
-				
+				actGroup = grouplist.get(selectedGroupPosition);
+				actUser = userlist.get(selectedUserPosition);
+
 				// send PUT/POST change groups add user to group.users
 				// update param group, user
-				
-				
+				// mGroupUpdateTask = new GroupUpdateTask(this);
+				// mGroupUpdateTask.execute((Void) null);
 
 			}
 
 		}
 	}
 
+	/**
+	 * longclick dialog for delete and detail view
+	 * 
+	 * @param position
+	 * @return
+	 */
 	private int startSelectionDialog(final int position) {
 
 		AlertDialog.Builder ad = new AlertDialog.Builder(this);
@@ -211,7 +236,11 @@ public class ChatOrganizeActivity extends Activity implements
 						Integer creatorId = grouplist.get(position)
 								.getCreator().getUid();
 
-						if (creatorId.equals(2)) {
+						boolean isSystem = creatorId.equals(2);
+						boolean isCreator = currentUser.getUid().equals(
+								creatorId);
+
+						if (isSystem || !isCreator) {
 							startFailDialog();
 						} else {
 							grouplist.remove(position);
@@ -241,12 +270,17 @@ public class ChatOrganizeActivity extends Activity implements
 
 	}
 
+	/**
+	 * failure dialog
+	 * 
+	 * @return
+	 */
 	private int startFailDialog() {
 
 		AlertDialog.Builder ad = new AlertDialog.Builder(this);
 		ad.setIcon(R.drawable.ic_launcher);
 		ad.setTitle("Fehler beim Löschen");
-		ad.setMessage("Die globale Gruppe kann nicht gelöscht werden, da sie vom System erstellt wurde!");
+		ad.setMessage("Die globale Gruppe kann nicht gelöscht werden, da sie nicht der Ersteller sind!");
 		ad.setCancelable(true);
 		ad.setNegativeButton(android.R.string.ok,
 				new DialogInterface.OnClickListener() {
@@ -262,6 +296,9 @@ public class ChatOrganizeActivity extends Activity implements
 
 	}
 
+	/**
+	 * onresume triggered after oncreate and when it comes up after onstop
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -311,16 +348,15 @@ public class ChatOrganizeActivity extends Activity implements
 	}
 
 	/**
-	 * save Groups task
+	 * add Groups task
 	 * 
 	 * @author marcman
 	 * 
 	 */
-	public class GroupSaveTask extends AsyncTask<Void, Void, Boolean> {
+	public class GroupAddTask extends AsyncTask<Void, Void, Boolean> {
 		Context context;
-		List<Gruppe> gruppen;
 
-		public GroupSaveTask(Context context) {
+		public GroupAddTask(Context context) {
 			this.context = context;
 		}
 
@@ -328,7 +364,33 @@ public class ChatOrganizeActivity extends Activity implements
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			Gruppe gruppe = grouplist.get(grouplist.size() - 1);
-			return acc.addGroup(gruppe);
+			return acc.addGroup(gruppe, currentUser);
+		}
+
+		@Override
+		protected void onCancelled() {
+			mGroupLoadTask = null;
+		}
+	}
+
+	/**
+	 * update Groups task
+	 * 
+	 * @author marcman
+	 * 
+	 */
+	public class GroupUpdateTask extends AsyncTask<Void, Void, Boolean> {
+		Context context;
+
+		public GroupUpdateTask(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+			boolean check = acc.updateGroup(actGroup, actUser);
+			return check;
 		}
 
 		@Override
