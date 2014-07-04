@@ -271,7 +271,7 @@ public class ChatOrganizeActivity extends Activity implements
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			gruppen = new ArrayList<Gruppe>();
-			gruppen.addAll(acc.getGroups());
+			gruppen.addAll(acc.getGroups(currentUser));
 			return false;
 
 		}

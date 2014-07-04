@@ -48,4 +48,8 @@ public interface IDasSystemRESTAccessor {
 	@GET
 	@Path("/gruppe/all")
 	public List<Gruppe> getGroups();
+
+	@POST
+	@Path("/gruppe/user")
+	public List<Gruppe> getGroups(User user);
 }

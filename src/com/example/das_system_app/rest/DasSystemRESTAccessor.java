@@ -107,4 +107,11 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 		gruppen = restClient.getGroups();
 		return gruppen;
 	}
+
+	@Override
+	public List<Gruppe> getGroups(User user) {
+		List<Gruppe> gruppen;
+		gruppen = restClient.getGroups(user);
+		return gruppen;
+	}
 }
