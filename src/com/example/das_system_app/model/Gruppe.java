@@ -25,6 +25,10 @@ public class Gruppe implements Serializable {
 		users.add(creator);
 	}
 
+	Gruppe() {
+
+	}
+
 	public String getName() {
 		return name;
 	}

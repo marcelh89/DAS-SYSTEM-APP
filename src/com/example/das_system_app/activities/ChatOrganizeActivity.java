@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.example.das_system_app.R;
+import com.example.das_system_app.activities.LoginActivity.UserLoginTask;
 import com.example.das_system_app.model.Gruppe;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
@@ -13,8 +16,12 @@ import com.example.das_system_app.util.DataWrapper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -53,6 +60,8 @@ public class ChatOrganizeActivity extends Activity implements
 	ArrayAdapter<Gruppe> dataAdapter;
 	User currentUser;
 	String room;
+	IDasSystemRESTAccessor acc;
+	private GroupLoadTask mGroupLoadTask = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +69,10 @@ public class ChatOrganizeActivity extends Activity implements
 		setContentView(R.layout.chat_choose);
 
 		currentUser = (User) getIntent().getSerializableExtra("user");
-
-		initializeGroupList();
+		acc = new DasSystemRESTAccessor();
 
 		ListView listView = (ListView) findViewById(R.id.listView1);
-
+		grouplist = new ArrayList<Gruppe>();
 		dataAdapter = new ArrayAdapter<Gruppe>(this, R.layout.simplerow,
 				grouplist);
 
@@ -83,31 +91,32 @@ public class ChatOrganizeActivity extends Activity implements
 
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mGroupLoadTask = new GroupLoadTask(this);
+		mGroupLoadTask.execute((Void) null);
+	};
+
 	/**
 	 * REST call to server getting Group lists of User
 	 */
-	private void initializeGroupList() {
-
-		User system = new User(0, "SYSTEM", "SYSTEM", "SYS@TEM.de", "123",
-				new Date(), false);
-
-		grouplist = new ArrayList<Gruppe>();
-		grouplist.add(new Gruppe("global", true, system));
-		grouplist.add(new Gruppe("privat1", false, system));
-		grouplist.add(new Gruppe("privat2", false, system));
-		grouplist.add(new Gruppe("useraddedGroup", false, currentUser));
-
-		// for (Gruppe element : grouplist) {
-		// Log.i("GROUPLIST",
-		// element.toString() + " - " + element.getCreator());
-		// }
-
-		IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-
-		List<Gruppe> grouplist2 = acc.getGroups();
-		
-
-	}
+	// private void initializeGroupList() {
+	//
+	// // User system = new User(0, "SYSTEM", "SYSTEM", "SYS@TEM.de", "123",
+	// // new Date(), false);
+	//
+	// // grouplist.add(new Gruppe("global", true, system));
+	// // grouplist.add(new Gruppe("privat1", false, system));
+	// // grouplist.add(new Gruppe("privat2", false, system));
+	// // grouplist.add(new Gruppe("useraddedGroup", false, currentUser));
+	//
+	// // for (Gruppe element : grouplist) {
+	// // Log.i("GROUPLIST",
+	// // element.toString() + " - " + element.getCreator());
+	// // }
+	//
+	// }
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -248,6 +257,35 @@ public class ChatOrganizeActivity extends Activity implements
 
 		return 0;
 
+	}
+
+	public class GroupLoadTask extends AsyncTask<Void, Void, Boolean> {
+		Context context;
+		List<Gruppe> gruppen;
+
+		public GroupLoadTask(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+			gruppen = new ArrayList<Gruppe>();
+			gruppen.addAll(acc.getGroups());
+			return false;
+
+		}
+
+		@Override
+		protected void onPostExecute(Boolean success) {
+			grouplist.addAll(gruppen);
+			dataAdapter.notifyDataSetChanged();
+		}
+
+		@Override
+		protected void onCancelled() {
+			mGroupLoadTask = null;
+		}
 	}
 
 }
