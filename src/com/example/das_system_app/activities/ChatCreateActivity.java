@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -69,6 +70,10 @@ public class ChatCreateActivity extends Activity implements OnClickListener {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
+						Intent returnIntent = new Intent();
+						returnIntent.putExtra(GROUP_NAME, "");
+						returnIntent.putExtra(GROUP_PASSWORD, "");
+						setResult(RESULT_CREATE_GROUP, returnIntent);
 						finish();
 					}
 				});
@@ -76,5 +81,14 @@ public class ChatCreateActivity extends Activity implements OnClickListener {
 		AlertDialog alert = ad.create();
 		alert.show();
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(GROUP_NAME, "");
+		returnIntent.putExtra(GROUP_PASSWORD, "");
+		setResult(RESULT_CREATE_GROUP, returnIntent);
+		finish();
 	}
 }

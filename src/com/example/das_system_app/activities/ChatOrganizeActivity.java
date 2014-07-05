@@ -69,9 +69,10 @@ public class ChatOrganizeActivity extends Activity implements
 	String room;
 	IDasSystemRESTAccessor acc;
 	private GroupLoadTask mGroupLoadTask = null;
-	private GroupAddTask mGroupSaveTask = null;
+	private GroupAddTask mGroupAddTask = null;
 	private UserLoadTask mUserLoadTask = null;
 	private GroupUpdateTask mGroupUpdateTask = null;
+	private GroupDeleteTask mGroupDeleteTask = null;
 
 	/**
 	 * triggered once on startup of activity
@@ -189,12 +190,12 @@ public class ChatOrganizeActivity extends Activity implements
 		if (requestCode == GROUP_CREATE) {
 			String name = data.getStringExtra(GROUP_NAME);
 			String password = data.getStringExtra(GROUP_PASSWORD);
-			grouplist.add(new Gruppe(-1, name, false, currentUser));
-			dataAdapter.notifyDataSetChanged();
+			grouplist.add(new Gruppe(grouplist.size() + 1, name, false,
+					currentUser));
 
 			// add to database
-			// mGroupSaveTask = new GroupSaveTask(this);
-			// mGroupSaveTask.execute((Void) null);
+			mGroupAddTask = new GroupAddTask(this);
+			mGroupAddTask.execute((Void) null);
 
 		} else if (requestCode == FRIEND_INVITE) {
 
@@ -208,8 +209,8 @@ public class ChatOrganizeActivity extends Activity implements
 
 				// send PUT/POST change groups add user to group.users
 				// update param group, user
-				// mGroupUpdateTask = new GroupUpdateTask(this);
-				// mGroupUpdateTask.execute((Void) null);
+				mGroupUpdateTask = new GroupUpdateTask(this);
+				mGroupUpdateTask.execute((Void) null);
 
 			}
 
@@ -233,8 +234,11 @@ public class ChatOrganizeActivity extends Activity implements
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 
-						Integer creatorId = grouplist.get(position)
-								.getCreator().getUid();
+						Gruppe group = grouplist.get(position);
+						Integer creatorId = group.getCreator().getUid();
+
+						// set global group for access in async task
+						actGroup = group;
 
 						boolean isSystem = creatorId.equals(2);
 						boolean isCreator = currentUser.getUid().equals(
@@ -245,6 +249,11 @@ public class ChatOrganizeActivity extends Activity implements
 						} else {
 							grouplist.remove(position);
 							dataAdapter.notifyDataSetChanged();
+
+							// send changements to db
+							mGroupDeleteTask = new GroupDeleteTask(
+									getBaseContext());
+							mGroupDeleteTask.execute((Void) null);
 						}
 
 					}
@@ -364,7 +373,32 @@ public class ChatOrganizeActivity extends Activity implements
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			Gruppe gruppe = grouplist.get(grouplist.size() - 1);
-			return acc.addGroup(gruppe, currentUser);
+			return acc.addGroup(gruppe);
+		}
+
+		@Override
+		protected void onCancelled() {
+			mGroupLoadTask = null;
+		}
+	}
+
+	/**
+	 * add Groups task
+	 * 
+	 * @author marcman
+	 * 
+	 */
+	public class GroupDeleteTask extends AsyncTask<Void, Void, Boolean> {
+		Context context;
+
+		public GroupDeleteTask(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+			return acc.deleteGroup(actGroup);
 		}
 
 		@Override

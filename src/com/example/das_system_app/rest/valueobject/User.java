@@ -3,6 +3,9 @@ package com.example.das_system_app.rest.valueobject;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.example.das_system_app.model.Gruppe;
+
+
 public class User implements Serializable {
 	/**
 	 * 
@@ -16,6 +19,7 @@ public class User implements Serializable {
 	private Date birthDate;
 	private boolean dozent;
 	private String lastLocation;
+	private Gruppe gruppe;
 
 	public User(int id, String forename, String surname, String email,
 			String password, Date birthDate, boolean dozent) {
