@@ -32,7 +32,7 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				URLS[2], new ApacheHttpClient4Executor());
+				URLS[1], new ApacheHttpClient4Executor());
 		Log.i(logger, "initialised restClient: " + restClient);
 	}
 
@@ -139,6 +139,7 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 		}
 		return retVal;
 	}
+
 	public List<Gruppe> getGroups(User user) {
 		List<Gruppe> gruppen;
 		gruppen = restClient.getGroups(user);
@@ -146,8 +147,8 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	}
 
 	@Override
-	public boolean addGroup(Gruppe gruppe, User currentUser) {
-		return restClient.addGroup(gruppe, currentUser);
+	public boolean addGroup(Gruppe gruppe) {
+		return restClient.addGroup(gruppe);
 	}
 
 	@Override

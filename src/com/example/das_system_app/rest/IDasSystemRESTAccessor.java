@@ -51,11 +51,12 @@ public interface IDasSystemRESTAccessor {
 	@GET
 	@Path("/gruppe/all")
 	public List<Gruppe> getGroups();
-	
+
 	@GET
 	@Path("/vorlesung/{dozentid}")
-	public List<Vorlesung> getVorlesungByDozent(@PathParam("dozentid") int dozentid);
-	
+	public List<Vorlesung> getVorlesungByDozent(
+			@PathParam("dozentid") int dozentid);
+
 	@POST
 	@Path("/vorlesung/update")
 	public Boolean updateVorlesungCode(Vorlesung vorlesung);
@@ -66,12 +67,12 @@ public interface IDasSystemRESTAccessor {
 
 	@POST
 	@Path("/gruppe/add")
-	public boolean addGroup(Gruppe gruppe, User currentUser);
-	
+	public boolean addGroup(Gruppe gruppe);
+
 	@PUT
 	@Path("/gruppe/update")
 	public boolean updateGroup(Gruppe gruppe, User newUser);
-	
+
 	@GET
 	@Path("/testuser")
 	public List<User> getUser();

@@ -69,7 +69,7 @@ public class ChatOrganizeActivity extends Activity implements
 	String room;
 	IDasSystemRESTAccessor acc;
 	private GroupLoadTask mGroupLoadTask = null;
-	private GroupAddTask mGroupSaveTask = null;
+	private GroupAddTask mGroupAddTask = null;
 	private UserLoadTask mUserLoadTask = null;
 	private GroupUpdateTask mGroupUpdateTask = null;
 
@@ -189,12 +189,13 @@ public class ChatOrganizeActivity extends Activity implements
 		if (requestCode == GROUP_CREATE) {
 			String name = data.getStringExtra(GROUP_NAME);
 			String password = data.getStringExtra(GROUP_PASSWORD);
-			grouplist.add(new Gruppe(-1, name, false, currentUser));
+			grouplist.add(new Gruppe(grouplist.size() + 1, name, false,
+					currentUser));
 			dataAdapter.notifyDataSetChanged();
 
 			// add to database
-			// mGroupSaveTask = new GroupSaveTask(this);
-			// mGroupSaveTask.execute((Void) null);
+			mGroupAddTask = new GroupAddTask(this);
+			mGroupAddTask.execute((Void) null);
 
 		} else if (requestCode == FRIEND_INVITE) {
 
@@ -364,7 +365,7 @@ public class ChatOrganizeActivity extends Activity implements
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			Gruppe gruppe = grouplist.get(grouplist.size() - 1);
-			return acc.addGroup(gruppe, currentUser);
+			return acc.addGroup(gruppe);
 		}
 
 		@Override
