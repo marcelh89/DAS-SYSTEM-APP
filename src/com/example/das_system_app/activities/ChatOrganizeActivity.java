@@ -11,6 +11,7 @@ import com.example.das_system_app.activities.LoginActivity.UserLoginTask;
 import com.example.das_system_app.model.Gruppe;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
+import com.example.das_system_app.rest.valueobject.FreundEinladenIn;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.util.DataWrapper;
 
@@ -311,8 +312,8 @@ public class ChatOrganizeActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mGroupLoadTask = new GroupLoadTask(this);
-		mGroupLoadTask.execute((Void) null);
+		// mGroupLoadTask = new GroupLoadTask(this);
+		// mGroupLoadTask.execute((Void) null);
 	};
 
 	/**
@@ -378,7 +379,7 @@ public class ChatOrganizeActivity extends Activity implements
 
 		@Override
 		protected void onCancelled() {
-			mGroupLoadTask = null;
+			mGroupAddTask = null;
 		}
 	}
 
@@ -403,7 +404,7 @@ public class ChatOrganizeActivity extends Activity implements
 
 		@Override
 		protected void onCancelled() {
-			mGroupLoadTask = null;
+			mGroupDeleteTask = null;
 		}
 	}
 
@@ -415,21 +416,39 @@ public class ChatOrganizeActivity extends Activity implements
 	 */
 	public class GroupUpdateTask extends AsyncTask<Void, Void, Boolean> {
 		Context context;
+		FreundEinladenIn freundEinladenIn;
 
 		public GroupUpdateTask(Context context) {
 			this.context = context;
 		}
 
 		@Override
+		protected void onPreExecute() {
+			freundEinladenIn = new FreundEinladenIn(actGroup.getGid(),
+					actUser.getUid());
+
+			// delete last item from grouplist because of changement due to
+			// update
+			// grouplist.remove(grouplist.size() - 1);
+		}
+
+		@Override
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-			boolean check = acc.updateGroup(actGroup, actUser);
-			return check;
+			return acc.updateGroup(freundEinladenIn);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			System.out.println();
+			// reload from db
+			// onResume();
+
 		}
 
 		@Override
 		protected void onCancelled() {
-			mGroupLoadTask = null;
+			mGroupUpdateTask = null;
 		}
 	}
 
@@ -482,7 +501,7 @@ public class ChatOrganizeActivity extends Activity implements
 
 		@Override
 		protected void onCancelled() {
-			mGroupLoadTask = null;
+			mUserLoadTask = null;
 		}
 	}
 
