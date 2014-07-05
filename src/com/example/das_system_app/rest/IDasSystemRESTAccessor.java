@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.example.das_system_app.model.Gruppe;
+import com.example.das_system_app.rest.valueobject.FreundEinladenIn;
 import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.RauminfoIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
@@ -75,7 +76,7 @@ public interface IDasSystemRESTAccessor {
 
 	@POST
 	@Path("/gruppe/update")
-	public boolean updateGroup(Gruppe gruppe, User newUser);
+	public boolean updateGroup(FreundEinladenIn freundEinladenIn);
 
 	@GET
 	@Path("/testuser")

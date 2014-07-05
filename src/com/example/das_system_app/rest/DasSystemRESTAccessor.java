@@ -13,6 +13,7 @@ import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
 import android.util.Log;
 
 import com.example.das_system_app.model.Gruppe;
+import com.example.das_system_app.rest.valueobject.FreundEinladenIn;
 import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.RauminfoIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
@@ -152,8 +153,8 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	}
 
 	@Override
-	public boolean updateGroup(Gruppe gruppe, User newUser) {
-		return restClient.updateGroup(gruppe, newUser);
+	public boolean updateGroup(FreundEinladenIn freundEinladenIn) {
+		return restClient.updateGroup(freundEinladenIn);
 	}
 
 	@Override
