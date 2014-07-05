@@ -71,7 +71,7 @@ public class ChatOrganizeActivity extends Activity implements
 	IDasSystemRESTAccessor acc;
 	private GroupLoadTask mGroupLoadTask = null;
 	private GroupAddTask mGroupAddTask = null;
-	private UserLoadTask mUserLoadTask = null;
+	// private UserLoadTask mUserLoadTask = null;
 	private GroupUpdateTask mGroupUpdateTask = null;
 	private GroupDeleteTask mGroupDeleteTask = null;
 
@@ -168,8 +168,15 @@ public class ChatOrganizeActivity extends Activity implements
 			break;
 		case R.id.FriendInvite:
 
-			mUserLoadTask = new UserLoadTask(this);
-			mUserLoadTask.execute((Void) null);
+			// mUserLoadTask = new UserLoadTask(this);
+			// mUserLoadTask.execute((Void) null);
+
+			Intent intent = new Intent(this, ChatInviteFriendActivity.class);
+			intent.putExtra("grouplist", new DataWrapper<Gruppe>(grouplist));
+			// intent.putExtra("userlist", new DataWrapper<User>(userlist));
+			intent.putExtra("user", currentUser);
+
+			startActivityForResult(intent, FRIEND_INVITE);
 
 			break;
 		default:
@@ -458,51 +465,51 @@ public class ChatOrganizeActivity extends Activity implements
 	 * @author marcman
 	 * 
 	 */
-	public class UserLoadTask extends AsyncTask<Void, Void, Boolean> {
-		Context context;
-		List<User> users;
-
-		public UserLoadTask(Context context) {
-			this.context = context;
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-			users = acc.getUser();
-			return false;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean success) {
-
-			for (User user : users) {
-				if (!userlist.contains(user)) {
-
-					// exclude currentuser from invitelist
-					if (user.getEmail().equals(currentUser.getEmail())) {
-						System.out.println();
-					} else {
-						userlist.add(user);
-					}
-
-				}
-			}
-
-			// redirect to next intent
-			Intent intent = new Intent(ChatOrganizeActivity.this,
-					ChatInviteFriendActivity.class);
-			intent.putExtra("grouplist", new DataWrapper<Gruppe>(grouplist));
-			intent.putExtra("userlist", new DataWrapper<User>(userlist));
-			intent.putExtra("user", currentUser);
-			startActivityForResult(intent, FRIEND_INVITE);
-
-		}
-
-		@Override
-		protected void onCancelled() {
-			mUserLoadTask = null;
-		}
-	}
+	// public class UserLoadTask extends AsyncTask<Void, Void, Boolean> {
+	// Context context;
+	// List<User> users;
+	//
+	// public UserLoadTask(Context context) {
+	// this.context = context;
+	// }
+	//
+	// @Override
+	// protected Boolean doInBackground(Void... params) {
+	// IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+	// users = acc.getUser();
+	// return false;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Boolean success) {
+	//
+	// for (User user : users) {
+	// if (!userlist.contains(user)) {
+	//
+	// // exclude currentuser from invitelist
+	// if (user.getEmail().equals(currentUser.getEmail())) {
+	// System.out.println();
+	// } else {
+	// userlist.add(user);
+	// }
+	//
+	// }
+	// }
+	//
+	// // redirect to next intent
+	// Intent intent = new Intent(ChatOrganizeActivity.this,
+	// ChatInviteFriendActivity.class);
+	// intent.putExtra("grouplist", new DataWrapper<Gruppe>(grouplist));
+	// intent.putExtra("userlist", new DataWrapper<User>(userlist));
+	// intent.putExtra("user", currentUser);
+	// startActivityForResult(intent, FRIEND_INVITE);
+	//
+	// }
+	//
+	// @Override
+	// protected void onCancelled() {
+	// mUserLoadTask = null;
+	// }
+	// }
 
 }
