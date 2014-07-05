@@ -12,20 +12,17 @@ import com.example.das_system_app.model.Gruppe;
  * @author marcman
  * 
  */
-public class DataWrapper implements Serializable {
+public class DataWrapper<T> implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Gruppe> groups;
+	private ArrayList<T> list;
 
-	public DataWrapper(List<Gruppe> grouplist) {
-		this.groups = (ArrayList<Gruppe>) grouplist;
+	public DataWrapper(List<T> glist) {
+		this.list = (ArrayList<T>) glist;
 	}
 
-	public ArrayList<Gruppe> getGroups() {
-		return this.groups;
+	public ArrayList<T> getList() {
+		return this.list;
 	}
 
 }

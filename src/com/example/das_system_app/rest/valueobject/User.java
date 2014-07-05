@@ -111,11 +111,16 @@ public class User implements Serializable {
 		this.lastLocation = lastLocation;
 	}
 
+	// @Override
+	// public String toString() {
+	// return "User [uid=" + uid + ", email=" + email + ", forename="
+	// + forename + ", surname=" + surname + ", password=" + password
+	// + ", birthDate=" + birthDate + ", dozent=" + dozent + "]";
+	// }
+
 	@Override
 	public String toString() {
-		return "User [uid=" + uid + ", email=" + email + ", forename="
-				+ forename + ", surname=" + surname + ", password=" + password
-				+ ", birthDate=" + birthDate + ", dozent=" + dozent + "]";
+		return forename + " " + surname;
 	}
 
 	public boolean equals(Object other) {
