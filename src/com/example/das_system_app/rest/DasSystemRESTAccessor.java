@@ -2,8 +2,10 @@ package com.example.das_system_app.rest;
 
 import java.util.List;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
@@ -16,6 +18,7 @@ import com.example.das_system_app.rest.valueobject.RauminfoIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.rest.valueobject.User_old;
+import com.example.das_system_app.rest.valueobject.Vorlesung;
 
 public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
@@ -29,7 +32,7 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				URLS[1], new ApacheHttpClient4Executor());
+				URLS[2], new ApacheHttpClient4Executor());
 		Log.i(logger, "initialised restClient: " + restClient);
 	}
 
@@ -106,5 +109,34 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 		List<Gruppe> gruppen = null;
 		gruppen = restClient.getGroups();
 		return gruppen;
+	}
+
+	@Override
+	@GET
+	@Path("/vorlesung/{dozentid}")
+	public List<Vorlesung> getVorlesungByDozent(
+			@PathParam("dozentid") int dozentid) {
+		List<Vorlesung> vorlesungen = null;
+		try {
+			vorlesungen = restClient.getVorlesungByDozent(dozentid);
+		} catch (Exception e) {
+			e.printStackTrace();
+			vorlesungen = null;
+		}
+		return vorlesungen;
+	}
+
+	@Override
+	@POST
+	@Path("/vorlesung/update")
+	public Boolean updateVorlesungCode(Vorlesung vorlesung) {
+		boolean retVal = false;
+		try {
+			retVal = restClient.updateVorlesungCode(vorlesung);
+		} catch (Exception e) {
+			e.printStackTrace();
+			retVal = false;
+		}
+		return retVal;
 	}
 }
