@@ -68,19 +68,17 @@ public interface IDasSystemRESTAccessor {
 	@POST
 	@Path("/gruppe/add")
 	public boolean addGroup(Gruppe gruppe);
-	
+
 	@POST
 	@Path("/gruppe/delete")
 	public boolean deleteGroup(Gruppe actGroup);
 
-	@PUT
+	@POST
 	@Path("/gruppe/update")
 	public boolean updateGroup(Gruppe gruppe, User newUser);
 
 	@GET
 	@Path("/testuser")
 	public List<User> getUser();
-
-	
 
 }
