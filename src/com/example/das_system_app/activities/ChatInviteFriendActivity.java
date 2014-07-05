@@ -44,6 +44,9 @@ public class ChatInviteFriendActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_invitefriend);
 
+		mUserLoadTask = new UserLoadTask(this);
+		mUserLoadTask.execute((Void) null);
+
 		DataWrapper<Gruppe> dw = (DataWrapper) getIntent()
 				.getSerializableExtra("grouplist");
 		ArrayList<Gruppe> grouplist = dw.getList();
@@ -63,7 +66,7 @@ public class ChatInviteFriendActivity extends Activity implements
 
 		}
 
-		//cancel if grouplist is empty
+		// cancel if grouplist is empty
 		if (grouplist.isEmpty()) {
 			startFailDialog();
 		}
@@ -99,15 +102,6 @@ public class ChatInviteFriendActivity extends Activity implements
 		// } else {
 
 		// }
-
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		mUserLoadTask = new UserLoadTask(this);
-		mUserLoadTask.execute((Void) null);
 
 	}
 
