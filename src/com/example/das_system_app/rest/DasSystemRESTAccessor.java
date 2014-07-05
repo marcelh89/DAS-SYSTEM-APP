@@ -160,4 +160,9 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	public List<User> getUser() {
 		return restClient.getUser();
 	}
+
+	public boolean deleteGroup(Gruppe actGroup) {
+		return restClient.deleteGroup(actGroup);
+	}
+
 }

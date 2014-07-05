@@ -72,6 +72,7 @@ public class ChatOrganizeActivity extends Activity implements
 	private GroupAddTask mGroupAddTask = null;
 	private UserLoadTask mUserLoadTask = null;
 	private GroupUpdateTask mGroupUpdateTask = null;
+	private GroupDeleteTask mGroupDeleteTask = null;
 
 	/**
 	 * triggered once on startup of activity
@@ -234,8 +235,11 @@ public class ChatOrganizeActivity extends Activity implements
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 
-						Integer creatorId = grouplist.get(position)
-								.getCreator().getUid();
+						Gruppe group = grouplist.get(position);
+						Integer creatorId = group.getCreator().getUid();
+
+						// set global group for access in async task
+						actGroup = group;
 
 						boolean isSystem = creatorId.equals(2);
 						boolean isCreator = currentUser.getUid().equals(
@@ -246,6 +250,11 @@ public class ChatOrganizeActivity extends Activity implements
 						} else {
 							grouplist.remove(position);
 							dataAdapter.notifyDataSetChanged();
+
+							// send changements to db
+							mGroupDeleteTask = new GroupDeleteTask(
+									getBaseContext());
+							mGroupDeleteTask.execute((Void) null);
 						}
 
 					}
@@ -366,6 +375,31 @@ public class ChatOrganizeActivity extends Activity implements
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			Gruppe gruppe = grouplist.get(grouplist.size() - 1);
 			return acc.addGroup(gruppe);
+		}
+
+		@Override
+		protected void onCancelled() {
+			mGroupLoadTask = null;
+		}
+	}
+
+	/**
+	 * add Groups task
+	 * 
+	 * @author marcman
+	 * 
+	 */
+	public class GroupDeleteTask extends AsyncTask<Void, Void, Boolean> {
+		Context context;
+
+		public GroupDeleteTask(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+			return acc.deleteGroup(actGroup);
 		}
 
 		@Override
