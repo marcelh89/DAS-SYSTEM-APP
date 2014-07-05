@@ -200,13 +200,13 @@ public class ChatOrganizeActivity extends Activity implements
 
 		} else if (requestCode == FRIEND_INVITE) {
 
-			int selectedUserPosition = data.getIntExtra(USER, -1);
-			int selectedGroupPosition = data.getIntExtra(GROUP, -1);
+			User selectedUser = (User) data.getSerializableExtra(USER);
+			Gruppe selectedGroup = (Gruppe) data.getSerializableExtra(GROUP);
 
-			if (selectedGroupPosition != -1 && selectedUserPosition != -1) {
+			if (selectedGroup != null && selectedUser != null) {
 
-				actGroup = grouplist.get(selectedGroupPosition);
-				actUser = userlist.get(selectedUserPosition);
+				actGroup = selectedGroup;
+				actUser = selectedUser;
 
 				// send PUT/POST change groups add user to group.users
 				// update param group, user
@@ -312,8 +312,8 @@ public class ChatOrganizeActivity extends Activity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// mGroupLoadTask = new GroupLoadTask(this);
-		// mGroupLoadTask.execute((Void) null);
+		mGroupLoadTask = new GroupLoadTask(this);
+		mGroupLoadTask.execute((Void) null);
 	};
 
 	/**

@@ -106,18 +106,17 @@ public class ChatInviteFriendActivity extends Activity implements
 
 		Intent returnIntent = new Intent();
 
-		int selectedUserPosition = mUsers.getSelectedItemPosition();
-		int selectedGroupPosition = mGroups.getSelectedItemPosition();
+		// TODO hier is n denkfehler!
+		User selectedUser = (User) mUsers.getSelectedItem();
+		Gruppe selectedGroup = (Gruppe) mGroups.getSelectedItem();
 
-		// return to parent
-		if (selectedGroupPosition != android.widget.AdapterView.INVALID_POSITION
-				&& selectedGroupPosition != android.widget.AdapterView.INVALID_POSITION) {
-			returnIntent.putExtra(GROUP, selectedGroupPosition);
-			returnIntent.putExtra(USER, selectedUserPosition);
+		if (selectedGroup != null && selectedUser != null) {
+			returnIntent.putExtra(GROUP, selectedGroup);
+			returnIntent.putExtra(USER, selectedUser);
 			setResult(RESULT_INVITE_FRIEND, returnIntent);
 			finish();
 		} else {
-			startFailDialog();
+
 		}
 
 	}
