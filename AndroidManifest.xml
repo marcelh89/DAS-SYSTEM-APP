@@ -46,7 +46,8 @@
         <activity android:name="com.example.das_system_app.activities.ProfilActivity" />
         <activity android:name="com.example.das_system_app.activities.RaumActivity" android:screenOrientation="portrait"/>
         <activity android:name="com.example.das_system_app.activities.KursAnmeldenActivity" android:screenOrientation="portrait"/>
-        <activity android:name="com.example.das_system_app.activities.DozentActivity" />
+        <activity android:name="com.example.das_system_app.activities.DozentActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.example.das_system_app.activities.DozentAnwesenheitActivity" android:screenOrientation="portrait"/>
         <activity
             android:name="com.example.das_system_app.activities.ChatActivity"
             android:label="@string/title_activity_chat_global"

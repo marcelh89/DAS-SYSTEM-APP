@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	<Spinner
+        android:id="@+id/spinnerVorlesung"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/datePick"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spinnerVorlesung"
+        android:gravity="center"
+        android:text="11.11.2011"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:background="@color/wallet_bright_foreground_holo_dark"/>
+    <Button
+        android:id="@+id/tAnzeigen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/datePick"
+        android:text="Anzeigen" />
+    <ListView
+        android:id="@+id/listeTeilnehmer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tAnzeigen"
+        >
+    </ListView>
+
+
+
+</RelativeLayout>

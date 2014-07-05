@@ -99,6 +99,14 @@ public class OverviewActivity extends Activity {
 				intent = new Intent(this, KursAnmeldenActivity.class);
 			}
 			break;
+		case 4:
+			if(childPosition == 0){
+				intent = new Intent(this, DozentAnwesenheitActivity.class);	
+			}
+			if(childPosition == 1){
+				intent = new Intent(this, DozentActivity.class);
+			}
+			break;
 		default:
 			intent = new Intent(this, DozentActivity.class);
 
@@ -125,8 +133,8 @@ public class OverviewActivity extends Activity {
 		String[] profilOptions = { "Profil einsehen" };
 		String[] raumOptions = { "Raum identifizieren",
 				"Für einen Kurs anmelden" };
-		String[] dozentOptions = { "Anwesenheit prÃ¼fen",
-				"QR-Code fÃ¼r LV bereitstellen" };
+		String[] dozentOptions = { "Anwesenheit prüfen",
+				"QR-Code für LV bereitstellen" };
 
 		optionsCollection = new LinkedHashMap<String, List<String>>();
 

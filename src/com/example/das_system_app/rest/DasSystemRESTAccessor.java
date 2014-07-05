@@ -16,6 +16,7 @@ import com.example.das_system_app.model.Gruppe;
 import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.RauminfoIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
+import com.example.das_system_app.rest.valueobject.TeilnehmerIn;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.rest.valueobject.User_old;
 import com.example.das_system_app.rest.valueobject.Vorlesung;
@@ -158,5 +159,19 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	@Override
 	public List<User> getUser() {
 		return restClient.getUser();
+	}
+
+	@Override
+	@POST
+	@Path("/vorlesung/teilnehmer")
+	public List<User> getVorlesungTeilnehmer(TeilnehmerIn tin) {
+		List<User> teilnehmer = null;
+		try {
+			teilnehmer = restClient.getVorlesungTeilnehmer(tin);
+		} catch (Exception e) {
+			e.printStackTrace();
+			teilnehmer = null;
+		}
+		return teilnehmer;
 	}
 }
