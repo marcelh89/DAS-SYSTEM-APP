@@ -192,7 +192,6 @@ public class ChatOrganizeActivity extends Activity implements
 			String password = data.getStringExtra(GROUP_PASSWORD);
 			grouplist.add(new Gruppe(grouplist.size() + 1, name, false,
 					currentUser));
-			dataAdapter.notifyDataSetChanged();
 
 			// add to database
 			mGroupAddTask = new GroupAddTask(this);
@@ -210,8 +209,8 @@ public class ChatOrganizeActivity extends Activity implements
 
 				// send PUT/POST change groups add user to group.users
 				// update param group, user
-				// mGroupUpdateTask = new GroupUpdateTask(this);
-				// mGroupUpdateTask.execute((Void) null);
+				mGroupUpdateTask = new GroupUpdateTask(this);
+				mGroupUpdateTask.execute((Void) null);
 
 			}
 
