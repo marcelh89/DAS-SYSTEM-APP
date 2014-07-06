@@ -3,8 +3,14 @@
  */
 package com.example.das_system_app.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.das_system_app.R;
 import com.example.das_system_app.R.layout;
+import com.example.das_system_app.rest.DasSystemRESTAccessor;
+import com.example.das_system_app.rest.IDasSystemRESTAccessor;
+import com.example.das_system_app.rest.valueobject.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -14,9 +20,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -37,7 +45,7 @@ public class NavigationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.navigation);
-
+		ArrayList<User> userlist= (ArrayList<User>) getIntent().getExtras().get("userList");
 		try {
 			// Loading map
 			initilizeMap();
@@ -53,16 +61,34 @@ public class NavigationActivity extends Activity {
 
 			addMarker(latFrom, lonFrom, "Eigener Standort",
 					BitmapDescriptorFactory.HUE_GREEN);
-			addMarker(latTo, lonTo, "Freund Standort",
-					BitmapDescriptorFactory.HUE_RED);
-
+//			addMarker(latTo, lonTo, "Freund Standort",
+//					BitmapDescriptorFactory.HUE_RED);
+			if(userlist != null){
+				String lon,lat,raum,tmp[];
+				for(User u:userlist){
+					if(u.getLastLocation() != null){
+						if(u.getLastLocation().contains("Raum")){
+							tmp = u.getLastLocation().split("Raum");
+							lat = tmp[0].split(",")[0];
+							lon = tmp[0].split(",")[1];
+							raum = tmp[1].trim();
+							addMarker(Double.parseDouble(lat), Double.parseDouble(lon), u.toString()+" "+raum, BitmapDescriptorFactory.HUE_RED);
+						}else{
+							tmp = u.getLastLocation().split(",");
+							lat = tmp[0];
+							lon = tmp[1];
+							addMarker(Double.parseDouble(lat), Double.parseDouble(lon), u.toString(), BitmapDescriptorFactory.HUE_RED);
+						}
+						
+					}
+				}	
+			}
 			googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
 					new LatLng(latFrom, lonFrom), 14.6f));
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private Location getMyLocation() {
@@ -121,4 +147,11 @@ public class NavigationActivity extends Activity {
 		initilizeMap();
 	}
 
+	@Override
+	public void onBackPressed() {
+		startActivity(new Intent(this, OverviewActivity.class));
+		super.onBackPressed();
+	}
+
+	
 }

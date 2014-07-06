@@ -10,6 +10,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,6 +31,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private EditText mPasswordView;
 	private Button mButton;
 	private UserLoginTask mAuthTask = null;
+	private User u;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,27 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	}
 
+	
+	private Location getMyLocation() {
+		// Get location from GPS if it's available
+		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		Location myLocation = lm
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+		// Location wasn't found, check the next most accurate place for the
+		// current location
+		if (myLocation == null) {
+			Criteria criteria = new Criteria();
+			criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+			// Finds a provider that matches the criteria
+			String provider = lm.getBestProvider(criteria, true);
+			// Use the provider to get the last known location
+			myLocation = lm.getLastKnownLocation(provider);
+		}
+
+		return myLocation;
+	}
+	
 	public void attemptLogin() {
 		if (mAuthTask != null) {
 			return;
@@ -122,7 +147,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		Context context;
-		User u;
 
 		public UserLoginTask(Context context) {
 			this.context = context;
@@ -169,6 +193,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 						OverviewActivity.class);
 				intent.putExtra("user", u);
 				startActivity(intent);
+				
+				Location loc = getMyLocation();
+				double latFrom = loc.getLatitude();
+				double lonFrom = loc.getLongitude();
+				System.out.println(latFrom+ " " + lonFrom);
+				UserUpdateTask uUTask = new UserUpdateTask();
+				uUTask.execute(latFrom, lonFrom);
 			} else {
 				mEmailView.setError("Email oder Passwort falsch");
 				mPasswordView.setError("Email oder Passwort falsch");
@@ -181,5 +212,22 @@ public class LoginActivity extends Activity implements OnClickListener {
 			mAuthTask = null;
 			mDialog.hide();
 		}
+	}
+	
+	public class UserUpdateTask extends AsyncTask<Double, Void, Boolean>{
+
+		@Override
+		protected Boolean doInBackground(Double... params) {
+			if(u!=null){
+				if(params.length > 1){
+					String locationStr = params[0]+","+	params[1];
+					u.setLastLocation(locationStr);
+					IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+					acc.updateLastLocationUser(u);
+				}
+			}
+			return null;
+		}
+		
 	}
 }

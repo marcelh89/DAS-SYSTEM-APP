@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
@@ -34,7 +35,7 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				URLS[1], new ApacheHttpClient4Executor());
+				URLS[2], new ApacheHttpClient4Executor());
 		Log.i(logger, "initialised restClient: " + restClient);
 	}
 
@@ -165,8 +166,17 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 	}
 
 	@Override
+	@GET
+	@Path("/testuser")
 	public List<User> getUser() {
-		return restClient.getUser();
+		List<User> users = null;
+		try {
+			users = restClient.getUser();
+		} catch (Exception e) {
+			e.printStackTrace();
+			users = null;
+		}
+		return users;
 	}
 
 	public boolean deleteGroup(Gruppe actGroup) {
@@ -185,6 +195,16 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 			teilnehmer = null;
 		}
 		return teilnehmer;
+	}
+
+	@Override
+	@PUT
+	public void updateLastLocationUser(User user) {
+		try {
+			restClient.updateLastLocationUser(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

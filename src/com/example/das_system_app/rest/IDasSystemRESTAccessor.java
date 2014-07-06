@@ -86,5 +86,8 @@ public interface IDasSystemRESTAccessor {
 	@POST
 	@Path("/vorlesung/teilnehmer")
 	public List<User> getVorlesungTeilnehmer(TeilnehmerIn tin);
+	
+	@PUT
+	public void updateLastLocationUser(User user); 
 
 }

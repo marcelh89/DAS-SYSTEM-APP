@@ -32,7 +32,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.das_system_app.activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,31 +40,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.das_system_app.activities.RegisterActivity" />
-        <activity android:name="com.example.das_system_app.activities.OverviewActivity" />
-        <activity android:name="com.example.das_system_app.activities.NavigationActivity" />
-        <activity android:name="com.example.das_system_app.activities.ProfilActivity" />
-        <activity android:name="com.example.das_system_app.activities.RaumActivity" android:screenOrientation="portrait"/>
-        <activity android:name="com.example.das_system_app.activities.KursAnmeldenActivity" android:screenOrientation="portrait"/>
-        <activity android:name="com.example.das_system_app.activities.DozentActivity" android:screenOrientation="portrait"/>
-        <activity android:name="com.example.das_system_app.activities.DozentAnwesenheitActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.OverviewActivity" />
+        <activity android:name=".activities.NavigationActivity" />
+        <activity android:name=".activities.ProfilActivity" />
         <activity
-            android:name="com.example.das_system_app.activities.ChatActivity"
+            android:name=".activities.RaumActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.KursAnmeldenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.DozentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.DozentAnwesenheitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ChatActivity"
             android:label="@string/title_activity_chat_global"
             android:screenOrientation="portrait" />
         <!-- created by marcman at 2014-07-03 11:09:22 -->
-        <activity android:name="com.example.das_system_app.activities.ChatOrganizeActivity" />
-        <activity android:name="com.example.das_system_app.activities.ChatCreateActivity" />
-        <activity android:name="com.example.das_system_app.activities.ChatInviteFriendActivity" />
-        <activity android:name="com.example.das_system_app.activities.ChatDetailActivity" />
+        <activity android:name=".activities.ChatOrganizeActivity" />
+        <activity android:name=".activities.ChatCreateActivity" />
+        <activity android:name=".activities.ChatInviteFriendActivity" />
+        <activity android:name=".activities.ChatDetailActivity" />
 
         <!-- Goolge API Key -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA2kW9J_EUdS1EqgQqWGXu5mwbLtCwmRfs" />
+            android:value="AIzaSyBk0GwYSCt1SuaIc8-Tg3nhxdjYofDfwxY" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.example.das_system_app.activities.LoadUserListActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
     </application>
 
 </manifest>

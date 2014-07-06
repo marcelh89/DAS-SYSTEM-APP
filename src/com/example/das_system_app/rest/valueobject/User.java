@@ -3,8 +3,6 @@ package com.example.das_system_app.rest.valueobject;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.example.das_system_app.model.Gruppe;
-
 
 public class User implements Serializable {
 	/**
@@ -19,38 +17,16 @@ public class User implements Serializable {
 	private Date birthDate;
 	private boolean dozent;
 	private String lastLocation;
-	private Gruppe gruppe;
+	
 
-	public User(int id, String forename, String surname, String email,
-			String password, Date birthDate, boolean dozent) {
-		this.email = email;
-		this.password = password;
-		this.forename = forename;
-		this.surname = surname;
-		this.setBirthDate(birthDate);
-		this.setUid(id);
-		this.setDozent(dozent);
+	public User() {
+
 	}
-
-	public User(String forename, String surname, String email, String password,
-			Date birthDate, boolean dozent) {
-		this.email = email;
-		this.password = password;
-		this.forename = forename;
-		this.surname = surname;
-		this.setBirthDate(birthDate);
-		this.setDozent(dozent);
-	}
-
 	// Login
 	public User(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}
-
-	public User() {
-	}
-
 	public Integer getUid() {
 		return uid;
 	}
@@ -115,23 +91,10 @@ public class User implements Serializable {
 		this.lastLocation = lastLocation;
 	}
 
-	// @Override
-	// public String toString() {
-	// return "User [uid=" + uid + ", email=" + email + ", forename="
-	// + forename + ", surname=" + surname + ", password=" + password
-	// + ", birthDate=" + birthDate + ", dozent=" + dozent + "]";
-	// }
 
 	@Override
 	public String toString() {
 		return forename + " " + surname;
-	}
-
-	public boolean equals(Object other) {
-		if (other.getClass() == this.getClass()) {
-			return this.getUid() == ((User) other).getUid();
-		}
-		return false;
 	}
 
 }

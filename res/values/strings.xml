@@ -39,5 +39,6 @@
     </string-array>
 
     <string name="title_activity_main_activityff">MainActivityff</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

@@ -11,6 +11,7 @@ import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.KursAnmeldenIn;
 import com.example.das_system_app.rest.valueobject.Rauminformation;
+import com.example.das_system_app.rest.valueobject.User;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -39,6 +40,8 @@ public class KursAnmeldenActivity extends Activity implements OnClickListener{
 	private TextView vorlesung,inhalt;
 	private CheckBox angemeldet;
 	private Rauminformation rauminfo;
+	
+	private int userid;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +104,12 @@ public class KursAnmeldenActivity extends Activity implements OnClickListener{
 			System.out.println(anmeldeCode);
 			SimpleDateFormat sf = new SimpleDateFormat("dd.MM.yyyy");
 			SharedPreferences settings = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
-			int userid = settings.getInt("UserId", 0);
+			userid = settings.getInt("UserId", 0);
 			KursAnmeldenIn kIn = new KursAnmeldenIn();
 			kIn.setAnmeldecode(anmeldeCode);
 			kIn.setUserid(userid);
 			kIn.setDatum(sf.format(new Date()));
+//			kIn.setDatum("07.07.2014");
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			rauminfo = acc.anKursAnmelden(kIn);
 			if(rauminfo != null){
@@ -125,6 +129,8 @@ public class KursAnmeldenActivity extends Activity implements OnClickListener{
 				angemeldet.setChecked(true);
 				vorlesung.setText(rauminfo.getName()); 
 				inhalt.setText(rauminfo.getInhalt());
+				UserUpdateTask uTask = new UserUpdateTask();
+				uTask.execute("52.411009", "12.538265", rauminfo.getRaumNr());
 			}else{
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Konnte Veranstalltung nicht finden!", Toast.LENGTH_SHORT);
@@ -140,5 +146,22 @@ public class KursAnmeldenActivity extends Activity implements OnClickListener{
 		}
 		
 	}
+	public class UserUpdateTask extends AsyncTask<String, Void, Boolean>{
 
+		@Override
+		protected Boolean doInBackground(String... params) {
+			if(userid!=0){
+				if(params.length > 1){
+					User u = new User();
+					u.setUid(userid);
+					String locationStr = params[0]+","+	params[1] + " Raum "+params[2];
+					u.setLastLocation(locationStr);
+					IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+					acc.updateLastLocationUser(u);
+				}
+			}
+			return null;
+		}
+		
+	}
 }
