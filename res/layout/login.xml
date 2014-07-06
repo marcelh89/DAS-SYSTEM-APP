@@ -57,29 +57,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <TextView
-                    android:id="@+id/LoginRegistrieren"
+                <Button
+                    android:id="@+id/RegisterButton"
+                    style="android:buttonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:text="Registrieren" />
+                    android:layout_marginTop="10dp"
+                    android:text="Registrieren"
+                    android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/LoginPasswortVergessen"
+                <Button
+                    android:id="@+id/LoginButton"
+                    style="android:buttonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Passwort vergessen" />
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1.00"
+                    android:text="Login"
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/LoginButton"
-                style="android:buttonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:layout_gravity="right"
-                android:layout_marginTop="10dp"
-                android:text="Login"
-                android:textSize="14sp" />
         </LinearLayout>
 
     </RelativeLayout>
