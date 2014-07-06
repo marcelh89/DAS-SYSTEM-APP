@@ -31,6 +31,11 @@ import android.widget.AdapterView.*;
 public class ChatInviteFriendActivity extends Activity implements
 		OnClickListener, OnItemSelectedListener {
 
+	private static final String MSG_NOFRIEND = "Sie haben keine weiteren Freunde die sie "
+			+ "hinzufügen könnten bzw. es alle Freunde bereits hinzugefügt worden.";
+	private static final String MSG_NOGROUP = "Sie haben bisher keine EIGENE Gruppe "
+			+ "angelegt, bitte tuen Sie dies!";
+
 	public static final String GROUP = "group";
 	public static final String USER = "user";
 
@@ -73,7 +78,7 @@ public class ChatInviteFriendActivity extends Activity implements
 
 		// cancel if grouplist is empty
 		if (grouplist.isEmpty()) {
-			startFailDialog();
+			startFailDialog(MSG_NOGROUP);
 		}
 
 		mGroups = (Spinner) findViewById(R.id.GroupSpinner);
@@ -162,19 +167,39 @@ public class ChatInviteFriendActivity extends Activity implements
 		protected void onPostExecute(Boolean success) {
 
 			for (User user : users) {
-				if (!userlist.contains(user)) {
 
-					// exclude currentuser from invitelist
-					if (user.getUid().equals(currentUser.getUid())) {
-						System.out.println();
-					} else {
-						userlist.add(user);
-					}
-
+				// exclude currentuser from invitelist
+				if (user.getUid().equals(currentUser.getUid())) {
+					System.out.println();
+				} else {
+					userlist.add(user);
 				}
+
+			}
+
+			// delete users that are already in selectedGroup.getUsers();
+			List<User> selectedUsers = selectedGroup.getUsers();
+
+			// create copy of userlist with copy constructor
+			ArrayList<User> userlistCopy = new ArrayList<User>(userlist);
+
+			// work with copied list
+			for (User user : userlistCopy) {
+
+				for (User selUser : selectedUsers) {
+					if (selUser.getUid().equals(user.getUid())) {
+						userlist.remove(user);
+						Log.i("remove", "remove");
+					}
+				}
+
 			}
 
 			userAdapter.notifyDataSetChanged();
+
+			if (userlist.isEmpty()) {
+				startFailDialog(MSG_NOFRIEND);
+			}
 
 		}
 
@@ -184,12 +209,12 @@ public class ChatInviteFriendActivity extends Activity implements
 		}
 	}
 
-	private int startFailDialog() {
+	private int startFailDialog(String msg) {
 
 		AlertDialog.Builder ad = new AlertDialog.Builder(this);
 		ad.setIcon(R.drawable.ic_launcher);
-		ad.setTitle("Fehler beim Finden von Gruppen");
-		ad.setMessage("Sie haben bisher keine EIGENE Gruppe angelegt, bitte tuen Sie dies!");
+		ad.setTitle("Ein Fehler ist aufgetreten");
+		ad.setMessage(msg);
 		ad.setCancelable(true);
 		ad.setNegativeButton(android.R.string.ok,
 				new DialogInterface.OnClickListener() {
