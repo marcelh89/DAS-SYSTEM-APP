@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -6,29 +6,32 @@
     tools:context="com.example.das_system_app.activities.ChatActivity"
     tools:ignore="MergeRootFrame" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
 
         <ListView
             android:id="@+id/ChatlistView"
             android:layout_width="match_parent"
-            android:layout_height="400dp" >
+            android:layout_height="400dp" 
+            android:layout_above="@+id/chatLinearLayout">
         </ListView>
 
         <LinearLayout
+            android:id="@+id/chatLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:layout_alignParentBottom="true"
+            >
 
             <EditText
                 android:id="@+id/editText2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.90"
-                android:paddingTop="20dp"
                 android:ems="10"
-                android:hint="Nachricht verfassen" />
+                android:hint="Nachricht verfassen"
+                android:paddingTop="20dp" >
+
+                <requestFocus />
+            </EditText>
 
             <ImageButton
                 android:id="@+id/imageButton1"
@@ -39,6 +42,5 @@
                 android:src="@android:drawable/ic_media_play" />
 
         </LinearLayout>
-    </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>
