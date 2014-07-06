@@ -91,8 +91,15 @@ public class DozentAnwesenheitActivity extends Activity implements OnClickListen
 		}
 		if(v.getId() == R.id.tAnzeigen){
 //			mDialog = new ProgressDialog(this);
-			mCheckTeilnehmerTask = new CheckTeilnehmerTask();
-			mCheckTeilnehmerTask.execute();
+			if(!listVorlesung.getAdapter().isEmpty()){
+				mCheckTeilnehmerTask = new CheckTeilnehmerTask();
+				mCheckTeilnehmerTask.execute();	
+			}else{
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Keine Vorlesung ausgewählt!", Toast.LENGTH_SHORT);
+				toast.show();	
+			}
+			
 		}
 	}
 	

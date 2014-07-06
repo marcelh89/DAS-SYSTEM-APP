@@ -154,7 +154,7 @@ public class RegisterActivity extends Activity implements
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Erfolgreich registriert!", Toast.LENGTH_SHORT);
 				toast.show();	
-				Intent intent = new Intent(RegisterActivity.this, OverviewActivity.class);
+				Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
 				startActivity(intent);
 			}else{
 				Toast toast = Toast.makeText(getApplicationContext(), 

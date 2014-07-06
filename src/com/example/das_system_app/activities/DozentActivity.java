@@ -75,8 +75,14 @@ public class DozentActivity extends Activity implements OnClickListener{
 		if (cancel) {
 			focusView.requestFocus();
 		} else {
-			mUpdateTask = new UpdateCodeTask(this);
-			mUpdateTask.execute();
+			if(listVorlesung.getAdapter() != null){
+				mUpdateTask = new UpdateCodeTask(this);
+				mUpdateTask.execute();	
+			}else{
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Keine Vorlesung ausgewählt!", Toast.LENGTH_SHORT);
+				toast.show();	
+			}
 		}
 	}
 
@@ -107,7 +113,7 @@ public class DozentActivity extends Activity implements OnClickListener{
 			super.onPostExecute(resultList);
 			mDialog.hide();
 			mVorTask = null;
-			if(resultList != null){
+			if(resultList != null && resultList.size()>0){
 				ArrayAdapter<Vorlesung> dataAdapter = new ArrayAdapter<Vorlesung>(DozentActivity.this,android.R.layout.simple_spinner_item, resultList);
 				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				listVorlesung.setAdapter(dataAdapter);
