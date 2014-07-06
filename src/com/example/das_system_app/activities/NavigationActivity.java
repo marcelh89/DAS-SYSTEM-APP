@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;

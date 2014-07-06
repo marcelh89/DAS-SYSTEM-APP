@@ -46,6 +46,9 @@ public class NavigierenFreundActivity extends Activity implements OnClickListene
 				String lon,lat,tmp[];
 				if(selUser.getLastLocation().contains("Raum")){
 					tmp = selUser.getLastLocation().split("Raum");
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"Zuletzt im Raum: "+tmp[1], Toast.LENGTH_SHORT);
+					toast.show();
 					lat = tmp[0].split(",")[0];
 					lon = tmp[0].split(",")[1];
 				}else{
