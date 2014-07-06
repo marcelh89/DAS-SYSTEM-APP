@@ -31,11 +31,12 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	private static String URLS[] = { "http://10.0.2.2:8080/DAS-SYSTEM-SERVER",
 			"http://192.168.178.60:8080/DAS-SYSTEM-SERVER",
-			"http://192.168.178.46:8080/DAS-SYSTEM-SERVER" };
+			"http://192.168.178.46:8080/DAS-SYSTEM-SERVER", 
+			"http://koj4k.no-ip.biz:8080/DAS-SYSTEM-SERVER"};
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				URLS[2], new ApacheHttpClient4Executor());
+				URLS[3], new ApacheHttpClient4Executor());
 		Log.i(logger, "initialised restClient: " + restClient);
 	}
 

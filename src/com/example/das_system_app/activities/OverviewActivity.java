@@ -69,7 +69,7 @@ public class OverviewActivity extends Activity {
 			// Freunde im Umkreis or Weg zum Freund
 			intent = (childPosition == 0) ? new Intent(this,
 					LoadUserListActivity.class) : new Intent(this,
-					LoadUserListActivity.class);
+					NavigierenFreundActivity.class);
 			break;
 		case 1:
 

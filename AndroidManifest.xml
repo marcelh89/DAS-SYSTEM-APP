@@ -75,8 +75,12 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.example.das_system_app.activities.LoadUserListActivity"
+            android:name=".activities.LoadUserListActivity"
             android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="com.example.das_system_app.activities.NavigierenFreundActivity"
+            android:label="@string/title_activity_navigieren_freund" >
         </activity>
     </application>
 
