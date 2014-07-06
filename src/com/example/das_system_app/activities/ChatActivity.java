@@ -31,7 +31,8 @@ public class ChatActivity extends Activity implements OnClickListener {
 	private static String URLS[] = {
 			"ws://10.0.2.2:8080/DAS-SYSTEM-SERVER/chat/",
 			"ws://192.168.178.60:8080/DAS-SYSTEM-SERVER/chat/",
-			"ws://192.168.178.46:8080/DAS-SYSTEM-SERVER/chat/" };
+			"ws://192.168.178.46:8080/DAS-SYSTEM-SERVER/chat/",
+			"ws://koj4k.no-ip.biz:8080/DAS-SYSTEM-SERVER/chat/"};
 
 	ImageButton postbtn;
 	ListView mChatListView;
@@ -139,7 +140,7 @@ public class ChatActivity extends Activity implements OnClickListener {
 
 	public void connect() {
 
-		final String wsuri = URLS[1] + room;
+		final String wsuri = URLS[3] + room;
 
 		try {
 			mConnection.connect(wsuri, new WebSocketHandler() {

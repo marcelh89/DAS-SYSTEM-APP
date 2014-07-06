@@ -137,15 +137,16 @@ public class NavigationActivity extends Activity {
 		}
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		initilizeMap();
-	}
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		initilizeMap();
+//	}
 
 	@Override
 	public void onBackPressed() {
-		startActivity(new Intent(this, OverviewActivity.class));
+		finish();
+//		startActivity(new Intent(this, OverviewActivity.class));
 		super.onBackPressed();
 	}
 

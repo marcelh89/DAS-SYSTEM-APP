@@ -3,8 +3,6 @@ package com.example.das_system_app.activities;
 import java.util.ArrayList;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.rest.DasSystemRESTAccessor;
-import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.User;
 
 import android.app.Activity;
@@ -14,7 +12,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +31,11 @@ public class NavigierenFreundActivity extends Activity implements OnClickListene
 		userSpin = (Spinner) findViewById(R.id.userSpin);
 		btnAnzeigen = (Button) findViewById(R.id.btnShow);
 		btnAnzeigen.setOnClickListener(this);
-		(new GetUsersTask()).execute();
+		@SuppressWarnings("unchecked")
+		ArrayList<User> userlist= (ArrayList<User>) getIntent().getExtras().get("userList");
+		ArrayAdapter<User> dataAdapter = new ArrayAdapter<User>(NavigierenFreundActivity.this,android.R.layout.simple_spinner_item, userlist);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		userSpin.setAdapter(dataAdapter);
 	}
 	
 	@Override
@@ -86,32 +87,4 @@ public class NavigierenFreundActivity extends Activity implements OnClickListene
 
 		return myLocation;
 	}
-	
-	public class GetUsersTask extends AsyncTask<Void, Void, ArrayList<User>>{
-
-		private ArrayList<User> u;
-		@Override
-		protected ArrayList<User> doInBackground(Void... params) {
-			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-			System.out.println("hier");
-			u = (ArrayList<User>) acc.getUser();
-			System.out.println("hier2");
-			return u;
-		}
-
-		@Override
-		protected void onPostExecute(ArrayList<User> resultList) {
-			if(resultList != null){
-				ArrayAdapter<User> dataAdapter = new ArrayAdapter<User>(NavigierenFreundActivity.this,android.R.layout.simple_spinner_item, resultList);
-				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				userSpin.setAdapter(dataAdapter);
-			}else{
-				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Konnte keine Nutzer finden!", Toast.LENGTH_SHORT);
-				toast.show();
-			}
-		}
-	}
-
-
 }

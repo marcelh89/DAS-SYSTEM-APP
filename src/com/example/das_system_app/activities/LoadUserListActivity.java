@@ -13,11 +13,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 public class LoadUserListActivity extends Activity {
-
+	private int child;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.load);
+		child = getIntent().getExtras().getInt("child");
 		(new GetUsersTask()).execute();
 	}
 
@@ -27,19 +28,24 @@ public class LoadUserListActivity extends Activity {
 		@Override
 		protected ArrayList<User> doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-			System.out.println("hier");
 			u = (ArrayList<User>) acc.getUser();
-			System.out.println("hier2");
 			return u;
 		}
 
 		@Override
 		protected void onPostExecute(ArrayList<User> result) {
-			System.out.println("hier3");
 			System.out.println(u.size());
-			Intent intent = new Intent(LoadUserListActivity.this, NavigationActivity.class);
+			Intent intent = null;
+			if(child == 0){
+				intent = new Intent(LoadUserListActivity.this, NavigationActivity.class);	
+			}
+			if(child == 1){
+				intent = new Intent(LoadUserListActivity.this, NavigierenFreundActivity.class);
+			}
 			intent.putExtra("userList", result);
 			startActivity(intent);
+			LoadUserListActivity.this.finish();
 		}
+		
 	}
 }

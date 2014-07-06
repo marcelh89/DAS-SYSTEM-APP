@@ -63,9 +63,13 @@ public class OverviewActivity extends Activity {
 		switch (groupPosition) {
 		case 0:
 			// Freunde im Umkreis or Weg zum Freund
-			intent = (childPosition == 0) ? new Intent(this,
-					LoadUserListActivity.class) : new Intent(this,
-					NavigierenFreundActivity.class);
+			intent = new Intent(this,LoadUserListActivity.class);
+			if(childPosition == 0){
+				intent.putExtra("child", childPosition);
+			}
+			if(childPosition == 1){
+				intent.putExtra("child", childPosition);
+			}
 			break;
 		case 1:
 
