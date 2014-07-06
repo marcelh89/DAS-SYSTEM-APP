@@ -73,6 +73,8 @@ public class ChatOrganizeActivity extends Activity implements
 	private GroupUpdateTask mGroupUpdateTask = null;
 	private GroupDeleteTask mGroupDeleteTask = null;
 
+	boolean doupdate = false;
+
 	/**
 	 * triggered once on startup of activity
 	 */
@@ -213,8 +215,35 @@ public class ChatOrganizeActivity extends Activity implements
 
 				// send PUT/POST change groups add user to group.users
 				// update param group, user
-				mGroupUpdateTask = new GroupUpdateTask(getApplicationContext());
-				mGroupUpdateTask.execute((Void) null);
+				// mGroupUpdateTask = new
+				// GroupUpdateTask(getApplicationContext());
+				// mGroupUpdateTask.execute((Void) null);
+
+				for (Gruppe group : grouplist) {
+					if (actGroup.getGid().equals(group.getGid())) {
+						grouplist.remove(group);
+						dataAdapter.notifyDataSetChanged();
+						break;
+					}
+				}
+
+				mGroupDeleteTask = new GroupDeleteTask(getBaseContext());
+				mGroupDeleteTask.execute((Void) null);
+
+				// then add
+
+				Gruppe gruppe = new Gruppe(grouplist.size() + 1,
+						actGroup.getName(), false, actGroup.getCreator());
+
+				List<User> oldUsers = actGroup.getUsers();
+				oldUsers.add(actUser);
+				gruppe.setUsers(oldUsers);
+
+				grouplist.add(gruppe);
+				// dataAdapter.notifyDataSetChanged();
+
+				mGroupAddTask = new GroupAddTask(getBaseContext());
+				mGroupAddTask.execute((Void) null);
 
 			}
 
@@ -404,6 +433,12 @@ public class ChatOrganizeActivity extends Activity implements
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			return acc.deleteGroup(actGroup);
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+
 		}
 
 		@Override
