@@ -4,7 +4,6 @@
 package com.example.das_system_app.activities;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.R.layout;
 import com.example.das_system_app.rest.valueobject.User;
 
 import android.app.Activity;

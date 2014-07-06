@@ -4,12 +4,8 @@
 package com.example.das_system_app.activities;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.R.layout;
-import com.example.das_system_app.rest.DasSystemRESTAccessor;
-import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +20,6 @@ import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -41,6 +36,7 @@ public class NavigationActivity extends Activity {
 	double latFrom, lonFrom, latTo, lonTo;
 	Location location;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

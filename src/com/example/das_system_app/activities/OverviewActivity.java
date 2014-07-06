@@ -9,19 +9,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.R.id;
-import com.example.das_system_app.R.layout;
 import com.example.das_system_app.adapters.ExpandableListAdapter;
 import com.example.das_system_app.rest.valueobject.User;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.Toast;
 
 public class OverviewActivity extends Activity {
 

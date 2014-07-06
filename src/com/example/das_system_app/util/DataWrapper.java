@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.das_system_app.model.Gruppe;
-
 /**
  * wraps Arraylist of Groups to pass through Activites
  * 

@@ -26,8 +26,6 @@ import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.util.DataWrapper;
 
-import android.widget.AdapterView.*;
-
 public class ChatInviteFriendActivity extends Activity implements
 		OnClickListener, OnItemSelectedListener {
 
@@ -49,6 +47,7 @@ public class ChatInviteFriendActivity extends Activity implements
 	ArrayList<Gruppe> grouplist;
 	Gruppe selectedGroup;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

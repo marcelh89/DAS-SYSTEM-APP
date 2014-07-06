@@ -1,13 +1,10 @@
 package com.example.das_system_app.activities;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.json.JSONObject;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.activities.LoginActivity.UserLoginTask;
 import com.example.das_system_app.model.Gruppe;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
@@ -17,11 +14,9 @@ import com.example.das_system_app.util.DataWrapper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,7 +65,7 @@ public class ChatOrganizeActivity extends Activity implements
 	String room;
 	private GroupLoadTask mGroupLoadTask = null;
 	private GroupAddTask mGroupAddTask = null;
-	private GroupUpdateTask mGroupUpdateTask = null;
+//	private GroupUpdateTask mGroupUpdateTask = null;
 	private GroupDeleteTask mGroupDeleteTask = null;
 
 	boolean doupdate = false;
@@ -195,7 +190,7 @@ public class ChatOrganizeActivity extends Activity implements
 
 		if (requestCode == GROUP_CREATE) {
 			String name = data.getStringExtra(GROUP_NAME);
-			String password = data.getStringExtra(GROUP_PASSWORD);
+//			String password = data.getStringExtra(GROUP_PASSWORD);
 			grouplist.add(new Gruppe(grouplist.size() + 1, name, false,
 					currentUser));
 
@@ -493,7 +488,7 @@ public class ChatOrganizeActivity extends Activity implements
 
 		@Override
 		protected void onCancelled() {
-			mGroupUpdateTask = null;
+//			mGroupUpdateTask = null;
 		}
 	}
 

@@ -1,10 +1,8 @@
 package com.example.das_system_app.activities;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.R.layout;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.User;
@@ -13,8 +11,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class LoadUserListActivity extends Activity {
 

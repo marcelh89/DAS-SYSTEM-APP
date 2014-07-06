@@ -117,11 +117,6 @@ public class RegisterActivity extends Activity implements
 			return true;
 		}
 	}
-	
-	private void submit(){
-		startActivity(new Intent(this, LoginActivity.class));
-		//besser zurück zur Parent Activity (startActivityWithResult..)
-	}
 
 	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 		Context context;

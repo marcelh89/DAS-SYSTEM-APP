@@ -3,15 +3,9 @@ package com.example.das_system_app.activities;
 import java.util.ArrayList;
 
 import com.example.das_system_app.R;
-import com.example.das_system_app.R.id;
-import com.example.das_system_app.R.layout;
-import com.example.das_system_app.R.menu;
-import com.example.das_system_app.activities.LoadUserListActivity.GetUsersTask;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.User;
-import com.example.das_system_app.rest.valueobject.Vorlesung;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,8 +16,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -50,7 +42,7 @@ public class NavigierenFreundActivity extends Activity implements OnClickListene
 		if(v.getId() == R.id.btnShow){
 			User selUser = (User)userSpin.getSelectedItem();
 			if(selUser.getLastLocation() != null){
-				String lon,lat,raum,tmp[];
+				String lon,lat,tmp[];
 				if(selUser.getLastLocation().contains("Raum")){
 					tmp = selUser.getLastLocation().split("Raum");
 					lat = tmp[0].split(",")[0];
