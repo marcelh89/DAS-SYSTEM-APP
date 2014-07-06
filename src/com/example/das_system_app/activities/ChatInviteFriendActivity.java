@@ -10,8 +10,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -26,7 +29,7 @@ import com.example.das_system_app.util.DataWrapper;
 import android.widget.AdapterView.*;
 
 public class ChatInviteFriendActivity extends Activity implements
-		OnClickListener {
+		OnClickListener, OnItemSelectedListener {
 
 	public static final String GROUP = "group";
 	public static final String USER = "user";
@@ -38,18 +41,20 @@ public class ChatInviteFriendActivity extends Activity implements
 	Spinner mUsers, mGroups;
 	ArrayAdapter<User> userAdapter;
 	User currentUser;
+	ArrayList<Gruppe> grouplist;
+	Gruppe selectedGroup;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_invitefriend);
 
-		mUserLoadTask = new UserLoadTask(this);
-		mUserLoadTask.execute((Void) null);
+		// mUserLoadTask = new UserLoadTask(this);
+		// mUserLoadTask.execute((Void) null);
 
 		DataWrapper<Gruppe> dw = (DataWrapper) getIntent()
 				.getSerializableExtra("grouplist");
-		ArrayList<Gruppe> grouplist = dw.getList();
+		grouplist = dw.getList();
 		// grouplist.remove(0); // delete global group
 
 		currentUser = (User) getIntent().getSerializableExtra("user");
@@ -75,6 +80,7 @@ public class ChatInviteFriendActivity extends Activity implements
 		ArrayAdapter<Gruppe> groupAdapter = new ArrayAdapter<Gruppe>(this,
 				android.R.layout.simple_spinner_item, grouplist);
 		mGroups.setAdapter(groupAdapter);
+		mGroups.setOnItemSelectedListener(this);
 
 		mUsers = (Spinner) findViewById(R.id.UserSpinner);
 		userAdapter = new ArrayAdapter<User>(this,
@@ -84,6 +90,24 @@ public class ChatInviteFriendActivity extends Activity implements
 		Button mAccept = (Button) findViewById(R.id.AccButton);
 		mAccept.setOnClickListener(this);
 
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+
+		Log.i("OnItemSelected", position + " -- "
+				+ grouplist.get(position).toString());
+
+		selectedGroup = grouplist.get(position);
+
+		mUserLoadTask = new UserLoadTask(this);
+		mUserLoadTask.execute((Void) null);
+
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
 	}
 
 	@Override
@@ -119,15 +143,13 @@ public class ChatInviteFriendActivity extends Activity implements
 			this.context = context;
 		}
 
-		// @Override
-		// protected void onPreExecute() {
-		// super.onPreExecute();
-		//
-		// // DataWrapper<User> dw2 = (DataWrapper) getIntent()
-		// // .getSerializableExtra("userlist");
-		// // userlist = dw2.getList();
-		//
-		// }
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			userlist.clear();
+			userAdapter.notifyDataSetChanged();
+
+		}
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
@@ -191,4 +213,5 @@ public class ChatInviteFriendActivity extends Activity implements
 		setResult(RESULT_INVITE_FRIEND, returnIntent);
 		finish();
 	}
+
 }
