@@ -1,5 +1,8 @@
 package com.example.das_system_app.activities;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.example.das_system_app.R;
 import com.example.das_system_app.rest.DasSystemRESTAccessor;
 import com.example.das_system_app.rest.IDasSystemRESTAccessor;
@@ -118,7 +121,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			mEmailView.setError("Emailfeld ist leer");
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
+		} else if (!checkEmailCorrectness(mEmail)) {
 			mEmailView.setError("Email nicht korrekt");
 			focusView = mEmailView;
 			cancel = true;
@@ -205,6 +208,17 @@ public class LoginActivity extends Activity implements OnClickListener {
 			mAuthTask = null;
 			mDialog.hide();
 		}
+	}
+
+	public boolean checkEmailCorrectness(String currentEmail) {
+		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+		Matcher m = p.matcher(currentEmail);
+		boolean matchFound = m.matches();
+
+		if (!matchFound) {
+			return false;
+		}
+		return true;
 	}
 
 	public class UserUpdateTask extends AsyncTask<Double, Void, Boolean> {
