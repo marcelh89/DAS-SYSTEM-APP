@@ -132,9 +132,9 @@ public class OverviewActivity extends Activity {
 		String[] chatOptions = { "Chats verwalten", "Direkt zum globalen Chat" };
 		String[] profilOptions = { "Profil einsehen" };
 		String[] raumOptions = { "Raum identifizieren",
-				"Für einen Kurs anmelden" };
-		String[] dozentOptions = { "Anwesenheit prüfen",
-				"QR-Code für LV bereitstellen" };
+				"FÃ¼r einen Kurs anmelden" };
+		String[] dozentOptions = { "Anwesenheit prÃ¼fen",
+				"QR-Code fÃ¼r LV bereitstellen" };
 
 		optionsCollection = new LinkedHashMap<String, List<String>>();
 
