@@ -155,7 +155,13 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	@Override
 	public boolean updateGroup(FreundEinladenIn freundEinladenIn) {
-		return restClient.updateGroup(freundEinladenIn);
+		try {
+			System.out.println(freundEinladenIn);
+			return restClient.updateGroup(freundEinladenIn);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
