@@ -29,7 +29,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private ProgressDialog mDialog;
 	private EditText mEmailView;
 	private EditText mPasswordView;
-	private Button mButton;
+	private Button mLogin, mRegister;
 	private UserLoginTask mAuthTask = null;
 	private User u;
 
@@ -44,24 +44,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 		mEmailView.setText("marcelh89@googlemail.com");
 		mPasswordView.setText("123");
 
-		mButton = (Button) findViewById(R.id.LoginButton);
-		mButton.setOnClickListener(this);
+		mLogin = (Button) findViewById(R.id.LoginButton);
+		mLogin.setOnClickListener(this);
 
-		TextView registerView = (TextView) findViewById(R.id.LoginRegistrieren);
-		registerView.setOnClickListener(this);
-
-		TextView passwordVergessenView = (TextView) findViewById(R.id.LoginPasswortVergessen);
-		passwordVergessenView.setOnClickListener(this);
+		mRegister = (Button) findViewById(R.id.RegisterButton);
+		mRegister.setOnClickListener(this);
 
 	}
 
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.LoginRegistrieren:
-			startActivity(new Intent(this, RegisterActivity.class));
-			break;
-		case R.id.LoginPasswortVergessen:
+		case R.id.RegisterButton:
 			startActivity(new Intent(this, RegisterActivity.class));
 			break;
 		case R.id.LoginButton:
@@ -72,7 +66,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 	}
 
-	
 	private Location getMyLocation() {
 		// Get location from GPS if it's available
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -92,7 +85,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		return myLocation;
 	}
-	
+
 	public void attemptLogin() {
 		if (mAuthTask != null) {
 			return;
@@ -186,18 +179,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 			if (success) {
 				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 				SharedPreferences.Editor editor = settings.edit();
-			    editor.putInt("UserId", u.getUid());
-			    editor.commit();
-			    
+				editor.putInt("UserId", u.getUid());
+				editor.commit();
+
 				Intent intent = new Intent(LoginActivity.this,
 						OverviewActivity.class);
 				intent.putExtra("user", u);
 				startActivity(intent);
-				
+
 				Location loc = getMyLocation();
 				double latFrom = loc.getLatitude();
 				double lonFrom = loc.getLongitude();
-				System.out.println(latFrom+ " " + lonFrom);
+				System.out.println(latFrom + " " + lonFrom);
 				UserUpdateTask uUTask = new UserUpdateTask();
 				uUTask.execute(latFrom, lonFrom);
 			} else {
@@ -213,14 +206,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 			mDialog.hide();
 		}
 	}
-	
-	public class UserUpdateTask extends AsyncTask<Double, Void, Boolean>{
+
+	public class UserUpdateTask extends AsyncTask<Double, Void, Boolean> {
 
 		@Override
 		protected Boolean doInBackground(Double... params) {
-			if(u!=null){
-				if(params.length > 1){
-					String locationStr = params[0]+","+	params[1];
+			if (u != null) {
+				if (params.length > 1) {
+					String locationStr = params[0] + "," + params[1];
 					u.setLastLocation(locationStr);
 					IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 					acc.updateLastLocationUser(u);
@@ -228,6 +221,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 			}
 			return null;
 		}
-		
+
 	}
 }

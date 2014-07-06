@@ -35,7 +35,7 @@ public class DasSystemRESTAccessor implements IDasSystemRESTAccessor {
 
 	public DasSystemRESTAccessor() {
 		this.restClient = ProxyFactory.create(IDasSystemRESTAccessor.class,
-				URLS[2], new ApacheHttpClient4Executor());
+				URLS[1], new ApacheHttpClient4Executor());
 		Log.i(logger, "initialised restClient: " + restClient);
 	}
 
