@@ -5,8 +5,10 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +18,8 @@ import android.widget.Spinner;
 
 import com.example.das_system_app.R;
 import com.example.das_system_app.model.Gruppe;
+import com.example.das_system_app.rest.DasSystemRESTAccessor;
+import com.example.das_system_app.rest.IDasSystemRESTAccessor;
 import com.example.das_system_app.rest.valueobject.User;
 import com.example.das_system_app.util.DataWrapper;
 
@@ -29,24 +33,26 @@ public class ChatInviteFriendActivity extends Activity implements
 
 	public static final int RESULT_INVITE_FRIEND = 1;
 
+	List<User> userlist = new ArrayList<User>();
+	private UserLoadTask mUserLoadTask = null;
 	Spinner mUsers, mGroups;
+	ArrayAdapter<User> userAdapter;
+	User currentUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_invitefriend);
 
+		mUserLoadTask = new UserLoadTask(this);
+		mUserLoadTask.execute((Void) null);
+
 		DataWrapper<Gruppe> dw = (DataWrapper) getIntent()
 				.getSerializableExtra("grouplist");
 		ArrayList<Gruppe> grouplist = dw.getList();
-		grouplist.remove(0); // delete global group
+		// grouplist.remove(0); // delete global group
 
-		User currentUser = (User) getIntent().getSerializableExtra("user");
-
-		DataWrapper<User> dw2 = (DataWrapper) getIntent().getSerializableExtra(
-				"userlist");
-		List<User> userlist = dw2.getList();
-
+		currentUser = (User) getIntent().getSerializableExtra("user");
 		ArrayList<Gruppe> grouplistCopy = (ArrayList<Gruppe>) grouplist.clone();
 
 		// delete groups im not creator of
@@ -60,24 +66,100 @@ public class ChatInviteFriendActivity extends Activity implements
 
 		}
 
-		// check if grouplist empty after deleting non creator groups
+		// cancel if grouplist is empty
 		if (grouplist.isEmpty()) {
 			startFailDialog();
 		}
 
 		mGroups = (Spinner) findViewById(R.id.GroupSpinner);
-		ArrayAdapter<Gruppe> dataAdapter = new ArrayAdapter<Gruppe>(this,
+		ArrayAdapter<Gruppe> groupAdapter = new ArrayAdapter<Gruppe>(this,
 				android.R.layout.simple_spinner_item, grouplist);
-		mGroups.setAdapter(dataAdapter);
+		mGroups.setAdapter(groupAdapter);
 
 		mUsers = (Spinner) findViewById(R.id.UserSpinner);
-		ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,
+		userAdapter = new ArrayAdapter<User>(this,
 				android.R.layout.simple_spinner_item, userlist);
-		mUsers.setAdapter(adapter);
+		mUsers.setAdapter(userAdapter);
 
 		Button mAccept = (Button) findViewById(R.id.AccButton);
 		mAccept.setOnClickListener(this);
 
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		Intent returnIntent = new Intent();
+
+		User selectedUser = (User) mUsers.getSelectedItem();
+		Gruppe selectedGroup = (Gruppe) mGroups.getSelectedItem();
+
+		// if (selectedGroup != null && selectedUser != null) {
+		returnIntent.putExtra(GROUP, selectedGroup);
+		returnIntent.putExtra(USER, selectedUser);
+		setResult(RESULT_INVITE_FRIEND, returnIntent);
+		finish();
+		// } else {
+
+		// }
+
+	}
+
+	/**
+	 * load Users task
+	 * 
+	 * @author marcman
+	 * 
+	 */
+	public class UserLoadTask extends AsyncTask<Void, Void, Boolean> {
+		Context context;
+		List<User> users;
+
+		public UserLoadTask(Context context) {
+			this.context = context;
+		}
+
+		// @Override
+		// protected void onPreExecute() {
+		// super.onPreExecute();
+		//
+		// // DataWrapper<User> dw2 = (DataWrapper) getIntent()
+		// // .getSerializableExtra("userlist");
+		// // userlist = dw2.getList();
+		//
+		// }
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
+			users = acc.getUser();
+			return false;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean success) {
+
+			for (User user : users) {
+				if (!userlist.contains(user)) {
+
+					// exclude currentuser from invitelist
+					if (user.getUid().equals(currentUser.getUid())) {
+						System.out.println();
+					} else {
+						userlist.add(user);
+					}
+
+				}
+			}
+
+			userAdapter.notifyDataSetChanged();
+
+		}
+
+		@Override
+		protected void onCancelled() {
+			mUserLoadTask = null;
+		}
 	}
 
 	private int startFailDialog() {
@@ -91,6 +173,8 @@ public class ChatInviteFriendActivity extends Activity implements
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
+						Intent returnIntent = new Intent();
+						setResult(RESULT_INVITE_FRIEND, returnIntent);
 						finish();
 					}
 				});
@@ -102,22 +186,9 @@ public class ChatInviteFriendActivity extends Activity implements
 	}
 
 	@Override
-	public void onClick(View v) {
-
+	public void onBackPressed() {
 		Intent returnIntent = new Intent();
-
-		// TODO hier is n denkfehler!
-		User selectedUser = (User) mUsers.getSelectedItem();
-		Gruppe selectedGroup = (Gruppe) mGroups.getSelectedItem();
-
-		if (selectedGroup != null && selectedUser != null) {
-			returnIntent.putExtra(GROUP, selectedGroup);
-			returnIntent.putExtra(USER, selectedUser);
-			setResult(RESULT_INVITE_FRIEND, returnIntent);
-			finish();
-		} else {
-
-		}
-
+		setResult(RESULT_INVITE_FRIEND, returnIntent);
+		finish();
 	}
 }

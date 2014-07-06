@@ -68,10 +68,8 @@ public class ChatOrganizeActivity extends Activity implements
 	ArrayAdapter<Gruppe> dataAdapter;
 	User currentUser;
 	String room;
-	IDasSystemRESTAccessor acc;
 	private GroupLoadTask mGroupLoadTask = null;
 	private GroupAddTask mGroupAddTask = null;
-	private UserLoadTask mUserLoadTask = null;
 	private GroupUpdateTask mGroupUpdateTask = null;
 	private GroupDeleteTask mGroupDeleteTask = null;
 
@@ -84,8 +82,6 @@ public class ChatOrganizeActivity extends Activity implements
 		setContentView(R.layout.chat_choose);
 
 		currentUser = (User) getIntent().getSerializableExtra("user");
-		acc = new DasSystemRESTAccessor();
-
 		ListView listView = (ListView) findViewById(R.id.listView1);
 		grouplist = new ArrayList<Gruppe>();
 		userlist = new ArrayList<User>();
@@ -168,8 +164,15 @@ public class ChatOrganizeActivity extends Activity implements
 			break;
 		case R.id.FriendInvite:
 
-			mUserLoadTask = new UserLoadTask(this);
-			mUserLoadTask.execute((Void) null);
+			// mUserLoadTask = new UserLoadTask(this);
+			// mUserLoadTask.execute((Void) null);
+
+			Intent intent = new Intent(this, ChatInviteFriendActivity.class);
+			intent.putExtra("grouplist", new DataWrapper<Gruppe>(grouplist));
+			// intent.putExtra("userlist", new DataWrapper<User>(userlist));
+			intent.putExtra("user", currentUser);
+
+			startActivityForResult(intent, FRIEND_INVITE);
 
 			break;
 		default:
@@ -210,7 +213,7 @@ public class ChatOrganizeActivity extends Activity implements
 
 				// send PUT/POST change groups add user to group.users
 				// update param group, user
-				mGroupUpdateTask = new GroupUpdateTask(this);
+				mGroupUpdateTask = new GroupUpdateTask(getApplicationContext());
 				mGroupUpdateTask.execute((Void) null);
 
 			}
@@ -374,6 +377,7 @@ public class ChatOrganizeActivity extends Activity implements
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
 			Gruppe gruppe = grouplist.get(grouplist.size() - 1);
+			grouplist.remove(grouplist.size() - 1);
 			return acc.addGroup(gruppe);
 		}
 
@@ -416,7 +420,12 @@ public class ChatOrganizeActivity extends Activity implements
 	 */
 	public class GroupUpdateTask extends AsyncTask<Void, Void, Boolean> {
 		Context context;
-		FreundEinladenIn freundEinladenIn;
+
+		Integer gruppenId = actGroup.getGid();
+		Integer userId = actUser.getUid();
+
+		FreundEinladenIn freundEinladenIn = new FreundEinladenIn(gruppenId,
+				userId);;
 
 		public GroupUpdateTask(Context context) {
 			this.context = context;
@@ -424,8 +433,7 @@ public class ChatOrganizeActivity extends Activity implements
 
 		@Override
 		protected void onPreExecute() {
-			freundEinladenIn = new FreundEinladenIn(actGroup.getGid(),
-					actUser.getUid());
+			super.onPreExecute();
 
 			// delete last item from grouplist because of changement due to
 			// update
@@ -435,11 +443,13 @@ public class ChatOrganizeActivity extends Activity implements
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-			return acc.updateGroup(freundEinladenIn);
+			acc.updateGroup(freundEinladenIn);
+			return false;
 		}
 
 		@Override
 		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
 			System.out.println();
 			// reload from db
 			// onResume();
@@ -449,59 +459,6 @@ public class ChatOrganizeActivity extends Activity implements
 		@Override
 		protected void onCancelled() {
 			mGroupUpdateTask = null;
-		}
-	}
-
-	/**
-	 * load Users task
-	 * 
-	 * @author marcman
-	 * 
-	 */
-	public class UserLoadTask extends AsyncTask<Void, Void, Boolean> {
-		Context context;
-		List<User> users;
-
-		public UserLoadTask(Context context) {
-			this.context = context;
-		}
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			IDasSystemRESTAccessor acc = new DasSystemRESTAccessor();
-			users = acc.getUser();
-			return false;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean success) {
-
-			for (User user : users) {
-				if (!userlist.contains(user)) {
-
-					// exclude currentuser from invitelist
-					if (user.getEmail().equals(currentUser.getEmail())) {
-						System.out.println();
-					} else {
-						userlist.add(user);
-					}
-
-				}
-			}
-
-			// redirect to next intent
-			Intent intent = new Intent(ChatOrganizeActivity.this,
-					ChatInviteFriendActivity.class);
-			intent.putExtra("grouplist", new DataWrapper<Gruppe>(grouplist));
-			intent.putExtra("userlist", new DataWrapper<User>(userlist));
-			intent.putExtra("user", currentUser);
-			startActivityForResult(intent, FRIEND_INVITE);
-
-		}
-
-		@Override
-		protected void onCancelled() {
-			mUserLoadTask = null;
 		}
 	}
 
