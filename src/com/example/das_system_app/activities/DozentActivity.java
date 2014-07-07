@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +47,27 @@ public class DozentActivity extends Activity implements OnClickListener{
 		code = (EditText) findViewById(R.id.code);
 		submit = (Button) findViewById(R.id.btnSubmit);
 		submit.setOnClickListener(this);
+		
+		listVorlesung.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				Vorlesung vor = (Vorlesung)parent.getItemAtPosition(position);
+				if(vor.getAnmeldecode()!=null){
+					code.setText(vor.getAnmeldecode());	
+				}else{
+					code.setText("");
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		mVorTask = new HoleVorlesungenTask(this);
 		mVorTask.execute();
