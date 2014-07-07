@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,6 +27,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 /**
  * @author marcman & patman
  *
@@ -82,6 +84,25 @@ public class DozentAnwesenheitActivity extends Activity implements OnClickListen
         sb.append(".");
         sb.append(year);
         datePick.setText(sb.toString());
+        
+        listVorlesung.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				Vorlesung vor = (Vorlesung)parent.getItemAtPosition(position);
+				if(vor.getAnmeldecode()!=null){
+					listTeilnehmer.setAdapter(null);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
 	@Override
